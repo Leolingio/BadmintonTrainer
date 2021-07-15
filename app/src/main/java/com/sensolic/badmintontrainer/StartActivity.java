@@ -1,10 +1,6 @@
 package com.sensolic.badmintontrainer;
 
 import android.annotation.SuppressLint;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -16,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.sensolic.badmintontrainer.graphics.CourtDimensions;
 import com.sensolic.badmintontrainer.graphics.Figure;
 
@@ -26,6 +25,7 @@ import com.sensolic.badmintontrainer.graphics.Figure;
 public class StartActivity extends AppCompatActivity {
 
     private static final boolean DEBUG = false;
+    private final Figure[] figures = new Figure[3];
 
     private Storage storage;
     private CourtDimensions dim;
@@ -35,9 +35,8 @@ public class StartActivity extends AppCompatActivity {
     private ImageView enemyPlayer;
     private ImageView featherBall;
     private ImageView selectedItem;
-    private Figure[] figures = new Figure[3];
-    private int scorePlayer1;
-    private int scorePlayer2;
+    private int scorePlayer1;   // Score of player1
+    private int scorePlayer2;   // Score of player2
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -112,7 +111,6 @@ public class StartActivity extends AppCompatActivity {
 
     private View.OnTouchListener onTouchListener() {
         return new View.OnTouchListener() {
-
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -352,51 +350,117 @@ public class StartActivity extends AppCompatActivity {
         featherBall.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Method to increment the score of player1
+     * @param view Button that was pressed to execute this method
+     */
     public void scoreIncrementPlayer1(View view){
-        Button btn1 = findViewById(R.id.score_sub_player1);
-        if(scorePlayer1 == 0) btn1.setEnabled(true);
-
+        Button btnSub = findViewById(R.id.score_sub_player1);
+        Button btnAdd = findViewById(R.id.score_add_player1);
         TextView score = (TextView) findViewById(R.id.score_player1);
-        if(scorePlayer1 != 30) scorePlayer1++;
-            score.setText(scorePlayer1+"");
 
-        Button btn2 = findViewById(R.id.score_add_player1);
-        if(scorePlayer1 == 30) btn2.setEnabled(false);
+        if(scorePlayer1 == 0){
+            btnSub.setEnabled(true);
+        } else if(scorePlayer1 >= 20){
+            Button btnSub2 = findViewById(R.id.score_sub_player2);
+            Button btnAdd2 = findViewById(R.id.score_add_player2);
+
+            if(scorePlayer1 > scorePlayer2 || scorePlayer1 == 29){    // Player 1 is winning
+                btnAdd.setEnabled(false);
+                btnSub.setEnabled(true);
+                btnAdd2.setEnabled(false);
+                btnSub2.setEnabled(false);
+            }
+        }
+        scorePlayer1++;
+        score.setText(String.valueOf(scorePlayer1));
     }
 
+    /**
+     * Method to decrement the score of player1
+     * @param view Button that was pressed to execute this method
+     */
     public void scoreDecrementPlayer1(View view){
-        Button btn1 = findViewById(R.id.score_sub_player1);
-        if(scorePlayer1 == 1) btn1.setEnabled(false);
-
+        Button btnSub = findViewById(R.id.score_sub_player1);
+        Button btnAdd = findViewById(R.id.score_add_player1);
         TextView score = (TextView) findViewById(R.id.score_player1);
-        if(scorePlayer1 != 0) scorePlayer1--;
-        score.setText(scorePlayer1+"");
 
-        Button btn2 = findViewById(R.id.score_add_player1);
-        if(scorePlayer1 == 29) btn2.setEnabled(true);
+        if(scorePlayer1 == 1){
+            btnSub.setEnabled(false);
+        } else if(scorePlayer1 >= 20){
+            Button btnSub2 = findViewById(R.id.score_sub_player2);
+            Button btnAdd2 = findViewById(R.id.score_add_player2);
+
+            if(Math.abs(scorePlayer1-scorePlayer2) >= 2 || scorePlayer1 == 30){
+                btnAdd.setEnabled(true);
+                btnSub.setEnabled(true);
+                btnAdd2.setEnabled(true);
+                btnSub2.setEnabled(true);
+            } else if(scorePlayer1 > 20 && scorePlayer1 < scorePlayer2){
+                btnAdd.setEnabled(false);
+                btnSub.setEnabled(false);
+                btnAdd2.setEnabled(false);
+                btnSub2.setEnabled(true);
+            }
+        }
+        scorePlayer1--;
+        score.setText(String.valueOf(scorePlayer1));
     }
 
+    /**
+     * Method to increment the score of player2
+     * @param view Button that was pressed to execute this method
+     */
     public void scoreIncrementPlayer2(View view){
-        Button btn1 = findViewById(R.id.score_sub_player2);
-        if(scorePlayer2 == 0) btn1.setEnabled(true);
-
+        Button btnSub = findViewById(R.id.score_sub_player2);
+        Button btnAdd = findViewById(R.id.score_add_player2);
         TextView score = (TextView) findViewById(R.id.score_player2);
-        if(scorePlayer2 != 30) scorePlayer2++;
-        score.setText(scorePlayer2+"");
 
-        Button btn2 = findViewById(R.id.score_add_player2);
-        if(scorePlayer2 == 30) btn2.setEnabled(false);
+        if(scorePlayer2 == 0){
+            btnSub.setEnabled(true);
+        } else if(scorePlayer2 >= 20){
+            Button btnSub2 = findViewById(R.id.score_sub_player1);
+            Button btnAdd2 = findViewById(R.id.score_add_player1);
+
+            if(scorePlayer2 > scorePlayer1 || scorePlayer2 == 29){    // Player 2 is winning
+                btnAdd.setEnabled(false);
+                btnSub.setEnabled(true);
+                btnAdd2.setEnabled(false);
+                btnSub2.setEnabled(false);
+            }
+        }
+        scorePlayer2++;
+        score.setText(String.valueOf(scorePlayer2));
     }
 
+    /**
+     * Method to decrement the score of player2
+     * @param view Button that was pressed to execute this method
+     */
     public void scoreDecrementPlayer2(View view){
-        Button btn1 = findViewById(R.id.score_sub_player2);
-        if(scorePlayer2 == 1) btn1.setEnabled(false);
-
+        Button btnSub = findViewById(R.id.score_sub_player2);
+        Button btnAdd = findViewById(R.id.score_add_player2);
         TextView score = (TextView) findViewById(R.id.score_player2);
-        if(scorePlayer2 != 0) scorePlayer2--;
-        score.setText(scorePlayer2+"");
 
-        Button btn2 = findViewById(R.id.score_add_player2);
-        if(scorePlayer2 == 29) btn2.setEnabled(true);
+        if(scorePlayer2 == 1){
+            btnSub.setEnabled(false);
+        } else if(scorePlayer2 >= 20){
+            Button btnSub2 = findViewById(R.id.score_sub_player1);
+            Button btnAdd2 = findViewById(R.id.score_add_player1);
+
+            if(Math.abs(scorePlayer1-scorePlayer2) >= 2 || scorePlayer2 == 30){
+                btnAdd.setEnabled(true);
+                btnSub.setEnabled(true);
+                btnAdd2.setEnabled(true);
+                btnSub2.setEnabled(true);
+            } else if(scorePlayer2 > 20 && scorePlayer1 > scorePlayer2){
+                btnAdd.setEnabled(false);
+                btnSub.setEnabled(false);
+                btnAdd2.setEnabled(false);
+                btnSub2.setEnabled(true);
+            }
+        }
+        scorePlayer2--;
+        score.setText(String.valueOf(scorePlayer2));
     }
 }
