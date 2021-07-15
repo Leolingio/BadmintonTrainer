@@ -25,6 +25,7 @@ import com.sensolic.badmintontrainer.graphics.Figure;
 public class StartActivity extends AppCompatActivity {
 
     private static final boolean DEBUG = false;
+    private static boolean TRAINING_BEGAN = false;
     private final Figure[] figures = new Figure[3];
 
     private Storage storage;
@@ -114,6 +115,8 @@ public class StartActivity extends AppCompatActivity {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+
+                if(!TRAINING_BEGAN) return false;
 
                 //Debug Code
                 TextView debugText = findViewById(R.id.debugTextView);
@@ -348,6 +351,8 @@ public class StartActivity extends AppCompatActivity {
         ownPlayer.setVisibility(View.VISIBLE);
         enemyPlayer.setVisibility(View.VISIBLE);
         featherBall.setVisibility(View.VISIBLE);
+
+        TRAINING_BEGAN = true;
     }
 
     /**
