@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id = "@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".StartActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/score_add_player1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plusSign"
+            android:layout_margin="5dp"
+            android:onClick="scoreIncrementPlayer1"
+            app:layout_constraintBottom_toTopOf="@id/score_sub_player1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/score_sub_player1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minusSign"
+            android:layout_margin="5dp"
+            android:onClick="scoreDecrementPlayer1"
+            app:layout_constraintBottom_toTopOf="@id/score_separator1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_add_player1"/>
+
+        <ImageView
+            android:id="@+id/score_separator1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/score_player1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_sub_player1"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/score_player1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/score_separator2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_separator1"
+            android:text="0"
+            android:textSize="30sp"
+            android:layout_margin="5dp"
+            android:textColor="#FF0000" />
+
+        <ImageView
+            android:id="@+id/score_separator2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/score_player2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_player1"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/score_player2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/score_separator3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_separator2"
+            android:text="0"
+            android:textSize="30sp"
+            android:layout_margin="5dp"
+            android:textColor="#000000" />
+
+        <ImageView
+            android:id="@+id/score_separator3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/score_add_player2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_player2"
+            android:layout_margin="5dp"/>
+
+        <Button
+            android:id="@+id/score_add_player2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/plusSign"
+            android:layout_margin="5dp"
+            android:onClick="scoreIncrementPlayer2"
+            app:layout_constraintBottom_toTopOf="@id/score_sub_player2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_separator3"/>
+
+        <Button
+            android:id="@+id/score_sub_player2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/minusSign"
+            android:layout_margin="5dp"
+            android:onClick="scoreDecrementPlayer2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/score_add_player2"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/court"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_court_tablet"
+        android:contentDescription="@string/badmintonCourt"
+        android:adjustViewBounds="true"
+        android:background="@drawable/badminton_court"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ownPlayer"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:contentDescription="@string/ownPlayer"
+        android:src="@drawable/player_circle"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="675dp"
+        android:layout_marginStart="325dp"/>
+
+    <ImageView
+        android:id="@+id/enemyPlayer"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:contentDescription="@string/enemyPlayer"
+        android:src="@drawable/enemy_circle"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="225dp"
+        android:layout_marginStart="200dp"/>
+
+    <ImageView
+        android:id="@+id/ball"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:contentDescription="@string/featherBall"
+        android:src="@drawable/featherball"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="635dp"
+        android:layout_marginStart="310dp"/>
+
+    <ImageView
+        android:id="@+id/selectedItemShower"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="5dp"
+        android:layout_gravity="end"
+        android:onClick="resetSelectedItem"/>
+
+    <TextView
+        android:id="@+id/debugTextView"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/newPosButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/newPosButton"
+        android:layout_gravity="bottom|end"
+        android:onClick="newPositions"/>
+
+    <Button
+        android:id="@+id/setStartPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/refreshStartPositions"
+        android:layout_gravity="bottom|left"
+        android:onClick="setupStartPositions" />
+
+    <Button
+        android:id="@+id/beginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/begin_Button"
+        android:layout_gravity="center"
+        android:onClick="beginTraining" />
+
+</FrameLayout>

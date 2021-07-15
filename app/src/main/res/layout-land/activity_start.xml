@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id = "@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".StartActivity">
+
+    <ImageView
+        android:id="@+id/court"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_court_phone"
+        android:contentDescription="@string/badmintonCourt"
+        android:adjustViewBounds="true"
+        android:background="@drawable/badminton_court_land" />
+
+    <ImageView
+        android:id="@+id/ownPlayer"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:contentDescription="@string/ownPlayer"
+        android:src="@drawable/player_circle"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="675dp"
+        android:layout_marginStart="325dp"/>
+
+    <ImageView
+        android:id="@+id/enemyPlayer"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:contentDescription="@string/enemyPlayer"
+        android:src="@drawable/enemy_circle"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="225dp"
+        android:layout_marginStart="200dp"/>
+
+    <ImageView
+        android:id="@+id/ball"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:contentDescription="@string/featherBall"
+        android:src="@drawable/featherball"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="635dp"
+        android:layout_marginStart="310dp"/>
+
+    <ImageView
+        android:id="@+id/selectedItemShower"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="5dp"
+        android:layout_gravity="end"
+        android:onClick="resetSelectedItem"/>
+
+    <TextView
+        android:id="@+id/debugTextView"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/newPosButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/newPosButton"
+        android:layout_gravity="bottom|end"
+        android:onClick="newPositions"/>
+
+    <Button
+        android:id="@+id/setStartPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/refreshStartPositions"
+        android:layout_gravity="bottom|start"
+        android:onClick="setupStartPositions" />
+
+    <Button
+        android:id="@+id/beginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/begin_Button"
+        android:layout_gravity="center"
+        android:onClick="beginTraining" />
+
+
+</FrameLayout>

@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
+
+    <TextView
+        android:id="@+id/settingsHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/marginSettings"
+        android:text="@string/settingsHeadline"
+        android:textColor="@color/colorSettings"
+        android:textSize="30sp" />
+
+    <CheckBox
+        android:id="@+id/setManualStartPositions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/colorSettings"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:text="@string/settings_manualStartPos"
+        android:textColor="@color/colorSettings"
+        android:textSize="20sp" />
+
+</LinearLayout>
