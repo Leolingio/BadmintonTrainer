@@ -74,11 +74,6 @@ public class StartActivity extends AppCompatActivity {
         for(Figure f : figures){
             f.getImg().setOnTouchListener(onTouchListener());
         }
-
-        ownPlayer.setOnTouchListener(onTouchListener());
-        enemyPlayer.setOnTouchListener(onTouchListener());
-        featherBall.setOnTouchListener(onTouchListener());
-
         Button b1 = (Button) findViewById(R.id.newPosButton);
         Button b2 = (Button) findViewById(R.id.setStartPos);
         b1.setEnabled(false);
@@ -86,12 +81,26 @@ public class StartActivity extends AppCompatActivity {
         b1.setVisibility(View.INVISIBLE);
         b2.setVisibility(View.INVISIBLE);
 
-        ownPlayer.setVisibility(View.INVISIBLE);
-        enemyPlayer.setVisibility(View.INVISIBLE);
-        featherBall.setVisibility(View.INVISIBLE);
+        ownPlayer.setVisibility(View.VISIBLE);
+        enemyPlayer.setVisibility(View.VISIBLE);
+        featherBall.setVisibility(View.VISIBLE);
 
         scorePlayer1 = 0;
         scorePlayer2 = 0;
+
+        dim = new CourtDimensions(court, getResources());
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            beginPositions();
+            loadingFeatherball();
+            mainLayout.invalidate();
+        }).start();
+
     }
 
     @Override
@@ -110,98 +119,95 @@ public class StartActivity extends AppCompatActivity {
 
     int counter = 0;
 
+    @SuppressLint("ClickableViewAccessibility")
     private View.OnTouchListener onTouchListener() {
-        return new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
+        return (View view, @SuppressLint("ClickableViewAccessibility") MotionEvent event) -> {
 
-                if(!TRAINING_BEGAN) return false;
+            if(!TRAINING_BEGAN) return false;
 
-                //Debug Code
-                TextView debugText = findViewById(R.id.debugTextView);
-                String msg;
+            //Debug Code
+            TextView debugText = findViewById(R.id.debugTextView);
+            String msg;
 
-                //Getting Raw event coordinates
-                final int xPos = (int) event.getRawX();
-                final int yPos = (int) event.getRawY();
-                msg = "x-Coordinates: "+xPos+" y-Coordinates"+yPos;
-                if(Settings.debugMode) debugText.setText(msg);
+            //Getting Raw event coordinates
+            final int xPos = (int) event.getRawX();
+            final int yPos = (int) event.getRawY();
+            msg = "x-Coordinates: "+xPos+" y-Coordinates"+yPos;
+            if(Settings.debugMode) debugText.setText(msg);
 
-                //Creating float array for 2 dimensional coordinates
-                float[] pos = new float[2];
-                pos[0] = xPos;
-                pos[1] = yPos;
+            //Creating float array for 2 dimensional coordinates
+            float[] pos = new float[2];
+            pos[0] = xPos;
+            pos[1] = yPos;
 
-                //Refreshing the dimensions of the court
-                dim.initializeDimensions();
+            //Refreshing the dimensions of the court
+            dim.initializeDimensions();
 
-                //If the touch-coordinates are not inside the court, the character will not be moved
-                if(!dim.isPartOfCourt(pos)) return false;
+            //If the touch-coordinates are not inside the court, the character will not be moved
+            if(!dim.isPartOfCourt(pos)) return false;
 
-                //If court is clicked the selected item will not change -> will be placed to that point
-                //If a player or the ball is clicked, selectedItem will be changed
-                if(view.equals(court)){
-                    if(selectedItem == null && !newPosActivated){
-                        return false;
-                    }
+            //If court is clicked the selected item will not change -> will be placed to that point
+            //If a player or the ball is clicked, selectedItem will be changed
+            if(view.equals(court)){
+                if(selectedItem == null && !newPosActivated){
+                    return false;
                 }
-                else{
-                    selectedItem = (ImageView) view;
-                    refreshSelectedItem();
+            }
+            else{
+                selectedItem = (ImageView) view;
+                refreshSelectedItem();
+            }
+
+            //Option if new Start Positions should be selected
+            if(newPosActivated && Settings.manualStartPos){
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+
+                        if (counter == 0) {
+                            pos = dim.getPosOnCenter(ownPlayer, pos);
+                            storage.storePos("firstOwnPlayer", pos);
+                            setupStartPositions(ownPlayer);
+                            counter++;
+                            Toast.makeText(getApplicationContext(), "Ok, now the Enemy Player", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        if (counter == 1) {
+                            pos = dim.getPosOnCenter(enemyPlayer, pos);
+                            storage.storePos("firstEnemyPlayer", pos);
+                            setupStartPositions(enemyPlayer);
+                            counter++;
+                            Toast.makeText(getApplicationContext(), "Ok, now the Ball", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        if (counter == 2) {
+                            pos = dim.getPosOnCenter(featherBall, pos);
+                            storage.storePos("featherBall", pos);
+                            counter++;
+                            newPosActivated = false;
+                            setupStartPositions(featherBall);
+                            counter = -1;
+                            findViewById(R.id.newPosButton).setClickable(true);
+                            Toast.makeText(getApplicationContext(), "Successfully created new start positions", Toast.LENGTH_LONG).show();
+                            return true;
+                        }
+
                 }
-
-                //Option if new Start Positions should be selected
-                if(newPosActivated && Settings.manualStartPos){
-                    if(event.getAction() == MotionEvent.ACTION_DOWN) {
-
-                            if (counter == 0) {
-                                pos = dim.getPosOnCenter(ownPlayer, pos);
-                                storage.storePos("firstOwnPlayer", pos);
-                                setupStartPositions(ownPlayer);
-                                counter++;
-                                Toast.makeText(getApplicationContext(), "Ok, now the Enemy Player", Toast.LENGTH_SHORT).show();
-                                return true;
-                            }
-                            if (counter == 1) {
-                                pos = dim.getPosOnCenter(enemyPlayer, pos);
-                                storage.storePos("firstEnemyPlayer", pos);
-                                setupStartPositions(enemyPlayer);
-                                counter++;
-                                Toast.makeText(getApplicationContext(), "Ok, now the Ball", Toast.LENGTH_SHORT).show();
-                                return true;
-                            }
-                            if (counter == 2) {
-                                pos = dim.getPosOnCenter(featherBall, pos);
-                                storage.storePos("featherBall", pos);
-                                counter++;
-                                newPosActivated = false;
-                                setupStartPositions(featherBall);
-                                counter = -1;
-                                findViewById(R.id.newPosButton).setClickable(true);
-                                Toast.makeText(getApplicationContext(), "Successfully created new start positions", Toast.LENGTH_LONG).show();
-                                return true;
-                            }
-
-                    }
-                    else return true;
-                }
-                else if(counter == -1){
-                    counter = 0;
-                    return true;
-                }
-
-                //Changing the coordinates, so that the image is positioned relative to its center
-                if(selectedItem == null) return false;
-                pos = dim.getPosOnCenter(selectedItem, pos);
-
-                //Refresh position of selected item
-                selectedItem.setX(pos[0]);
-                selectedItem.setY(pos[1]);
-
-                mainLayout.invalidate();
+                else return true;
+            }
+            else if(counter == -1){
+                counter = 0;
                 return true;
             }
+
+            //Changing the coordinates, so that the image is positioned relative to its center
+            if(selectedItem == null) return false;
+            pos = dim.getPosOnCenter(selectedItem, pos);
+
+            //Refresh position of selected item
+            selectedItem.setX(pos[0]);
+            selectedItem.setY(pos[1]);
+
+            mainLayout.invalidate();
+            return true;
         };
     }
 
@@ -332,7 +338,8 @@ public class StartActivity extends AppCompatActivity {
         ConstraintLayout score = (ConstraintLayout) findViewById(R.id.score);
         score.setVisibility(View.VISIBLE);
 
-        dim = new CourtDimensions(court, getResources());
+        rotate = false;
+
         if(Storage.isSaved){
             setupStartPositions(view);
         } else defaultPositions();
@@ -353,6 +360,58 @@ public class StartActivity extends AppCompatActivity {
         featherBall.setVisibility(View.VISIBLE);
 
         TRAINING_BEGAN = true;
+    }
+
+    private void beginPositions(){
+        double marginTop = ownPlayer.getHeight()*0.9;
+        double marginStart = ownPlayer.getWidth();
+
+        float[] pos = new float[2];
+        pos[0] = (float) marginStart + ownPlayer.getWidth()/2f;
+        pos[1] = (float) marginTop + ownPlayer.getHeight()/2f;
+
+        float[] res = dim.getPosOnCenter(ownPlayer,pos);
+        ownPlayer.setX(res[0]);
+        ownPlayer.setY(res[1]);
+
+        pos[0] = (float) marginStart + featherBall.getWidth()*2f;
+        pos[1] = (float) marginTop - 6 + featherBall.getHeight()/2f;
+
+        res = dim.getPosOnCenter(featherBall,pos);
+        featherBall.setX(res[0]);
+        featherBall.setY(res[1]);
+        featherBall.setRotation(-45);
+
+        pos[0] = (float) marginStart + enemyPlayer.getWidth()*3.5f;
+        pos[1] = (float) marginTop + enemyPlayer.getHeight()/2f;
+
+        res = dim.getPosOnCenter(enemyPlayer,pos);
+        enemyPlayer.setX(res[0]);
+        enemyPlayer.setY(res[1]);
+
+        mainLayout.invalidate();
+    }
+
+    private boolean rotate = false;     // Attribute of loading ball rotation
+
+    public void loadingFeatherball(){
+        new Thread(() -> {
+            rotate = true;
+            float currRot = featherBall.getRotation();
+
+            while(rotate){
+                if(currRot == 359) currRot = 0;
+                else currRot++;
+                featherBall.setRotation(currRot);
+                try {
+                    Thread.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            featherBall.setRotation(-45);
+            rotate = false;
+        }).start();
     }
 
     /**

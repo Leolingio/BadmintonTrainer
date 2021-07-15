@@ -45,6 +45,7 @@
             android:id="@+id/score_separator1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/separator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/score_player1"
             app:layout_constraintStart_toEndOf="@id/score_sub_player1"
@@ -94,6 +95,7 @@
             android:id="@+id/score_separator3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/separator"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/score_add_player2"
             app:layout_constraintStart_toEndOf="@id/score_player2"
@@ -178,6 +180,7 @@
         android:layout_height="35dp"
         android:layout_margin="5dp"
         android:layout_gravity="end"
+        android:contentDescription="@string/selecteditemshower"
         android:onClick="resetSelectedItem"/>
 
     <TextView
@@ -201,7 +204,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:text="@string/refreshStartPositions"
-        android:layout_gravity="bottom|left"
+        android:layout_gravity="bottom|start"
         android:onClick="setupStartPositions" />
 
     <Button
@@ -209,7 +212,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/begin_Button"
-        android:layout_gravity="center"
+        android:layout_gravity="bottom|center"
         android:onClick="beginTraining" />
 
 </FrameLayout>
