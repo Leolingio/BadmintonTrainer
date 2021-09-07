@@ -38,6 +38,8 @@ public class StartActivity extends AppCompatActivity {
     private ImageView selectedItem;
     private int scorePlayer1;   // Score of player1
     private int scorePlayer2;   // Score of player2
+    private int setPlayer1;   // Score of player1
+    private int setPlayer2;   // Score of player2
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -87,6 +89,8 @@ public class StartActivity extends AppCompatActivity {
 
         scorePlayer1 = 0;
         scorePlayer2 = 0;
+        setPlayer1 = 0;
+        setPlayer2 = 0;
 
         dim = new CourtDimensions(court, getResources());
 
@@ -338,6 +342,9 @@ public class StartActivity extends AppCompatActivity {
         ConstraintLayout score = (ConstraintLayout) findViewById(R.id.score);
         score.setVisibility(View.VISIBLE);
 
+        ConstraintLayout set = (ConstraintLayout) findViewById(R.id.set);
+        set.setVisibility(View.VISIBLE);
+
         rotate = false;
 
         if(Storage.isSaved){
@@ -430,10 +437,23 @@ public class StartActivity extends AppCompatActivity {
             Button btnAdd2 = findViewById(R.id.score_add_player2);
 
             if(scorePlayer1 > scorePlayer2 || scorePlayer1 == 29){    // Player 1 is winning
-                btnAdd.setEnabled(false);
-                btnSub.setEnabled(true);
-                btnAdd2.setEnabled(false);
-                btnSub2.setEnabled(false);
+                TextView set = (TextView) findViewById(R.id.set_player1);
+                set.setText(String.valueOf(++setPlayer1));
+
+                TextView score2 = (TextView) findViewById(R.id.score_player2);
+                score.setText("0");
+                score2.setText("0");
+                scorePlayer1 = 0;
+                scorePlayer2 = 0;
+
+                if(setPlayer1 == 2) {
+                    btnAdd.setEnabled(false);
+                    btnSub.setEnabled(false);
+                    btnAdd2.setEnabled(false);
+                    btnSub2.setEnabled(false);
+                    Toast.makeText(getApplicationContext(),"Player 1 won!", Toast.LENGTH_LONG).show();
+                }
+                return;
             }
         }
         scorePlayer1++;
@@ -487,10 +507,23 @@ public class StartActivity extends AppCompatActivity {
             Button btnAdd2 = findViewById(R.id.score_add_player1);
 
             if(scorePlayer2 > scorePlayer1 || scorePlayer2 == 29){    // Player 2 is winning
-                btnAdd.setEnabled(false);
-                btnSub.setEnabled(true);
-                btnAdd2.setEnabled(false);
-                btnSub2.setEnabled(false);
+                TextView set = (TextView) findViewById(R.id.set_player2);
+                set.setText(String.valueOf(++setPlayer2));
+
+                TextView score2 = (TextView) findViewById(R.id.score_player1);
+                score.setText("0");
+                score2.setText("0");
+                scorePlayer1 = 0;
+                scorePlayer2 = 0;
+
+                if(setPlayer2 == 2) {
+                    btnAdd.setEnabled(false);
+                    btnSub.setEnabled(true);
+                    btnAdd2.setEnabled(false);
+                    btnSub2.setEnabled(false);
+                    Toast.makeText(getApplicationContext(),"Player 2 won!", Toast.LENGTH_LONG).show();
+                }
+                return;
             }
         }
         scorePlayer2++;

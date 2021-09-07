@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:visibility="invisible">
 
         <Button
@@ -126,6 +126,78 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/score_add_player2"
             app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="32dp"
+        android:layout_gravity="top|center"
+        android:layout_margin="15dp"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/set_separator1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/separator"
+            app:layout_constraintEnd_toStartOf="@id/set_player1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:id="@+id/set_player1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/set_separator2"
+            app:layout_constraintStart_toEndOf="@id/set_separator1"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="0"
+            android:textSize="25sp"
+            android:layout_margin="5dp"
+            android:textColor="#222222" />
+
+        <TextView
+            android:id="@+id/set_separator2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/set_player2"
+            app:layout_constraintStart_toEndOf="@id/set_player1"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"/>
+
+        <TextView
+            android:id="@+id/set_player2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/set_separator3"
+            app:layout_constraintStart_toEndOf="@id/set_separator2"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="0"
+            android:textSize="25sp"
+            android:layout_margin="5dp"
+            android:textColor="#FF4400" />
+
+        <ImageView
+            android:id="@+id/set_separator3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/separator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/set_player2"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="5dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
