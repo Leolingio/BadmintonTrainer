@@ -18,10 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.sensolic.badmintontrainer.graphics.CourtDimensions;
 import com.sensolic.badmintontrainer.graphics.Figure;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class StartActivity extends AppCompatActivity {
 
     private static final boolean DEBUG = false;
