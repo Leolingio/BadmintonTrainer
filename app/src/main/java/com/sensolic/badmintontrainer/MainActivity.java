@@ -1,16 +1,10 @@
 package com.sensolic.badmintontrainer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 
-import java.security.acl.Group;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,10 +17,6 @@ public class MainActivity extends AppCompatActivity {
     public void startTraining(View view){
         Intent intent = new Intent(this, StartActivity.class);
         startActivity(intent);
-    }
-
-    public void closeApp(View view) {
-        finish();
     }
 
     public void openSettings(View view) {
