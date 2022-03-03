@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/settings_activity.xml" value="0.1435912938331318" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-sw600dp/activity_start.xml" value="0.11730295566502463" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/settings_activity.xml" value="0.11730295566502463" />
         <entry key="..\:/workspace/BadmintonTrainer/app/src/main/res/layout-land/activity_main.xml" value="0.176" />
         <entry key="..\:/workspace/BadmintonTrainer/app/src/main/res/layout-land/activity_stats.xml" value="0.10802469135802469" />
         <entry key="..\:/workspace/BadmintonTrainer/app/src/main/res/layout-sw600dp-land/activity_start.xml" value="0.2" />
