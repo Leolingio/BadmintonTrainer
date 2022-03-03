@@ -3,8 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/activity_main.xml" value="0.12636033857315598" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/activity_stats.xml" value="0.10973397823458284" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/fragment_ranking.xml" value="0.21281741233373638" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/settings_activity.xml" value="0.1435912938331318" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-sw600dp/activity_start.xml" value="0.11730295566502463" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/activity_main.xml" value="0.11730295566502463" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/activity_stats.xml" value="0.25" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/activity_test.xml" value="0.2062807881773399" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_player_search.xml" value="0.2062807881773399" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_ranking.xml" value="0.2062807881773399" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_register_match.xml" value="0.2062807881773399" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_stats.xml" value="0.141796875" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/settings_activity.xml" value="0.11730295566502463" />
         <entry key="..\:/workspace/BadmintonTrainer/app/src/main/res/layout-land/activity_main.xml" value="0.176" />
         <entry key="..\:/workspace/BadmintonTrainer/app/src/main/res/layout-land/activity_stats.xml" value="0.10802469135802469" />
