@@ -3,6 +3,7 @@ package com.sensolic.badmintontrainer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,8 +16,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startTraining(View view){
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, StartActivity.class);
+        Toast.makeText(getApplicationContext(),"This function is not available yet",Toast.LENGTH_SHORT).show();
+        //startActivity(intent);
     }
 
     public void openSettings(View view) {
