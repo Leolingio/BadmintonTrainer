@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.sensolic.badmintontrainer.statsFragments.PlayerSearchFragment;
-import com.sensolic.badmintontrainer.statsFragments.RankingFragment;
-import com.sensolic.badmintontrainer.statsFragments.RegisterMatchFragment;
+import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
+import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
 import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
 
 public class StatsActivity extends AppCompatActivity {
@@ -23,9 +22,8 @@ public class StatsActivity extends AppCompatActivity {
 
     private void setUpTabs(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PlayerSearchFragment(), "Search");
-        adapter.addFragment(new RegisterMatchFragment(), "Register Match");
-        adapter.addFragment(new RankingFragment(), "Ranking");
+        adapter.addFragment(new HomeFragment(), "Home");
+        adapter.addFragment(new LeaderboardFragment(), "Leaderboard");
 
         ViewPager vp = findViewById(R.id.viewPager);
         vp.setAdapter(adapter);
@@ -36,6 +34,6 @@ public class StatsActivity extends AppCompatActivity {
         /*
             tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
             tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
-        */
+         */
     }
 }

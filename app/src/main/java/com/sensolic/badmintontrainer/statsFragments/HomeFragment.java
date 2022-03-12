@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
 
-public class PlayerSearchFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,6 @@ public class PlayerSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_player_search, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }
