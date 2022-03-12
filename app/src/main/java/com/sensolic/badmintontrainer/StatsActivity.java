@@ -31,9 +31,8 @@ public class StatsActivity extends AppCompatActivity {
         TabLayout tl = findViewById(R.id.tabs);
         tl.setupWithViewPager(vp);
 
-        /*
-            tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
-            tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
-         */
+        tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
+        tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
+
     }
 }
