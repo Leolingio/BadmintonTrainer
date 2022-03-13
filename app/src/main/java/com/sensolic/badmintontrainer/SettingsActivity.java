@@ -1,8 +1,11 @@
 package com.sensolic.badmintontrainer;
 
+import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +43,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         refreshSettings();
+
+        TextView versionText =findViewById(R.id.version);
+        versionText.setText(getString(R.string.version)+ BuildConfig.VERSION_NAME.toString());
     }
 
     @Override
