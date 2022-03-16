@@ -1,10 +1,13 @@
 package com.sensolic.badmintontrainer;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
@@ -18,6 +21,15 @@ public class StatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stats);
 
         setUpTabs();
+
+        FloatingActionButton searchButton = findViewById(R.id.SearchButton);
+        Intent intentSearch = new Intent(this, SearchActivity.class);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentSearch);
+            }
+        });
     }
 
     private void setUpTabs(){

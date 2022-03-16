@@ -18,4 +18,8 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!--TODO Add style here-->
+    </style>
+
 </resources>
