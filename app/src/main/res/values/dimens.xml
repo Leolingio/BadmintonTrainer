@@ -3,4 +3,5 @@
     <dimen name="margin_court_phone">20dp</dimen>
     <dimen name="margin_court_tablet">40dp</dimen>
     <dimen name="marginSettings">20dp</dimen>
+    <dimen name="marginRegisterMatch">30dp</dimen>
 </resources>

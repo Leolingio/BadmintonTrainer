@@ -30,6 +30,15 @@ public class StatsActivity extends AppCompatActivity {
                 startActivity(intentSearch);
             }
         });
+
+        FloatingActionButton registerMatchButton = findViewById(R.id.RegisterMatchButton);
+        Intent intentRegisterMatch = new Intent(this, RegisterMatchActivity.class);
+        registerMatchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentRegisterMatch);
+            }
+        });
     }
 
     private void setUpTabs(){
