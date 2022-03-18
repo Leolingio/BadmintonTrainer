@@ -47,133 +47,81 @@
                 android:hint="Doubles Match" />
         </RadioGroup>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/team1player1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/team1label"
-                android:textColor="@color/colorRegisterMatch"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+            android:layout_marginEnd="30dp">
 
             <EditText
                 android:id="@+id/player1editText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/editTextHint"
+                android:inputType="text"
+                android:lines="1"
                 android:minWidth="233dp" />
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/team1player2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/team1label"
-                android:textColor="@color/colorRegisterMatch"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+            android:layout_marginEnd="30dp">
 
             <EditText
                 android:id="@+id/player2editText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/editTextHint"
+                android:inputType="text"
+                android:lines="1"
                 android:minWidth="233dp" />
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/darker_gray"/>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/team2player1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/team2label"
-                android:textColor="@color/colorRegisterMatch"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
+            android:layout_marginEnd="30dp">
             <EditText
                 android:id="@+id/player3editText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/editTextHint"
-                android:imeOptions="actionDone"
                 android:inputType="text"
                 android:lines="1"
                 android:minWidth="233dp" />
-        </LinearLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/team2player2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/team2label"
-                android:textColor="@color/colorRegisterMatch"
-                android:textSize="20sp" />
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
+            android:layout_marginEnd="30dp">
             <EditText
                 android:id="@+id/player4editText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="@string/editTextHint"
+                android:inputType="text"
+                android:lines="1"
                 android:minWidth="233dp" />
-        </LinearLayout>
-
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -188,16 +136,20 @@
                 android:layout_height="0dp"
                 android:layout_weight="2" />
 
-            <EditText
-                android:id="@+id/scoreTeam1"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:hint="@string/score1Hint"
-                android:inputType="number"
-                android:maxWidth="150dp"
-                android:textAlignment="center" />
-
+                android:hint="@string/score1Hint">
+                <EditText
+                    android:id="@+id/scoreTeam1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:inputType="number"
+                    android:minWidth="100dp"
+                    android:maxWidth="150dp"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -207,15 +159,20 @@
                 android:text="@string/scoreSeparator"
                 android:textSize="20sp" />
 
-            <EditText
-                android:id="@+id/scoreTeam2"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:hint="@string/score2Hint"
-                android:inputType="number"
-                android:maxWidth="150dp"
-                android:textAlignment="center" />
+                android:hint="@string/score2Hint">
+                <EditText
+                    android:id="@+id/scoreTeam2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:inputType="number"
+                    android:maxWidth="150dp"
+                    android:minWidth="100dp"
+                    android:textAlignment="center" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Space
                 android:layout_width="0dp"

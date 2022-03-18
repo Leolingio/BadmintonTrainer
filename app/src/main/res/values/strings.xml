@@ -32,7 +32,12 @@
 
     <!-- Content of RegisterMatch Activity -->
     <string name="registerMatchHeadline">Register Match</string>
-    <string name="editTextHint">ID or name</string>
+    <string name="player1hint">Player 1: ID or name</string>
+    <string name="player2hint">Player 2: ID or name</string>
+    <string name="team1Player1hint">Team 1 Player 1: ID or name</string>
+    <string name="team1Player2hint">Team 1 Player 2: ID or name</string>
+    <string name="team2Player1hint">Team 2 Player 1: ID or name</string>
+    <string name="team2Player2hint">Team 2 Player 2: ID or name</string>
     <string name="team1label">Team 1: </string>
     <string name="team2label">Team 2: </string>
     <string name="player1label">Player 1: </string>

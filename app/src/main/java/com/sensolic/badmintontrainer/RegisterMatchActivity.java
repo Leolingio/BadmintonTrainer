@@ -16,6 +16,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import org.w3c.dom.Text;
 
 public class RegisterMatchActivity extends AppCompatActivity {
@@ -38,10 +40,10 @@ public class RegisterMatchActivity extends AppCompatActivity {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                LinearLayout team1player1 = findViewById(R.id.team1player1);
-                LinearLayout team1player2 = findViewById(R.id.team1player2);
-                LinearLayout team2player1 = findViewById(R.id.team2player1);
-                LinearLayout team2player2 = findViewById(R.id.team2player2);
+                TextInputLayout team1player1 = findViewById(R.id.team1player1);
+                TextInputLayout team1player2 = findViewById(R.id.team1player2);
+                TextInputLayout team2player1 = findViewById(R.id.team2player1);
+                TextInputLayout team2player2 = findViewById(R.id.team2player2);
                 TextView text;
                 EditText editText;
 
@@ -52,22 +54,14 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         team1player2.setVisibility(View.GONE);
                         team2player2.setVisibility(View.GONE);
 
-                        // Change Label text
-                        text = (TextView) team1player1.getChildAt(0);
-                        text.setText(R.string.player1label);
-                        text = (TextView) team2player1.getChildAt(0);
-                        text.setText(R.string.player2label);
-
-                        // Make second team label invisible
-                        text = (TextView) team1player2.getChildAt(0);
-                        text.setVisibility(View.INVISIBLE);
-                        text = (TextView) team2player2.getChildAt(0);
-                        text.setVisibility(View.INVISIBLE);
+                        // Change player hint
+                        team1player1.setHint(R.string.player1hint);
+                        team2player1.setHint(R.string.player2hint);
 
                         // Reset invisible Edittext
-                        editText = (EditText) team1player2.getChildAt(2);
+                        editText = findViewById(R.id.player2editText);
                         editText.setText("");
-                        editText = (EditText) team2player2.getChildAt(2);
+                        editText = findViewById(R.id.player4editText);
                         editText.setText("");
                         break;
                     case R.id.doublesMatchSelector: // Doubles match selected
@@ -76,11 +70,11 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         team1player2.setVisibility(View.VISIBLE);
                         team2player2.setVisibility(View.VISIBLE);
 
-                        // Change Label text
-                        text = (TextView) team1player1.getChildAt(0);
-                        text.setText(R.string.team1label);
-                        text = (TextView) team2player1.getChildAt(0);
-                        text.setText(R.string.team2label);
+                        // Change player hint
+                        team1player1.setHint(R.string.team1Player1hint);
+                        team1player2.setHint(R.string.team1Player2hint);
+                        team2player1.setHint(R.string.team2Player1hint);
+                        team2player2.setHint(R.string.team2Player2hint);
                         break;
                 }
             }
