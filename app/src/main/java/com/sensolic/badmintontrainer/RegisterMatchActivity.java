@@ -3,22 +3,20 @@ package com.sensolic.badmintontrainer;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-
-import org.w3c.dom.Text;
 
 public class RegisterMatchActivity extends AppCompatActivity {
 
@@ -155,7 +153,29 @@ public class RegisterMatchActivity extends AppCompatActivity {
             }
         });
 
-        EditText score1editText  =findViewById(R.id.scoreTeam1);
+        EditText score1editText  = findViewById(R.id.scoreTeam1);
+        EditText score2editText = findViewById(R.id.scoreTeam2);
+
+        score1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1editText,score2editText)});
+        score1editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                int input = -1;
+                if(b){
+                    if(!score2editText.getText().toString().isEmpty()){
+                        try{
+                            input = Integer.parseInt(score2editText.getText().toString());
+                        } catch (NumberFormatException nfe){
+                            // Ignore
+                        }
+                        if(input < 20){
+                            score1editText.setText("21");
+                            score2editText.clearFocus();
+                        }
+                    }
+                }
+            }
+        });
         score1editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -173,7 +193,26 @@ public class RegisterMatchActivity extends AppCompatActivity {
             }
         });
 
-        EditText score2editText = findViewById(R.id.scoreTeam2);
+        score2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score2editText, score1editText)});
+        score2editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                int input = -1;
+                if(b){
+                    if(!score1editText.getText().toString().isEmpty()){
+                        try{
+                            input = Integer.parseInt(score1editText.getText().toString());
+                        } catch (NumberFormatException nfe){
+                            // Ignore
+                        }
+                        if(input < 20){
+                            score2editText.setText("21");
+                            score2editText.clearFocus();
+                        }
+                    }
+                }
+            }
+        });
         score2editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -241,5 +280,23 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 }
             }
         });
+
+        LinearLayout container = findViewById(R.id.registerMatchContainer);
+        ScrollView scrollView = findViewById(R.id.registerMatchScrollView);
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                player1editText.clearFocus();
+                player2editText.clearFocus();
+                player3editText.clearFocus();
+                player4editText.clearFocus();
+                score1editText.clearFocus();
+                score2editText.clearFocus();
+            }
+        };
+
+        container.setOnClickListener(onClickListener);
+        scrollView.setOnClickListener(onClickListener);
     }
 }
