@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registerMatchScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     tools:context=".RegisterMatchActivity">
 
     <LinearLayout
+        android:id="@+id/registerMatchContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -96,6 +98,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp">
+
             <EditText
                 android:id="@+id/player3editText"
                 android:layout_width="match_parent"
@@ -113,6 +116,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp">
+
             <EditText
                 android:id="@+id/player4editText"
                 android:layout_width="match_parent"
@@ -140,14 +144,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/score1Hint">
+
                 <EditText
                     android:id="@+id/scoreTeam1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:inputType="number"
-                    android:minWidth="100dp"
                     android:maxWidth="150dp"
+                    android:minWidth="100dp"
                     android:textAlignment="center" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -163,6 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/score2Hint">
+
                 <EditText
                     android:id="@+id/scoreTeam2"
                     android:layout_width="wrap_content"
@@ -201,5 +207,10 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:text="@string/submitButton" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
     </LinearLayout>
 </ScrollView>

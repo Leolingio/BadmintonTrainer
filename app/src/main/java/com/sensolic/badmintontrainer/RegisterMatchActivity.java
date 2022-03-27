@@ -160,15 +160,17 @@ public class RegisterMatchActivity extends AppCompatActivity {
         score1editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                int input = -1;
+                int scoreThis = -1;
+                int scoreOther = -1;
                 if(b){
                     if(!score2editText.getText().toString().isEmpty()){
                         try{
-                            input = Integer.parseInt(score2editText.getText().toString());
+                            scoreOther = Integer.parseInt(score2editText.getText().toString());
+                            scoreThis = Integer.parseInt(score1editText.getText().toString());
                         } catch (NumberFormatException nfe){
                             // Ignore
                         }
-                        if(input < 20){
+                        if(scoreOther < 20 && scoreThis == -1){
                             score1editText.setText("21");
                             score2editText.clearFocus();
                         }
@@ -197,15 +199,17 @@ public class RegisterMatchActivity extends AppCompatActivity {
         score2editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                int input = -1;
+                int scoreThis = -1;
+                int scoreOther = -1;
                 if(b){
                     if(!score1editText.getText().toString().isEmpty()){
                         try{
-                            input = Integer.parseInt(score1editText.getText().toString());
+                            scoreOther = Integer.parseInt(score1editText.getText().toString());
+                            scoreThis = Integer.parseInt(score2editText.getText().toString());
                         } catch (NumberFormatException nfe){
                             // Ignore
                         }
-                        if(input < 20){
+                        if(scoreOther < 20 && scoreThis == -1){
                             score2editText.setText("21");
                             score2editText.clearFocus();
                         }
@@ -248,11 +252,21 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 score1 = !s1.getText().toString().isEmpty();
                 score2 = !s2.getText().toString().isEmpty();
 
+                boolean scoreValid;
+                int firstScore = -1, secondScore = -1;
+                try{
+                    firstScore = Integer.parseInt(s1.getText().toString());
+                    secondScore = Integer.parseInt(s2.getText().toString());
+                } catch (NumberFormatException nfe){
+                    // score field are empty or have invalid value
+                }
+                scoreValid = InputFilterScore.checkScore(firstScore, secondScore);
+
                 String errorMessage = "";
                 TextView errorText = findViewById(R.id.errorText);
 
                 if(singlesMatch){
-                    if(player1 && player3 && score1 && score2){
+                    if(player1 && player3 && score1 && score2 && scoreValid){
                         errorText.setText("");
                         Toast.makeText(getApplicationContext(), "Successfully created match",Toast.LENGTH_SHORT).show();
                         finish();
@@ -260,6 +274,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         if(!player1) errorMessage = errorMessage + "Player 1 missing, ";
                         if(!player3) errorMessage = errorMessage + "Player 2 missing, ";
                         if(!score1 || !score2) errorMessage = errorMessage + "Score missing, ";
+                        else if(!scoreValid) errorMessage = errorMessage + "Score invalid, ";
+
                         errorMessage = errorMessage.substring(0,errorMessage.length()-2);
                         errorText.setText(errorMessage);
                     }
