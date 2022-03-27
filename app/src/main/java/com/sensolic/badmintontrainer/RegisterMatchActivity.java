@@ -2,16 +2,24 @@ package com.sensolic.badmintontrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +36,12 @@ public class RegisterMatchActivity extends AppCompatActivity {
     boolean player4 = false;
     boolean score1 = false;
     boolean score2 = false;
+    CustomEditText player1editText;
+    CustomEditText player2editText;
+    CustomEditText player3editText;
+    CustomEditText player4editText;
+    CustomEditText score1editText;
+    CustomEditText score2editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +95,22 @@ public class RegisterMatchActivity extends AppCompatActivity {
         RadioButton singlesMatchSelector = findViewById(R.id.singlesMatchSelector);
         singlesMatchSelector.setChecked(true);
 
-        EditText player1editText = findViewById(R.id.player1editText);
+        player1editText = findViewById(R.id.player1editText);
+        player2editText = findViewById(R.id.player2editText);
+        player3editText = findViewById(R.id.player3editText);
+        player4editText = findViewById(R.id.player4editText);
+        score1editText = findViewById(R.id.scoreTeam1);
+        score2editText = findViewById(R.id.scoreTeam2);
+
+        CustomEditText.KeyImeChange keyImeChangeListener = new CustomEditText.KeyImeChange() {
+            @Override
+            public void onKeyIme(int keyCode, KeyEvent event) {
+                if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+                    clearFocus();
+                }
+            }
+        };
+
         player1editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -98,8 +127,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             }
         });
+        player1editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        EditText player2editText = findViewById(R.id.player2editText);
         player2editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -116,8 +145,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             }
         });
+        player2editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        EditText player3editText = findViewById(R.id.player3editText);
         player3editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -134,8 +163,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             }
         });
+        player3editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        EditText player4editText = findViewById(R.id.player4editText);
         player4editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -152,25 +181,32 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             }
         });
+        player4editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        EditText score1editText  = findViewById(R.id.scoreTeam1);
-        EditText score2editText = findViewById(R.id.scoreTeam2);
-
-        score1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1editText,score2editText)});
+        score1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1editText, score2editText)});
+        score1editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    score1editText.clearFocus();
+                }
+                return false;
+            }
+        });
         score1editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
+            public void onFocusChange(View view, boolean hasFocus) {
                 int scoreThis = -1;
                 int scoreOther = -1;
-                if(b){
-                    if(!score2editText.getText().toString().isEmpty()){
-                        try{
+                if (hasFocus) {
+                    if (!score2editText.getText().toString().isEmpty()) {
+                        try {
                             scoreOther = Integer.parseInt(score2editText.getText().toString());
                             scoreThis = Integer.parseInt(score1editText.getText().toString());
-                        } catch (NumberFormatException nfe){
+                        } catch (NumberFormatException nfe) {
                             // Ignore
                         }
-                        if(scoreOther < 20 && scoreThis == -1){
+                        if (scoreOther < 20 && scoreThis == -1) {
                             score1editText.setText("21");
                             score2editText.clearFocus();
                         }
@@ -194,22 +230,32 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             }
         });
+        score1editText.setKeyImeChangeListener(keyImeChangeListener);
 
         score2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score2editText, score1editText)});
+        score2editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    score2editText.clearFocus();
+                }
+                return false;
+            }
+        });
         score2editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b) {
+            public void onFocusChange(View view, boolean hasFocus) {
                 int scoreThis = -1;
                 int scoreOther = -1;
-                if(b){
-                    if(!score1editText.getText().toString().isEmpty()){
-                        try{
+                if (hasFocus) {
+                    if (!score1editText.getText().toString().isEmpty()) {
+                        try {
                             scoreOther = Integer.parseInt(score1editText.getText().toString());
                             scoreThis = Integer.parseInt(score2editText.getText().toString());
-                        } catch (NumberFormatException nfe){
+                        } catch (NumberFormatException nfe) {
                             // Ignore
                         }
-                        if(scoreOther < 20 && scoreThis == -1){
+                        if (scoreOther < 20 && scoreThis == -1) {
                             score2editText.setText("21");
                             score2editText.clearFocus();
                         }
@@ -233,6 +279,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             }
         });
+        score2editText.setKeyImeChangeListener(keyImeChangeListener);
 
         Button submitButton = findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -254,10 +301,10 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
                 boolean scoreValid;
                 int firstScore = -1, secondScore = -1;
-                try{
+                try {
                     firstScore = Integer.parseInt(s1.getText().toString());
                     secondScore = Integer.parseInt(s2.getText().toString());
-                } catch (NumberFormatException nfe){
+                } catch (NumberFormatException nfe) {
                     // score field are empty or have invalid value
                 }
                 scoreValid = InputFilterScore.checkScore(firstScore, secondScore);
@@ -265,54 +312,63 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 String errorMessage = "";
                 TextView errorText = findViewById(R.id.errorText);
 
-                if(singlesMatch){
-                    if(player1 && player3 && score1 && score2 && scoreValid){
+                if (singlesMatch) {
+                    if (player1 && player3 && score1 && score2 && scoreValid) {
                         errorText.setText("");
-                        Toast.makeText(getApplicationContext(), "Successfully created match",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        if(!player1) errorMessage = errorMessage + "Player 1 missing, ";
-                        if(!player3) errorMessage = errorMessage + "Player 2 missing, ";
-                        if(!score1 || !score2) errorMessage = errorMessage + "Score missing, ";
-                        else if(!scoreValid) errorMessage = errorMessage + "Score invalid, ";
+                        if (!player1) errorMessage = errorMessage + "Player 1 missing \n ";
+                        if (!player3) errorMessage = errorMessage + "Player 2 missing \n ";
+                        if (!score1 || !score2) errorMessage = errorMessage + "Score missing \n";
+                        else if (!scoreValid) errorMessage = errorMessage + "Score invalid \n";
 
-                        errorMessage = errorMessage.substring(0,errorMessage.length()-2);
+                        errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
                         errorText.setText(errorMessage);
                     }
-                } else{
-                    if(player1 && player2 && player3 && player4 && score1 && score2){
+                } else {
+                    if (player1 && player2 && player3 && player4 && score1 && score2 && scoreValid) {
                         errorText.setText("");
-                        Toast.makeText(getApplicationContext(), "Successfully created match",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        if(!player1) errorMessage = errorMessage + "Team 1 Player 1 missing, ";
-                        if(!player2) errorMessage = errorMessage + "Team 1 Player 2 missing, ";
-                        if(!player3) errorMessage = errorMessage + "Team 2 Player 1 missing, ";
-                        if(!player4) errorMessage = errorMessage + "Team 2 Player 2 missing, ";
-                        if(!score1 || !score2) errorMessage = errorMessage + "Score missing, ";
-                        errorMessage = errorMessage.substring(0,errorMessage.length()-2);
+                        if (!player1) errorMessage = errorMessage + "Team 1 Player 1 missing \n";
+                        if (!player2) errorMessage = errorMessage + "Team 1 Player 2 missing \n";
+                        if (!player3) errorMessage = errorMessage + "Team 2 Player 1 missing \n";
+                        if (!player4) errorMessage = errorMessage + "Team 2 Player 2 missing \n";
+                        if (!score1 || !score2) errorMessage = errorMessage + "Score missing \n";
+                        else if(!scoreValid) errorMessage = errorMessage + "Score invalid \n";
+
+                        errorMessage = errorMessage.substring(0, errorMessage.length() - 2);
                         errorText.setText(errorMessage);
                     }
                 }
+                clearFocus();
+                hideKeyboard(view);
             }
         });
 
-        LinearLayout container = findViewById(R.id.registerMatchContainer);
-        ScrollView scrollView = findViewById(R.id.registerMatchScrollView);
-
-        View.OnClickListener onClickListener = new View.OnClickListener() {
+        RelativeLayout container = findViewById(R.id.registerMatchContainer);
+        container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                player1editText.clearFocus();
-                player2editText.clearFocus();
-                player3editText.clearFocus();
-                player4editText.clearFocus();
-                score1editText.clearFocus();
-                score2editText.clearFocus();
+                clearFocus();
+                hideKeyboard(view);
             }
-        };
+        });
+    }
 
-        container.setOnClickListener(onClickListener);
-        scrollView.setOnClickListener(onClickListener);
+    private void hideKeyboard(View view){
+        InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void clearFocus() {
+        player1editText.clearFocus();
+        player2editText.clearFocus();
+        player3editText.clearFocus();
+        player4editText.clearFocus();
+        score1editText.clearFocus();
+        score2editText.clearFocus();
     }
 }

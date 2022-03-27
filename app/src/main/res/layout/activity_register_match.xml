@@ -4,10 +4,12 @@
     android:id="@+id/registerMatchScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@color/colorPrimaryDark"
     tools:context=".RegisterMatchActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/registerMatchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +19,8 @@
             android:id="@+id/registerMatchHeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
             android:layout_margin="@dimen/marginRegisterMatch"
             android:text="@string/registerMatchHeadline"
             android:textColor="@color/colorRegisterMatch"
@@ -29,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:layout_below="@id/registerMatchHeadline"
             android:orientation="horizontal">
 
             <RadioButton
@@ -53,16 +57,17 @@
             android:id="@+id/team1player1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/matchTypeSelector"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp">
 
-            <EditText
+            <com.sensolic.badmintontrainer.CustomEditText
                 android:id="@+id/player1editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:lines="1"
                 android:minWidth="233dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,23 +76,26 @@
             android:id="@+id/team1player2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/team1player1"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp">
 
-            <EditText
+            <com.sensolic.badmintontrainer.CustomEditText
                 android:id="@+id/player2editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:lines="1"
                 android:minWidth="233dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <View
+            android:id="@+id/playerSeparator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_below="@id/team1player2"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"/>
 
@@ -95,16 +103,17 @@
             android:id="@+id/team2player1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/playerSeparator"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp">
 
-            <EditText
+            <com.sensolic.badmintontrainer.CustomEditText
                 android:id="@+id/player3editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:lines="1"
                 android:minWidth="233dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -113,23 +122,26 @@
             android:id="@+id/team2player2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/team2player1"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp">
 
-            <EditText
+            <com.sensolic.badmintontrainer.CustomEditText
                 android:id="@+id/player4editText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:lines="1"
                 android:minWidth="233dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
+            android:id="@+id/scoreContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/team2player2"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
@@ -145,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/score1Hint">
 
-                <EditText
+                <com.sensolic.badmintontrainer.CustomEditText
                     android:id="@+id/scoreTeam1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/score2Hint">
 
-                <EditText
+                <com.sensolic.badmintontrainer.CustomEditText
                     android:id="@+id/scoreTeam2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -191,6 +203,7 @@
             android:id="@+id/errorText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/scoreContainer"
             android:layout_gravity="center"
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
@@ -203,14 +216,11 @@
         <Button
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:layout_below="@id/errorText"
+            android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
             android:text="@string/submitButton" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
-
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

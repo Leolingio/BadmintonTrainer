@@ -38,8 +38,6 @@ public class InputFilterScore implements InputFilter {
         if(score1 == 30 && (score2 == 28 || score2 == 29)
                 || score2 == 30 && (score1 == 28 || score1 == 29))  return true;    // Maximum points 30:29 or 30:28
         if(score1 > 19 && score2 > 19 && Math.abs(score1-score2) == 2)  return true;
-        else if((score1 > 19 && score2 < 10)
-                || score2 > 19 && score1 < 10) return true;
 
         return false;
     }
@@ -70,8 +68,8 @@ public class InputFilterScore implements InputFilter {
             // Auto complete other score
             scoreOther.setText("21");
         } else if(inputOther != -1 && (inputThis >= 20 || inputOther >= 20)
-            && !checkScore(inputThis,inputOther)) {
-            return "";
+                && inputThis >= 10 && !checkScore(inputThis,inputOther)){
+                return "";
         }
 
         return null;
