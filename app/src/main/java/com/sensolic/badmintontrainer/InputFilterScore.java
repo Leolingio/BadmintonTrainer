@@ -66,7 +66,7 @@ public class InputFilterScore implements InputFilter {
         if(inputOther == -1 && (inputThis < 20) && (inputThis != 1)
                 && (inputThis != 2) && (inputThis != 3)){
             // Auto complete other score
-            scoreOther.setText("21");
+            if(Settings.autocompleteScore()) scoreOther.setText("21");
         } else if(inputOther != -1 && (inputThis >= 20 || inputOther >= 20)
                 && inputThis >= 10 && !checkScore(inputThis,inputOther)){
                 return "";

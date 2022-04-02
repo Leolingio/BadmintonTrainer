@@ -13,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Storage storage = Storage.getInstance(getApplicationContext());
+        Settings.getInstance(getApplicationContext());
     }
 
     public void startTraining(View view){

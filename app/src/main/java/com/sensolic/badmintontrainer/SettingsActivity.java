@@ -1,15 +1,11 @@
 package com.sensolic.badmintontrainer;
 
-import android.annotation.SuppressLint;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -17,20 +13,21 @@ public class SettingsActivity extends AppCompatActivity {
     private Settings settings;
     private CheckBox manualStartPos;
     private CheckBox debugMode;
+    private CheckBox autocompleteScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
 
-        storage = new Storage(getApplicationContext());
-        settings = new Settings(storage);
+        storage = Storage.getInstance(getApplicationContext());
+        settings = Settings.getInstance(getApplicationContext());
 
         manualStartPos = findViewById(R.id.setManualStartPositions);
         manualStartPos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                settings.setManualStartPos(b);
+                Settings.setManualStartPos(b);
             }
         });
 
@@ -38,7 +35,15 @@ public class SettingsActivity extends AppCompatActivity {
         debugMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                settings.setDebugMode(b);
+                Settings.setDebugMode(b);
+            }
+        });
+
+        autocompleteScore = findViewById(R.id.setAutocompleteScore);
+        autocompleteScore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Settings.setAutocompleteScore(b);
             }
         });
 
@@ -67,15 +72,16 @@ public class SettingsActivity extends AppCompatActivity {
      * This method refreshes the displayed settings by the values in the Settings object
      */
     private void refreshSettings() {
-        manualStartPos.setChecked(settings.manualStartPos());
-        debugMode.setChecked(settings.debugMode());
+        manualStartPos.setChecked(Settings.manualStartPos());
+        debugMode.setChecked(Settings.debugMode());
+        autocompleteScore.setChecked(Settings.autocompleteScore());
     }
 
     /**
      * This method saves the current settings
      */
     private void save() {
-        storage.saveSettings(settings);
+        storage.saveSettings();
     }
 
 

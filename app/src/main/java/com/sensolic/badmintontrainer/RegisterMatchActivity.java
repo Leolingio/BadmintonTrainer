@@ -232,7 +232,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         } catch (NumberFormatException nfe) {
                             // Ignore
                         }
-                        if (scoreOther < 20 && scoreThis == -1) {
+                        if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                             score1editText.setText("21");
                             score2editText.clearFocus();
                         }
@@ -283,9 +283,10 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         } catch (NumberFormatException nfe) {
                             // Ignore
                         }
-                        if (scoreOther < 20 && scoreThis == -1) {
+                        if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                             score2editText.setText("21");
                             score2editText.clearFocus();
+
                         }
                     }
                 }

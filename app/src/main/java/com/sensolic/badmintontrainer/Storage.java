@@ -6,30 +6,36 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
 
 public class Storage {
 
+    private static Storage instance;
     public static boolean isSaved = false;      // If Positions of Characters are saved
     private Context context;
 
-    public Storage(Context applicationContext) {
+    private Storage(Context applicationContext) {
         context = applicationContext;
         File data = new File(context.getFilesDir().getAbsolutePath()+"/data");
+
         try {
-            data.delete();
-            data.createNewFile();
+            if(!data.exists()) {
+                data.delete();
+                data.createNewFile();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public static Storage getInstance(Context context){
+        if(instance == null){
+            instance = new Storage(context);
+        }
+        return instance;
     }
 
     /**
@@ -113,18 +119,22 @@ public class Storage {
 
     /**
      * This method saves the settings
-     * @param settings Settings to save
      */
-    public void saveSettings(Settings settings){
+    public void saveSettings(){
 
-        if(!changeSetting("manualStartPos", settings.manualStartPos()+"")){
-            if(!addSetting("manualStartPos", settings.manualStartPos()+"")){
+        if(!changeSetting("manualStartPos", Settings.manualStartPos()+"")){
+            if(!addSetting("manualStartPos", Settings.manualStartPos()+"")){
                 System.out.println("ERROR in Saving Settings");
             }
         }
 
-        if(!changeSetting("debugMode", settings.debugMode()+"")){
-            if(!addSetting("debugMode", settings.debugMode()+"")){
+        if(!changeSetting("debugMode", Settings.debugMode()+"")){
+            if(!addSetting("debugMode", Settings.debugMode()+"")){
+                System.out.println("ERROR in Saving Settings");
+            }
+        }
+        if(!changeSetting("autocompleteScore", Settings.autocompleteScore()+"")){
+            if(!addSetting("autocompleteScore", Settings.autocompleteScore()+"")){
                 System.out.println("ERROR in Saving Settings");
             }
         }

@@ -28,6 +28,7 @@
     <string name="settingsHeadline">Settings</string>
     <string name="settings_manualStartPos">Set Start Positions manually</string>
     <string name="settings_debugMode">Run in Debug Mode</string>
+    <string name="settings_autocompleteScore">Automatically complete scores</string>
     <string name="version">Badminton Trainer - version \u0020</string>
 
     <!-- Content of RegisterMatch Activity -->

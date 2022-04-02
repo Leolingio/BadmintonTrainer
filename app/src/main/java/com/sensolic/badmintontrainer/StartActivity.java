@@ -46,7 +46,7 @@ public class StartActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_start);
 
-        storage = new Storage(getApplicationContext());
+        storage = Storage.getInstance(getApplicationContext());
 
         mainLayout = (FrameLayout) findViewById(R.id.mainLayout);
 
@@ -133,7 +133,7 @@ public class StartActivity extends AppCompatActivity {
             final int xPos = (int) event.getRawX();
             final int yPos = (int) event.getRawY();
             msg = "x-Coordinates: "+xPos+" y-Coordinates"+yPos;
-            if(Settings.debugMode) debugText.setText(msg);
+            if(Settings.debugMode()) debugText.setText(msg);
 
             //Creating float array for 2 dimensional coordinates
             float[] pos = new float[2];
@@ -159,7 +159,7 @@ public class StartActivity extends AppCompatActivity {
             }
 
             //Option if new Start Positions should be selected
-            if(newPosActivated && Settings.manualStartPos){
+            if(newPosActivated && Settings.manualStartPos()){
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
 
                         if (counter == 0) {
@@ -278,7 +278,7 @@ public class StartActivity extends AppCompatActivity {
     private boolean newPosActivated = false;
 
     public void newPositions(View view) {
-        if(Settings.manualStartPos){
+        if(Settings.manualStartPos()){
             view.setClickable(false);
             newPosActivated = true;
             counter = 0;

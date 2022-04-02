@@ -4,33 +4,35 @@ import android.content.Context;
 
 public class Settings {
 
-    public static boolean manualStartPos;
-    public static boolean debugMode;
+    private static Settings instance;
+    private static boolean manualStartPos = true;
+    private static boolean debugMode = false;
+    private static boolean autocompleteScore = false;
+
+
     private Storage storage;
 
     /**
      * This is the constructor if only the context is given -> storage object will be created
      * @param  context This parameter is necessary to build a storage object
      */
-    public Settings(Context context){
-        storage = new Storage(context);
+    private Settings(Context context){
+        storage = Storage.getInstance(context);
         executeSettings(storage.getSettings());
     }
 
-    /**
-     * This is the constructor if the storage object already exists
-     * @param storage This parameter is necessary to build the settings object
-     */
-    public Settings(Storage storage){
-        this.storage = storage;
-        executeSettings(storage.getSettings());
+    public static Settings getInstance(Context context){
+        if(instance == null){
+            instance = new Settings(context);
+        }
+        return instance;
     }
 
     /**
      * This method can be used to get the value of the manualStartPos attribute
      * @return  Value of manualStartPos
      */
-    public boolean manualStartPos(){
+    public static boolean manualStartPos(){
         return manualStartPos;
     }
 
@@ -38,15 +40,23 @@ public class Settings {
      * This method can be used to get the value of debugMode attribute
      * @return  Value of debugMode
      */
-    public boolean debugMode(){
+    public static boolean debugMode(){
         return debugMode;
+    }
+
+    /**
+     * This method can be used to get the value of autocompleteScore attribute
+     * @return  Value of debugMode
+     */
+    public static boolean autocompleteScore(){
+        return autocompleteScore;
     }
 
     /**
      * This method can be used to set the value of the manualStartPos
      * @param value The new value for manualStartPos
      */
-    public void setManualStartPos(boolean value){
+    public static void setManualStartPos(boolean value){
         manualStartPos = value;
     }
 
@@ -54,8 +64,16 @@ public class Settings {
      * This method can be used to set the value of debugMode
      * @param value The new value for debugMode
      */
-    public void setDebugMode(boolean value){
+    public static void setDebugMode(boolean value){
         debugMode = value;
+    }
+
+    /**
+     * This method can be used to set the value of autoCompleteScore
+     * @param value The new value for autocompleteScore
+     */
+    public static void setAutocompleteScore(boolean value){
+        autocompleteScore = value;
     }
 
     /**
@@ -76,8 +94,17 @@ public class Settings {
         }
         // Getting debugMode value
         buffer = code.substring(code.indexOf(":")+1,code.indexOf(";"));
+        code = code.substring(code.indexOf(";")+1);
         try{
             debugMode = Boolean.parseBoolean(buffer);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        // Getting autocompleteScore value
+        buffer = code.substring(code.indexOf(":")+1,code.indexOf(";"));
+        code = code.substring(code.indexOf(";")+1);
+        try{
+            autocompleteScore = Boolean.parseBoolean(buffer);
         } catch (Exception e){
             e.printStackTrace();
         }
