@@ -1,28 +1,23 @@
 package com.sensolic.badmintontrainer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.content.Context;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -48,6 +43,15 @@ public class RegisterMatchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_match);
 
+        // Setup edittext references
+        player1editText = findViewById(R.id.player1editText);
+        player2editText = findViewById(R.id.player2editText);
+        player3editText = findViewById(R.id.player3editText);
+        player4editText = findViewById(R.id.player4editText);
+        score1editText = findViewById(R.id.scoreTeam1);
+        score2editText = findViewById(R.id.scoreTeam2);
+
+
         RadioGroup radioGroup = findViewById(R.id.matchTypeSelector);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -70,11 +74,13 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         team1player1.setHint(R.string.player1hint);
                         team2player1.setHint(R.string.player2hint);
 
-                        // Reset invisible Edittext
-                        editText = findViewById(R.id.player2editText);
-                        editText.setText("");
-                        editText = findViewById(R.id.player4editText);
-                        editText.setText("");
+                        // Reset every edittext
+                        player1editText.setText("");
+                        player2editText.setText("");
+                        player3editText.setText("");
+                        player4editText.setText("");
+                        score1editText.setText("");
+                        score2editText.setText("");
                         break;
                     case R.id.doublesMatchSelector: // Doubles match selected
                         singlesMatch = false;
@@ -87,20 +93,28 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         team1player2.setHint(R.string.team1Player2hint);
                         team2player1.setHint(R.string.team2Player1hint);
                         team2player2.setHint(R.string.team2Player2hint);
+
+                        // Reset every edittext
+                        player1editText.setText("");
+                        player2editText.setText("");
+                        player3editText.setText("");
+                        player4editText.setText("");
+                        score1editText.setText("");
+                        score2editText.setText("");
                         break;
                 }
+
+                // Reset error text
+                resetErrorText();
+
+                // Clear Focus
+                clearFocus();
+                hideKeyboard(group);
             }
         });
 
         RadioButton singlesMatchSelector = findViewById(R.id.singlesMatchSelector);
         singlesMatchSelector.setChecked(true);
-
-        player1editText = findViewById(R.id.player1editText);
-        player2editText = findViewById(R.id.player2editText);
-        player3editText = findViewById(R.id.player3editText);
-        player4editText = findViewById(R.id.player4editText);
-        score1editText = findViewById(R.id.scoreTeam1);
-        score2editText = findViewById(R.id.scoreTeam2);
 
         CustomEditText.KeyImeChange keyImeChangeListener = new CustomEditText.KeyImeChange() {
             @Override
@@ -108,6 +122,12 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
                     clearFocus();
                 }
+            }
+        };
+        View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus) resetErrorText();
             }
         };
 
@@ -128,6 +148,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
             }
         });
         player1editText.setKeyImeChangeListener(keyImeChangeListener);
+        player1editText.setOnFocusChangeListener(focusChangeListener);
 
         player2editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -146,6 +167,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
             }
         });
         player2editText.setKeyImeChangeListener(keyImeChangeListener);
+        player2editText.setOnFocusChangeListener(focusChangeListener);
 
         player3editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,6 +186,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
             }
         });
         player3editText.setKeyImeChangeListener(keyImeChangeListener);
+        player3editText.setOnFocusChangeListener(focusChangeListener);
 
         player4editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -182,6 +205,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
             }
         });
         player4editText.setKeyImeChangeListener(keyImeChangeListener);
+        player4editText.setOnFocusChangeListener(focusChangeListener);
 
         score1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1editText, score2editText)});
         score1editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -199,6 +223,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 int scoreThis = -1;
                 int scoreOther = -1;
                 if (hasFocus) {
+                    // Reset errorText
+                    resetErrorText();
                     if (!score2editText.getText().toString().isEmpty()) {
                         try {
                             scoreOther = Integer.parseInt(score2editText.getText().toString());
@@ -248,6 +274,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 int scoreThis = -1;
                 int scoreOther = -1;
                 if (hasFocus) {
+                    // Reset errorText
+                    resetErrorText();
                     if (!score1editText.getText().toString().isEmpty()) {
                         try {
                             scoreOther = Integer.parseInt(score1editText.getText().toString());
@@ -370,5 +398,10 @@ public class RegisterMatchActivity extends AppCompatActivity {
         player4editText.clearFocus();
         score1editText.clearFocus();
         score2editText.clearFocus();
+    }
+
+    private void resetErrorText(){
+        TextView errorText  = findViewById(R.id.errorText);
+        errorText.setText("");
     }
 }
