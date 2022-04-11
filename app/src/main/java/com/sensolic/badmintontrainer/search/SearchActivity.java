@@ -9,6 +9,7 @@ import android.widget.SearchView;
 import com.sensolic.badmintontrainer.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -23,10 +24,17 @@ public class SearchActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         SearchEntry p1 = new SearchEntry("Player 1", "#P0001");
         SearchEntry p2 = new SearchEntry("Player 2", "#P0002");
+        SearchEntry p3 = new SearchEntry("Player 3", "#P0003");
+        SearchEntry p4 = new SearchEntry("Player 4", "#P0004");
+        SearchEntry p5 = new SearchEntry("Match 1", "#M0001");
+        SearchEntry p6 = new SearchEntry("Match 2", "#M0002");
+        SearchEntry p7 = new SearchEntry("Match 3", "#M0003");
 
-        ArrayList<SearchEntry> arrayList = new ArrayList<>();
-        arrayList.add(p1);
-        arrayList.add(p2);
+        SearchEntry[] entries = new SearchEntry[]{
+                p1,p2,p3,p4,p5,p6,p7
+        };
+
+        ArrayList<SearchEntry> arrayList = new ArrayList<>(Arrays.asList(entries));
 
         adapter = new SearchAdapter(getApplicationContext(), arrayList);
 
