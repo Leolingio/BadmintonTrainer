@@ -1,4 +1,4 @@
-package com.sensolic.badmintontrainer;
+package com.sensolic.badmintontrainer.registerMatch;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

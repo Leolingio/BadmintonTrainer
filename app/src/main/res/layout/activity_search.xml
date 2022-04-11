@@ -6,93 +6,24 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".search.SearchActivity">
 
     <SearchView
         android:id="@+id/searchView"
         style="@style/SearchViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:iconifiedByDefault="false"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="30dp"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/searchHint"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Player 1"
-            android:textAlignment="center" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="#P00001"
-            android:textAlignment="center" />
-
-    </LinearLayout>
-
-    <TextView
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Player 2"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Player 3"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Match 1"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Match 2"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Player 4"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Match 3"
-        android:textAlignment="center" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="Match 4"
-        android:textAlignment="center" />
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
 </LinearLayout>

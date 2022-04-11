@@ -9,6 +9,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
+import com.sensolic.badmintontrainer.search.SearchActivity;
 import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
 import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;

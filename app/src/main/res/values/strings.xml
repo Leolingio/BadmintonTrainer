@@ -48,5 +48,8 @@
     <string name="scoreSeparator">:</string>
     <string name="submitButton">Submit</string>
 
+    <!-- Content of Search Activity -->
+    <string name="searchHint">Type in name or ID</string>
+
 
 </resources>

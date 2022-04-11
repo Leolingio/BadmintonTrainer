@@ -1,4 +1,4 @@
-package com.sensolic.badmintontrainer;
+package com.sensolic.badmintontrainer.registerMatch;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,6 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.Settings;
 
 public class RegisterMatchActivity extends AppCompatActivity {
 

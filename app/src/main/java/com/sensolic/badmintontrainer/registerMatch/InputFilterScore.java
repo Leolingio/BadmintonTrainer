@@ -1,8 +1,10 @@
-package com.sensolic.badmintontrainer;
+package com.sensolic.badmintontrainer.registerMatch;
 
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.widget.EditText;
+
+import com.sensolic.badmintontrainer.Settings;
 
 public class InputFilterScore implements InputFilter {
 
