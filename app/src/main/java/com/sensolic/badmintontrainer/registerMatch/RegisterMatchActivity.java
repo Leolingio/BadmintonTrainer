@@ -22,9 +22,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.Settings;
+import com.sensolic.badmintontrainer.Storage;
 
 public class RegisterMatchActivity extends AppCompatActivity {
 
+    private static long matchID;
     static boolean singlesMatch = true;
     boolean completed = false;
     boolean player1 = false;
@@ -39,6 +41,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
     CustomEditText player4editText;
     CustomEditText score1editText;
     CustomEditText score2editText;
+    private Storage storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,6 +349,9 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 if (singlesMatch) {
                     if (player1 && player3 && score1 && score2 && scoreValid) {
                         errorText.setText("");
+                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" against "+p3.getText());
+                        matchID++;
+                        storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
@@ -360,6 +366,9 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 } else {
                     if (player1 && player2 && player3 && player4 && score1 && score2 && scoreValid) {
                         errorText.setText("");
+                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" and "+p2.getText()+" against "+p3.getText()+" and "+p4.getText());
+                        matchID++;
+                        storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
@@ -387,6 +396,10 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 hideKeyboard(view);
             }
         });
+
+        storage = Storage.getInstance(getApplicationContext());
+        matchID = storage.getCurrentMatchID();
+
     }
 
     private void hideKeyboard(View view){

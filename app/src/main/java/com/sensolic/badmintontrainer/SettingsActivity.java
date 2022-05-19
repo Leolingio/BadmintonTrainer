@@ -28,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Settings.setManualStartPos(b);
+                save();
             }
         });
 
@@ -36,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Settings.setDebugMode(b);
+                save();
             }
         });
 
@@ -44,6 +46,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 Settings.setAutocompleteScore(b);
+                save();
             }
         });
 
@@ -64,7 +67,6 @@ public class SettingsActivity extends AppCompatActivity {
      */
     @Override
     protected void onPause() {
-        save();
         super.onPause();
     }
 

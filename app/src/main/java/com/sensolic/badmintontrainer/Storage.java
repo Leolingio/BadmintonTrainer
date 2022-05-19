@@ -3,16 +3,21 @@ package com.sensolic.badmintontrainer;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.sensolic.badmintontrainer.search.SearchEntry;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class Storage {
 
     private static Storage instance;
+    private long currentMatchID = -1;
     public static boolean isSaved = false;      // If Positions of Characters are saved
     private Context context;
 
@@ -24,6 +29,17 @@ public class Storage {
             if(!data.exists()) {
                 data.delete();
                 data.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File matches = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+
+        try {
+            if(!matches.exists()) {
+                matches.delete();
+                matches.createNewFile();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -238,4 +254,161 @@ public class Storage {
         return result;
     }
 
+    /**
+     *  Adds an Entry to the matches file
+     * @param matchID Name of the Entry
+     * @param matchName Value of the Entry
+     * @return If the operation was successful
+     */
+    private boolean addMatch(String matchID, String matchName){
+        String content = "";
+        String newContent = matchID+":"+matchName+";";
+        String buffer;
+        try{
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while(buffer != null) {
+                content = content + buffer + System.lineSeparator();
+                buffer = reader.readLine();
+            }
+
+            resetFile(false);
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content);
+            writer.append(newContent);
+
+            reader.close();
+            writer.close();
+        } catch(Exception e){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *  Changes an existing Match entry
+     * @param matchID Name of the setting
+     * @param newMatchName Value of the Setting
+     * @return If the operation was successful
+     */
+    private boolean changeMatch(String matchID, String newMatchName){
+        String content = "";
+        String newContent = matchID+":"+newMatchName+";";
+        String buffer;
+        boolean successful = false;
+        try{
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while(buffer != null) {
+                if(buffer.contains(matchID)){
+                    content = content + newContent + System.lineSeparator();
+                    successful = true;
+                } else {
+                    content = content + buffer + System.lineSeparator();
+                }
+                buffer = reader.readLine();
+            }
+            resetFile(false);
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content);
+
+            reader.close();
+            writer.close();
+        } catch(Exception e){
+            return false;
+        }
+        return successful;
+    }
+
+    /**
+     * This method saves a match
+     */
+    public void saveMatch(String matchID, String matchName){
+        if(!changeMatch(matchID, matchName)){
+            if(!addMatch(matchID, matchName)){
+                System.out.println("ERROR in Saving Match");
+            }
+        }
+    }
+
+    public long getCurrentMatchID(){
+        if(currentMatchID != -1) return currentMatchID;
+        String buffer;
+        try{
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while(buffer != null) {
+                if(buffer.contains("currentMatchID")){
+                    buffer = buffer.substring(buffer.indexOf(':')+1,buffer.length()-1);
+                    return Long.parseLong(buffer);
+                }
+                buffer = reader.readLine();
+            }
+        } catch(Exception e){
+            return -1;
+        }
+        setCurrentMatchID(1);
+        return 1;
+    }
+    public void setCurrentMatchID(long newMatchID){
+        currentMatchID = newMatchID;
+        String content = "";
+        String newContent = "currentMatchID"+":"+String.valueOf(newMatchID)+";";
+        String buffer;
+        boolean existed = false;
+        try{
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while(buffer != null) {
+                if(buffer.contains("currentMatchID")){
+                    content = content + newContent + System.lineSeparator();
+                    existed = true;
+                } else {
+                    content = content + buffer + System.lineSeparator();
+                }
+                buffer = reader.readLine();
+            }
+            if(!existed) content = content + newContent;
+
+            resetFile(false);
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content);
+
+            reader.close();
+            writer.close();
+        } catch(Exception e){
+            //ignored
+        }
+    }
+
+    public void addStoredMatches(ArrayList<SearchEntry> list){
+        String buffer;
+        try{
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while(buffer != null) {
+                if(!buffer.substring(0,buffer.indexOf(':')).contains("currentMatchID")){
+                    SearchEntry toAdd = new SearchEntry(buffer.substring(buffer.indexOf(':')+1,buffer.length()-1), "#M"+buffer.substring(0,buffer.indexOf(':')));
+                    list.add(toAdd);
+                }
+                buffer = reader.readLine();
+            }
+        } catch(Exception e){
+            //ignore
+        }
+    }
 }
