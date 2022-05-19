@@ -7,7 +7,7 @@ public class Settings {
     private static Settings instance;
     private static boolean manualStartPos = true;
     private static boolean debugMode = false;
-    private static boolean autocompleteScore = false;
+    private static boolean autocompleteScore = true;
 
 
     private Storage storage;

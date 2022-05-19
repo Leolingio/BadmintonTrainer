@@ -339,6 +339,39 @@ public class Storage {
         }
     }
 
+    /**
+     * This method deletes a match
+     * @param matchID ID of the match without #M
+     */
+    public boolean deleteMatch(String matchID){
+        String content = "";
+        String buffer;
+        boolean successful = false;
+        try{
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while(buffer != null) {
+                if(!buffer.contains(matchID)){
+                    content = content + buffer + System.lineSeparator();
+                } else successful = true;
+                buffer = reader.readLine();
+            }
+            resetFile(false);
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content);
+
+            reader.close();
+            writer.close();
+        } catch(Exception e){
+            // ignored
+        }
+        return successful;
+    }
+
     public long getCurrentMatchID(){
         if(currentMatchID != -1) return currentMatchID;
         String buffer;

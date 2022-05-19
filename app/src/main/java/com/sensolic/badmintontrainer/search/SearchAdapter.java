@@ -1,20 +1,30 @@
 package com.sensolic.badmintontrainer.search;
 
 import android.content.Context;
+import android.os.Handler;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sensolic.badmintontrainer.MainActivity;
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.Storage;
 
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class SearchAdapter extends BaseAdapter {
 
+    Storage storage;
     Context context;
     LayoutInflater inflater;
     List<SearchEntry> entryList;
@@ -26,6 +36,7 @@ public class SearchAdapter extends BaseAdapter {
         inflater = LayoutInflater.from(context);
         arrayList = new ArrayList<>();
         arrayList.addAll(entryList);
+        storage = Storage.getInstance(context);
     }
 
     public class ViewHolder{
@@ -47,6 +58,10 @@ public class SearchAdapter extends BaseAdapter {
         return 0;
     }
 
+    //Variables for touch detection
+    boolean pressed = false;
+    long start, end;
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         ViewHolder holder;
@@ -63,6 +78,52 @@ public class SearchAdapter extends BaseAdapter {
         }
         holder.name.setText(entryList.get(position).getName());
         holder.ID.setText(entryList.get(position).getID());
+
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        pressed = true;
+                        start = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_MOVE:
+                        end = System.currentTimeMillis();
+                        if(pressed && (end-start >= 200)){
+                            // Showing the popup menu
+                            PopupMenu menu = new PopupMenu(context, view);
+                            menu.getMenuInflater().inflate(R.menu.popup_menu_search, menu.getMenu());
+                            menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem menuItem) {
+                                    if(menuItem.getTitle().equals("Delete")){
+                                        ViewHolder h = (ViewHolder) view.getTag();
+                                        String id = h.ID.getText().toString();
+                                        id = id.substring(id.indexOf('M')+1);
+                                        storage.deleteMatch(id);
+                                        for(SearchEntry s : entryList){
+                                            if(s.getID().equals("#M"+id)){
+                                                entryList.remove(s);
+                                                arrayList.remove(s);
+                                            }
+                                        }
+                                        notifyDataSetChanged();
+                                    }
+                                    return true;
+                                }
+                            });
+                            menu.show();
+
+                            start = 0;
+                            end = 0;
+                            pressed = false;
+                        }
+                        break;
+                }
+                return true;
+            }
+        });
 
         return view;
     }

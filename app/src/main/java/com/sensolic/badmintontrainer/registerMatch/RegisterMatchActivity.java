@@ -349,7 +349,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 if (singlesMatch) {
                     if (player1 && player3 && score1 && score2 && scoreValid) {
                         errorText.setText("");
-                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" against "+p3.getText());
+                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" vs "+p3.getText());
                         matchID++;
                         storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
@@ -366,7 +366,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 } else {
                     if (player1 && player2 && player3 && player4 && score1 && score2 && scoreValid) {
                         errorText.setText("");
-                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" and "+p2.getText()+" against "+p3.getText()+" and "+p4.getText());
+                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" & "+p2.getText()+" vs "+p3.getText()+" & "+p4.getText());
                         matchID++;
                         storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
