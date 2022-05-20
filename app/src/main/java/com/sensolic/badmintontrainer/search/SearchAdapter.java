@@ -8,6 +8,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -79,6 +82,7 @@ public class SearchAdapter extends BaseAdapter {
         holder.name.setText(entryList.get(position).getName());
         holder.ID.setText(entryList.get(position).getID());
 
+        view.setClickable(true);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -94,30 +98,40 @@ public class SearchAdapter extends BaseAdapter {
                             // Showing the popup menu
                             PopupMenu menu = new PopupMenu(context, view);
                             menu.getMenuInflater().inflate(R.menu.popup_menu_search, menu.getMenu());
-                            menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem menuItem) {
-                                    if(menuItem.getTitle().equals("Delete")){
-                                        ViewHolder h = (ViewHolder) view.getTag();
-                                        String id = h.ID.getText().toString();
-                                        id = id.substring(id.indexOf('M')+1);
-                                        storage.deleteMatch(id);
-                                        for(SearchEntry s : entryList){
-                                            if(s.getID().equals("#M"+id)){
-                                                entryList.remove(s);
-                                                arrayList.remove(s);
-                                            }
+                            menu.setOnMenuItemClickListener(menuItem -> {
+                                if(menuItem.getTitle().equals("Delete")){
+                                    ViewHolder h = (ViewHolder) view.getTag();
+                                    String id = h.ID.getText().toString();
+                                    id = id.substring(id.indexOf('M')+1);
+                                    storage.deleteMatch(id);
+                                    int index = 0;
+                                    for(SearchEntry s : entryList){
+                                        if(s.getID().equals("#M"+id)){
+                                            break;
                                         }
-                                        notifyDataSetChanged();
+                                        index++;
                                     }
-                                    return true;
+                                    entryList.remove(index);
+                                    arrayList.remove(index);
+
+                                    // Vanishing Animation of list item
+                                    Animation animation = new ScaleAnimation(1, 1, 1, 0);
+                                    animation.setDuration(300);
+                                    view.startAnimation(animation);
+                                    view.postDelayed(() -> notifyDataSetChanged(),300);
                                 }
+                                return true;
                             });
                             menu.show();
 
                             start = 0;
                             end = 0;
                             pressed = false;
+                        } else {
+                            // Click animation of list item
+                            Animation animation = new AlphaAnimation(0.3f, 1.0f);
+                            animation.setDuration(300);
+                            view.startAnimation(animation);
                         }
                         break;
                 }

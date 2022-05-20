@@ -76,12 +76,9 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                adapter.notifyDataSetChanged();
-                pullToRefresh.setRefreshing(false);
-            }
+        pullToRefresh.setOnRefreshListener(() -> {
+            adapter.notifyDataSetChanged();
+            pullToRefresh.setRefreshing(false);
         });
 
     }

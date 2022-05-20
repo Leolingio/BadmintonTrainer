@@ -82,31 +82,32 @@ public class Settings {
      */
     private void executeSettings(String code){
         String buffer;
+        String name, value;
 
         if(code == null) return;
-        // Getting startPos value
-        buffer = code.substring(code.indexOf(":")+1,code.indexOf(";"));
-        code = code.substring(code.indexOf(";")+1);
-        try{
-            manualStartPos = Boolean.parseBoolean(buffer);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        // Getting debugMode value
-        buffer = code.substring(code.indexOf(":")+1,code.indexOf(";"));
-        code = code.substring(code.indexOf(";")+1);
-        try{
-            debugMode = Boolean.parseBoolean(buffer);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        // Getting autocompleteScore value
-        buffer = code.substring(code.indexOf(":")+1,code.indexOf(";"));
-        code = code.substring(code.indexOf(";")+1);
-        try{
-            autocompleteScore = Boolean.parseBoolean(buffer);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+
+        do {
+            buffer = code.substring(0,code.indexOf(";"));
+            code = code.substring(code.indexOf(";")+1);
+
+            name = buffer.substring(0, buffer.indexOf(':'));
+            value = buffer.substring(buffer.indexOf(':') + 1);
+
+            try {
+                switch (name) {
+                    case "manualStartPos":
+                        manualStartPos = Boolean.parseBoolean(value);
+                        break;
+                    case "debugMode":
+                        debugMode = Boolean.parseBoolean(value);
+                        break;
+                    case "autocompleteScore":
+                        autocompleteScore = Boolean.parseBoolean(value);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } while(code.contains(";"));
     }
 }

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Storage storage = Storage.getInstance(getApplicationContext());
+        Storage.getInstance(getApplicationContext());
         Settings.getInstance(getApplicationContext());
     }
 

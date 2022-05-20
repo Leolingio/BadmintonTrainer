@@ -236,7 +236,7 @@ public class Storage {
      */
     public String getSettings(){
         String buffer;
-        String result = null;
+        String result = "";
         try{
             File file = new File(context.getFilesDir().getAbsolutePath()+"/data");
             BufferedReader r = new BufferedReader(new FileReader(file));
@@ -251,6 +251,7 @@ public class Storage {
             e.printStackTrace();
             return null;
         }
+        if(result.length() == 0) return null;
         return result;
     }
 
