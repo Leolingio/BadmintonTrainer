@@ -376,7 +376,7 @@ public class Storage {
         if(currentMatchID != -1) return currentMatchID;
         String buffer;
         try{
-            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/data");
             BufferedReader reader = new BufferedReader(new FileReader(file));
             buffer = reader.readLine();
             while(buffer != null) {
@@ -395,11 +395,11 @@ public class Storage {
     public void setCurrentMatchID(long newMatchID){
         currentMatchID = newMatchID;
         String content = "";
-        String newContent = "currentMatchID"+":"+String.valueOf(newMatchID)+";";
+        String newContent = "currentMatchID"+":"+ newMatchID +";";
         String buffer;
         boolean existed = false;
         try{
-            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            File file = new File(context.getFilesDir().getAbsolutePath()+"/data");
             BufferedReader reader = new BufferedReader(new FileReader(file));
             buffer = reader.readLine();
             while(buffer != null) {
