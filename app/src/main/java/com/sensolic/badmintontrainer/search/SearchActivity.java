@@ -1,29 +1,19 @@
 package com.sensolic.badmintontrainer.search;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.sensolic.badmintontrainer.R;
-import com.sensolic.badmintontrainer.Storage;
+import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SearchActivity extends AppCompatActivity {
 
-    static boolean keepRunning = true;
     Storage storage;
     ListView listView;
     SearchAdapter adapter;
@@ -46,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
         };
          */
 
-        ArrayList<SearchEntry> arrayList = new ArrayList<>();
+        ArrayList<Searchable> arrayList = new ArrayList<>();
 
         storage.addStoredMatches(arrayList);
 

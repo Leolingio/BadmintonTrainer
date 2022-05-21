@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sensolic.badmintontrainer.data.Storage;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private Storage storage;

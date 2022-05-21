@@ -1,6 +1,6 @@
 package com.sensolic.badmintontrainer.search;
 
-public class SearchEntry {
+public class SearchEntry implements Searchable{
 
     private final String name;      // Name
     private final String ID;      // ID
@@ -10,11 +10,11 @@ public class SearchEntry {
         this.ID = ID;
     }
 
-    public String getName(){
+    public String getInfo(){
         return name;
     }
 
-    public String getID(){
+    public String getIDInfo(){
         return ID;
     }
 }

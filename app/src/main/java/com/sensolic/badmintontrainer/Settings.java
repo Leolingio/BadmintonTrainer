@@ -2,6 +2,8 @@ package com.sensolic.badmintontrainer;
 
 import android.content.Context;
 
+import com.sensolic.badmintontrainer.data.Storage;
+
 public class Settings {
 
     private static Settings instance;

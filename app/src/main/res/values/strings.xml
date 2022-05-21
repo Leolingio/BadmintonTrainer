@@ -50,6 +50,9 @@
 
     <!-- Content of Search Activity -->
     <string name="searchHint">Type in name or ID</string>
-
+    <string name="matchTypeSingles">Singles</string>
+    <string name="matchTypeDoubles">Doubles</string>
+    <string name="matchTypeSinglesInfo">Singles Match</string>
+    <string name="matchTypeDoublesInfo">Doubles Match</string>
 
 </resources>

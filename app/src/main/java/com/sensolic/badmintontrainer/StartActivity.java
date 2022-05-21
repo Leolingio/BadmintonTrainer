@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.graphics.CourtDimensions;
 import com.sensolic.badmintontrainer.graphics.Figure;
 

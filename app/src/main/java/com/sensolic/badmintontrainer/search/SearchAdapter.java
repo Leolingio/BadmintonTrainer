@@ -1,10 +1,7 @@
 package com.sensolic.badmintontrainer.search;
 
 import android.content.Context;
-import android.os.Handler;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +11,10 @@ import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.sensolic.badmintontrainer.MainActivity;
 import com.sensolic.badmintontrainer.R;
-import com.sensolic.badmintontrainer.Storage;
+import com.sensolic.badmintontrainer.data.Storage;
 
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,10 +24,10 @@ public class SearchAdapter extends BaseAdapter {
     Storage storage;
     Context context;
     LayoutInflater inflater;
-    List<SearchEntry> entryList;
-    ArrayList<SearchEntry> arrayList;
+    List<Searchable> entryList;
+    ArrayList<Searchable> arrayList;
 
-    public SearchAdapter(Context context, List<SearchEntry> entryList){
+    public SearchAdapter(Context context, List<Searchable> entryList){
         this.context = context;
         this.entryList = entryList;
         inflater = LayoutInflater.from(context);
@@ -79,8 +73,8 @@ public class SearchAdapter extends BaseAdapter {
         } else{
             holder = (ViewHolder) view.getTag();
         }
-        holder.name.setText(entryList.get(position).getName());
-        holder.ID.setText(entryList.get(position).getID());
+        holder.name.setText(entryList.get(position).getInfo());
+        holder.ID.setText(entryList.get(position).getIDInfo());
 
         view.setClickable(true);
         view.setOnTouchListener(new View.OnTouchListener() {
@@ -105,8 +99,8 @@ public class SearchAdapter extends BaseAdapter {
                                     id = id.substring(id.indexOf('M')+1);
                                     storage.deleteMatch(id);
                                     int index = 0;
-                                    for(SearchEntry s : entryList){
-                                        if(s.getID().equals("#M"+id)){
+                                    for(Searchable s : entryList){
+                                        if(s.getIDInfo().equals("#M"+id)){
                                             break;
                                         }
                                         index++;
@@ -148,9 +142,9 @@ public class SearchAdapter extends BaseAdapter {
         if(charText.length() == 0){
             entryList.addAll(arrayList);
         } else{
-            for(SearchEntry e : arrayList){
-                if(e.getName().toLowerCase(Locale.getDefault()).contains(charText)
-                    || e.getID().toLowerCase(Locale.getDefault()).contains(charText)){
+            for(Searchable e : arrayList){
+                if(e.getInfo().toLowerCase(Locale.getDefault()).contains(charText)
+                    || e.getIDInfo().toLowerCase(Locale.getDefault()).contains(charText)){
                     entryList.add(e);
                 }
             }

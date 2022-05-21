@@ -22,7 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.Settings;
-import com.sensolic.badmintontrainer.Storage;
+import com.sensolic.badmintontrainer.data.Match;
+import com.sensolic.badmintontrainer.data.Storage;
 
 public class RegisterMatchActivity extends AppCompatActivity {
 
@@ -349,7 +350,15 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 if (singlesMatch) {
                     if (player1 && player3 && score1 && score2 && scoreValid) {
                         errorText.setText("");
-                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" vs "+p3.getText());
+
+                        long[] playerIDs = new long[]{1L,2L};
+                        String s = s1.getText() + ":" + s2.getText();
+                        String[] scores = new String[2];
+                        scores[0] = s;
+                        scores[1] = "0:21";
+                        Match matchNew = new Match(matchID, 'S', playerIDs, 2, scores);
+                        storage.storeMatch(matchNew);
+                        //storage.saveMatch(String.valueOf(matchID),p1.getText()+" vs "+p3.getText());
                         matchID++;
                         storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
@@ -366,7 +375,15 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 } else {
                     if (player1 && player2 && player3 && player4 && score1 && score2 && scoreValid) {
                         errorText.setText("");
-                        storage.saveMatch(String.valueOf(matchID),p1.getText()+" & "+p2.getText()+" vs "+p3.getText()+" & "+p4.getText());
+
+                        long[] playerIDs = new long[]{1L,2L,3L,4L};
+                        String s = s1.getText() + ":" + s2.getText();
+                        String[] scores = new String[2];
+                        scores[0] = s;
+                        scores[1] = "0:21";
+                        Match matchNew = new Match(matchID, 'D', playerIDs, 2, scores);
+                        storage.storeMatch(matchNew);
+                        //storage.saveMatch(String.valueOf(matchID),p1.getText()+" & "+p2.getText()+" vs "+p3.getText()+" & "+p4.getText());
                         matchID++;
                         storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();

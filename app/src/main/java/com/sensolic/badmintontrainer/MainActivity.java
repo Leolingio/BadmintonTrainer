@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.sensolic.badmintontrainer.data.Storage;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

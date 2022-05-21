@@ -1,9 +1,12 @@
-package com.sensolic.badmintontrainer;
+package com.sensolic.badmintontrainer.data;
 
 import android.content.Context;
 import android.widget.Toast;
 
+import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.search.SearchEntry;
+import com.sensolic.badmintontrainer.search.Searchable;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +14,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Storage {
@@ -428,7 +430,7 @@ public class Storage {
         }
     }
 
-    public void addStoredMatches(ArrayList<SearchEntry> list){
+    public void addStoredMatches(ArrayList<Searchable> list){
         String buffer;
         try{
             File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
@@ -436,7 +438,7 @@ public class Storage {
             buffer = reader.readLine();
             while(buffer != null) {
                 if(!buffer.substring(0,buffer.indexOf(':')).contains("currentMatchID")){
-                    SearchEntry toAdd = new SearchEntry(buffer.substring(buffer.indexOf(':')+1,buffer.length()-1), "#M"+buffer.substring(0,buffer.indexOf(':')));
+                    Searchable toAdd = new SearchEntry(buffer.substring(buffer.indexOf(':')+1,buffer.length()-1), "#M"+buffer.substring(0,buffer.indexOf(':')));
                     list.add(toAdd);
                 }
                 buffer = reader.readLine();
@@ -444,5 +446,91 @@ public class Storage {
         } catch(Exception e){
             //ignore
         }
+
+    }
+
+    public void storeMatch(Match match){
+        // If already saved then just update the existing data
+        if(containsMatch(match)) updateMatch(match);
+        else{   // Create new entry for the match
+            String buffer;
+            String toStore = "{"+System.lineSeparator()+ "objectType:match;" + System.lineSeparator();
+
+            // Add matchID attribute
+            toStore = toStore + "id:" + match.getMatchID() +";" + System.lineSeparator();
+
+            // Add matchType attribute
+            buffer = "matchType:";
+            if(match.getMatchType() == 'S'){
+                buffer = buffer + context.getResources().getString(R.string.matchTypeSingles);
+            } else{
+                buffer = buffer + context.getResources().getString(R.string.matchTypeDoubles);
+            }
+            toStore = toStore + buffer + ";" + System.lineSeparator();
+
+            // Add player attributes
+            toStore = toStore + "playerOne:" + match.getPlayerOneID() + ";"+ System.lineSeparator();
+            toStore = toStore + "playerTwo:" + match.getPlayerTwoID() + ";"+ System.lineSeparator();
+            if(match.getMatchType() == 'D'){
+                toStore = toStore + "playerThree:" + match.getPlayerThreeID() + ";"+ System.lineSeparator();
+                toStore = toStore + "playerFour:" + match.getPlayerFourID() + ";"+ System.lineSeparator();
+            }
+
+            // Add set attributes
+            toStore = toStore + "setCount:" + match.getSetCount() + ";" + System.lineSeparator();
+            buffer = match.getScoreFirst();
+            toStore = toStore + "firstSetTeamOne:" + buffer.substring(0,buffer.indexOf(':')) + ";" + System.lineSeparator();
+            toStore = toStore + "firstSetTeamTwo:" + buffer.substring(buffer.indexOf(':')+1) + ";" + System.lineSeparator();
+            buffer = match.getScoreSecond();
+            toStore = toStore + "secondSetTeamOne:" + buffer.substring(0,buffer.indexOf(':')) + ";" + System.lineSeparator();
+            toStore = toStore + "secondSetTeamTwo:" + buffer.substring(buffer.indexOf(':')+1) + ";" + System.lineSeparator();
+            if(match.getSetCount() == 3){
+                buffer = match.getScoreThird();
+                toStore = toStore + "thirdSetTeamOne:" + buffer.substring(0,buffer.indexOf(':')) + ";" + System.lineSeparator();
+                toStore = toStore + "thirdSetTeamTwo:" + buffer.substring(buffer.indexOf(':')+1) + ";" + System.lineSeparator();
+            }
+
+            // Adding match dependency
+            toStore = toStore + "matchDependency:" + match.getMatchDependency() + ";" + System.lineSeparator();
+            if(match.getMatchDependency().equals("Tournament")){
+                toStore = toStore + "tournamentID:" + match.getTournamentID() + ";" + System.lineSeparator();
+            } else if(match.getMatchDependency().equals("League")){
+                toStore = toStore + "leagueID:" + match.getLeagueID() + ";" + System.lineSeparator();
+                toStore = toStore + "teamNumber:" + match.getTeamNumber() + ";" + System.lineSeparator();
+            }
+            toStore = toStore + "}";
+
+            String content = "";
+            try{
+                File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+                BufferedReader reader = new BufferedReader(new FileReader(file));
+                buffer = reader.readLine();
+                while(buffer != null) {
+                    content = content + buffer + System.lineSeparator();
+                    buffer = reader.readLine();
+                }
+
+                resetFile(false);
+
+                FileWriter w = new FileWriter(file);
+                BufferedWriter writer = new BufferedWriter(w);
+
+                writer.write(content);
+                writer.append(toStore);
+
+                reader.close();
+                writer.close();
+            } catch(Exception e){
+                // ignore
+            }
+        }
+    }
+
+    private boolean containsMatch(Match match){
+        return false;
+    }
+
+    public void updateMatch(Match match){
+
     }
 }
