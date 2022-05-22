@@ -163,9 +163,9 @@ public class Match implements Searchable {
     public String getInfo() {
         String result;
         if (matchType == 'S') {
-            result = String.valueOf(R.string.matchTypeSinglesInfo);
+            result = "Singles Match";
         } else if (matchType == 'D') {
-            result = String.valueOf(R.string.matchTypeDoublesInfo);
+            result = "Doubles Match";
         } else result = null;
         return result;
     }

@@ -38,7 +38,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ArrayList<Searchable> arrayList = new ArrayList<>();
 
-        storage.addStoredMatches(arrayList);
+        storage.addStoredObjects(arrayList);
 
         adapter = new SearchAdapter(getApplicationContext(), arrayList);
 

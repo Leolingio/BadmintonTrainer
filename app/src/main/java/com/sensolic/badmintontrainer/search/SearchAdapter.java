@@ -1,5 +1,6 @@
 package com.sensolic.badmintontrainer.search;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -79,7 +80,7 @@ public class SearchAdapter extends BaseAdapter {
         view.setClickable(true);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public boolean onTouch(View view1, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         pressed = true;
@@ -88,19 +89,19 @@ public class SearchAdapter extends BaseAdapter {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_MOVE:
                         end = System.currentTimeMillis();
-                        if(pressed && (end-start >= 200)){
+                        if (pressed && (end - start >= 200)) {
                             // Showing the popup menu
-                            PopupMenu menu = new PopupMenu(context, view);
+                            PopupMenu menu = new PopupMenu(context, view1);
                             menu.getMenuInflater().inflate(R.menu.popup_menu_search, menu.getMenu());
                             menu.setOnMenuItemClickListener(menuItem -> {
-                                if(menuItem.getTitle().equals("Delete")){
-                                    ViewHolder h = (ViewHolder) view.getTag();
+                                if (menuItem.getTitle().equals("Delete")) {
+                                    ViewHolder h = (ViewHolder) view1.getTag();
                                     String id = h.ID.getText().toString();
-                                    id = id.substring(id.indexOf('M')+1);
-                                    storage.deleteMatch(id);
+                                    id = id.substring(id.indexOf('M') + 1);
+                                    storage.deleteMatch(Long.parseLong(id));
                                     int index = 0;
-                                    for(Searchable s : entryList){
-                                        if(s.getIDInfo().equals("#M"+id)){
+                                    for (Searchable s : entryList) {
+                                        if (s.getIDInfo().equals("#M" + id)) {
                                             break;
                                         }
                                         index++;
@@ -111,8 +112,8 @@ public class SearchAdapter extends BaseAdapter {
                                     // Vanishing Animation of list item
                                     Animation animation = new ScaleAnimation(1, 1, 1, 0);
                                     animation.setDuration(300);
-                                    view.startAnimation(animation);
-                                    view.postDelayed(() -> notifyDataSetChanged(),300);
+                                    view1.startAnimation(animation);
+                                    view1.postDelayed(SearchAdapter.this::notifyDataSetChanged, 300);
                                 }
                                 return true;
                             });
@@ -125,7 +126,7 @@ public class SearchAdapter extends BaseAdapter {
                             // Click animation of list item
                             Animation animation = new AlphaAnimation(0.3f, 1.0f);
                             animation.setDuration(300);
-                            view.startAnimation(animation);
+                            view1.startAnimation(animation);
                         }
                         break;
                 }

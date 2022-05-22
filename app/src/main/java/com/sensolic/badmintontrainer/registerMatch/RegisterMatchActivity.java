@@ -358,7 +358,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         scores[1] = "0:21";
                         Match matchNew = new Match(matchID, 'S', playerIDs, 2, scores);
                         storage.storeMatch(matchNew);
-                        //storage.saveMatch(String.valueOf(matchID),p1.getText()+" vs "+p3.getText());
                         matchID++;
                         storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
@@ -383,7 +382,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         scores[1] = "0:21";
                         Match matchNew = new Match(matchID, 'D', playerIDs, 2, scores);
                         storage.storeMatch(matchNew);
-                        //storage.saveMatch(String.valueOf(matchID),p1.getText()+" & "+p2.getText()+" vs "+p3.getText()+" & "+p4.getText());
                         matchID++;
                         storage.setCurrentMatchID(matchID);
                         Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
