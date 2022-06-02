@@ -47,6 +47,9 @@
     <string name="score2Hint">Score 2 </string>
     <string name="scoreSeparator">:</string>
     <string name="submitButton">Submit</string>
+    <string name="firstSet">1. Set</string>
+    <string name="secondSet">2. Set</string>
+    <string name="thirdSet">3. Set</string>
 
     <!-- Content of Search Activity -->
     <string name="searchHint">Type in name or ID</string>
