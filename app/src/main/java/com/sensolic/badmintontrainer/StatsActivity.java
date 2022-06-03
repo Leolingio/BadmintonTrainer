@@ -1,6 +1,7 @@
 package com.sensolic.badmintontrainer;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,12 +23,20 @@ import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
 public class StatsActivity extends AppCompatActivity {
 
     private static boolean menuExpanded = false;
+    private static AlertDialog changelog;
     private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
+
+        // Changelog
+        AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this);
+        builder.setMessage(getString(R.string.changelog_text))
+                .setTitle("What's new?");
+
+        changelog = builder.create();
 
         // Actions to-do on start-up of the app
         Storage.getInstance(getApplicationContext());
@@ -98,6 +107,10 @@ public class StatsActivity extends AppCompatActivity {
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
         tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
 
+    }
+
+    public static void showChangelog(){
+        changelog.show();
     }
 
     private void closeMenu(){

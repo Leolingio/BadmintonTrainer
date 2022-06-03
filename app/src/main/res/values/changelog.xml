@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="changelog_text">
+        This is the text of a test changelog!
+        \nThis should be written in a new line
+    </string>
+
+</resources>

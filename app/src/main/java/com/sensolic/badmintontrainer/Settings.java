@@ -6,6 +6,7 @@ import com.sensolic.badmintontrainer.data.Storage;
 
 public class Settings {
 
+    private static int lastAppVersion = -1;
     private static Settings instance;
     private static boolean manualStartPos = true;
     private static boolean debugMode = false;
@@ -21,6 +22,10 @@ public class Settings {
     private Settings(Context context){
         storage = Storage.getInstance(context);
         executeSettings(storage.getSettings());
+        if(lastAppVersion != BuildConfig.VERSION_CODE){
+            storage.showChangelog();
+            lastAppVersion = BuildConfig.VERSION_CODE;
+        }
     }
 
     public static Settings getInstance(Context context){
@@ -105,6 +110,13 @@ public class Settings {
                         break;
                     case "autocompleteScore":
                         autocompleteScore = Boolean.parseBoolean(value);
+                        break;
+                    case "lastAppVersion":
+                        try {
+                            lastAppVersion = Integer.parseInt(value);
+                        } catch(NumberFormatException e){
+                            // Ignored
+                        }
                         break;
                 }
             } catch (Exception e) {

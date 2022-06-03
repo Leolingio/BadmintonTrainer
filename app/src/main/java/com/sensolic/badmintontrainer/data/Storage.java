@@ -3,10 +3,10 @@ package com.sensolic.badmintontrainer.data;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.BuildConfig;
 import com.sensolic.badmintontrainer.Settings;
+import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.registerMatch.InputFilterScore;
-import com.sensolic.badmintontrainer.search.SearchEntry;
 import com.sensolic.badmintontrainer.search.Searchable;
 
 import java.io.BufferedReader;
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
 
 public class Storage {
@@ -56,6 +55,17 @@ public class Storage {
             instance = new Storage(context);
         }
         return instance;
+    }
+
+    public void showChangelog(){
+        // Updating appVersion in file
+        if(!changeSetting("lastAppVersion",BuildConfig.VERSION_CODE+"")){
+            if(!addSetting("lastAppVersion", BuildConfig.VERSION_CODE+"")){
+                System.out.println("ERROR in Saving AppVersion");
+            }
+        }
+        // Showing Dialog
+        StatsActivity.showChangelog();
     }
 
     /**
