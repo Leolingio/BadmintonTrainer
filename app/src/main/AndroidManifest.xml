@@ -17,7 +17,8 @@
             android:exported="false" />
         <activity
             android:name=".StatsActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".SettingsActivity"
             android:exported="true"

@@ -36,6 +36,8 @@
         android:id="@+id/SearchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:fabSize="mini"
+        android:visibility="gone"
         android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_search_24"
         android:layout_above="@id/RegisterMatchButton"
@@ -43,19 +45,51 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="20dp"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/RegisterMatchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:fabSize="mini"
+        android:visibility="gone"
         android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_add_24"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/SettingsButton"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/SettingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="mini"
+        android:visibility="gone"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@drawable/ic_settings_24"
+        android:layout_above="@id/mainMenuButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mainMenuButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:src="@drawable/ic_menu_24"
+        app:maxImageSize="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="25dp"
         android:layout_marginBottom="30dp"
         android:clickable="true"
-        android:focusable="true"/>
+        android:focusable="true" />
 
 </RelativeLayout>

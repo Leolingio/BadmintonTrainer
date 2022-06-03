@@ -1,9 +1,12 @@
 package com.sensolic.badmintontrainer;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,6 +20,9 @@ import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
 
 public class StatsActivity extends AppCompatActivity {
 
+    private static boolean menuExpanded = false;
+    private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,21 +30,51 @@ public class StatsActivity extends AppCompatActivity {
 
         setUpTabs();
 
-        FloatingActionButton searchButton = findViewById(R.id.SearchButton);
+        searchButton = findViewById(R.id.SearchButton);
         Intent intentSearch = new Intent(this, SearchActivity.class);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(intentSearch);
+                if(menuExpanded) closeMenu();
             }
         });
 
-        FloatingActionButton registerMatchButton = findViewById(R.id.RegisterMatchButton);
+        registerMatchButton = findViewById(R.id.RegisterMatchButton);
         Intent intentRegisterMatch = new Intent(this, RegisterMatchActivity.class);
         registerMatchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(intentRegisterMatch);
+                if(menuExpanded) closeMenu();
+            }
+        });
+
+        settingsButton = findViewById(R.id.SettingsButton);
+        Intent intentSettings = new Intent(this, SettingsActivity.class);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(intentSettings);
+                if(menuExpanded) closeMenu();
+            }
+        });
+
+        // Bring buttons in starting position
+        searchButton.setTranslationY(575);
+        registerMatchButton.setTranslationY(400);
+        settingsButton.setTranslationY(225);
+
+        menuButton = findViewById(R.id.mainMenuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onClick(View view) {
+                if(menuExpanded) {
+                    closeMenu();
+                } else{
+                    expandMenu();
+                }
             }
         });
     }
@@ -57,5 +93,58 @@ public class StatsActivity extends AppCompatActivity {
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
         tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
 
+    }
+
+    private void closeMenu(){
+        searchButton.animate().translationY(575).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                searchButton.setVisibility(View.GONE);
+            }
+        });
+        registerMatchButton.animate().translationY(400).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                registerMatchButton.setVisibility(View.GONE);
+            }
+        });;
+        settingsButton.animate().translationY(225).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                settingsButton.setVisibility(View.GONE);
+            }
+        });;
+
+
+        menuButton.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_menu_24));
+        menuExpanded = false;
+    }
+
+    private void expandMenu(){
+        searchButton.setVisibility(View.VISIBLE);
+        registerMatchButton.setVisibility(View.VISIBLE);
+        settingsButton.setVisibility(View.VISIBLE);
+
+        searchButton.animate().translationY(0);
+        registerMatchButton.animate().translationY(0);
+        settingsButton.animate().translationY(0);
+
+        menuButton.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_cancel_24));
+        menuExpanded = true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(menuExpanded){
+            closeMenu();
+        } else{
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(menuExpanded) expandMenu();
     }
 }
