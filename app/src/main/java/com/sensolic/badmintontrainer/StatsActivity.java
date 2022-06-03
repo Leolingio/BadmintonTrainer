@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
 import com.sensolic.badmintontrainer.search.SearchActivity;
 import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
@@ -27,6 +28,10 @@ public class StatsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stats);
+
+        // Actions to-do on start-up of the app
+        Storage.getInstance(getApplicationContext());
+        Settings.getInstance(getApplicationContext());
 
         setUpTabs();
 
