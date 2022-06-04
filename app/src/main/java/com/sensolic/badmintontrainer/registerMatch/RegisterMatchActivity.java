@@ -489,6 +489,13 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     scoreValid = false;
                 }
 
+                if((score3Team1 && score3Team2) && firstScore > secondScore && thirdScore > fourthScore
+                        || (score3Team1 && score3Team2) && firstScore < secondScore && thirdScore < fourthScore
+                        || !(score3Team1 && score3Team2) && firstScore < secondScore && thirdScore > fourthScore
+                        || !(score3Team1 && score3Team2) && firstScore > secondScore && thirdScore < fourthScore){
+                    scoreValid = false;
+                }
+
                 String errorMessage = "";
                 TextView errorText = findViewById(R.id.errorText);
 
@@ -499,9 +506,17 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         long[] playerIDs = new long[]{1L,2L};
                         String s = s1.getText() + ":" + s2.getText();
                         String[] scores = new String[2];
+                        if(score3Team1 && score3Team2){
+                            scores = new String[3];
+                        }
                         scores[0] = s;
-                        scores[1] = "0:21";
-                        Match matchNew = new Match(matchID, 'S', playerIDs, 2, scores);
+                        s = s3.getText() + ":" + s4.getText();
+                        scores[1] = s;
+                        if(score3Team1 && score3Team2){
+                            s = s5.getText() + ":" + s6.getText();
+                            scores[2] = s;
+                        }
+                        Match matchNew = new Match(matchID, 'S', playerIDs, scores.length, scores);
                         storage.storeMatch(matchNew);
                         matchID++;
                         storage.setCurrentMatchID(matchID);
@@ -522,9 +537,17 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         long[] playerIDs = new long[]{1L,2L,3L,4L};
                         String s = s1.getText() + ":" + s2.getText();
                         String[] scores = new String[2];
+                        if(score3Team1 && score3Team2){
+                            scores = new String[3];
+                        }
                         scores[0] = s;
-                        scores[1] = "0:21";
-                        Match matchNew = new Match(matchID, 'D', playerIDs, 2, scores);
+                        s = s3.getText() + ":" + s4.getText();
+                        scores[1] = s;
+                        if(score3Team1 && score3Team2){
+                            s = s5.getText() + ":" + s6.getText();
+                            scores[2] = s;
+                        }
+                        Match matchNew = new Match(matchID, 'D', playerIDs, scores.length, scores);
                         storage.storeMatch(matchNew);
                         matchID++;
                         storage.setCurrentMatchID(matchID);
