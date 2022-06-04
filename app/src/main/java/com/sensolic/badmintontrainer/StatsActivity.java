@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
 import com.sensolic.badmintontrainer.search.SearchActivity;
+import com.sensolic.badmintontrainer.search.Searchable;
 import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
 import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
@@ -23,6 +24,9 @@ import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
 public class StatsActivity extends AppCompatActivity {
 
     private static boolean menuExpanded = false;
+    private static boolean showSearchInfo = false;
+    private boolean infoShowing = false;
+    private static Searchable searchableToShow;
     private static AlertDialog changelog;
     private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
 
@@ -106,7 +110,11 @@ public class StatsActivity extends AppCompatActivity {
 
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
         tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
+    }
 
+    public static void showInfo(Searchable searchable){
+        showSearchInfo = true;
+        searchableToShow = searchable;
     }
 
     public static void showChangelog(){
@@ -164,5 +172,13 @@ public class StatsActivity extends AppCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if(menuExpanded) expandMenu();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(showSearchInfo){
+            showSearchInfo = false;
+        }
     }
 }

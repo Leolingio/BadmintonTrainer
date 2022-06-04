@@ -1,6 +1,5 @@
 package com.sensolic.badmintontrainer.search;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,6 +13,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.StatsActivity;
+import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
@@ -27,14 +28,16 @@ public class SearchAdapter extends BaseAdapter {
     LayoutInflater inflater;
     List<Searchable> entryList;
     ArrayList<Searchable> arrayList;
+    SearchActivity searchActivityInstance;
 
-    public SearchAdapter(Context context, List<Searchable> entryList){
+    public SearchAdapter(Context context, List<Searchable> entryList, SearchActivity searchActivityInstance){
         this.context = context;
         this.entryList = entryList;
         inflater = LayoutInflater.from(context);
         arrayList = new ArrayList<>();
         arrayList.addAll(entryList);
         storage = Storage.getInstance(context);
+        this.searchActivityInstance = searchActivityInstance;
     }
 
     public class ViewHolder{
@@ -57,7 +60,7 @@ public class SearchAdapter extends BaseAdapter {
     }
 
     //Variables for touch detection
-    boolean pressed = false;
+    boolean pressed = false, popupMenuShowing = false;
     long start, end;
 
     @Override
@@ -81,33 +84,49 @@ public class SearchAdapter extends BaseAdapter {
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view1, MotionEvent motionEvent) {
+                //Identifying the match
+                ViewHolder h = (ViewHolder) view1.getTag();
+                String id = h.ID.getText().toString();
+                id = id.substring(id.indexOf('M') + 1);
+                int index = 0;
+                for (Searchable s : entryList) {
+                    if (s.getIDInfo().equals("#M" + id)) {
+                        break;
+                    }
+                    index++;
+                }
+                Searchable searchable = entryList.get(index);
+
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         pressed = true;
                         start = System.currentTimeMillis();
                         break;
                     case MotionEvent.ACTION_UP:
+                        end = System.currentTimeMillis();
+                        if (end - start < 200){
+                            // Click animation of list item
+                            Animation animation = new AlphaAnimation(0.3f, 1.0f);
+                            animation.setDuration(300);
+                            view1.startAnimation(animation);
+                            if(!popupMenuShowing) {
+                                StatsActivity.showInfo(searchable);
+                                searchActivityInstance.finish();
+                            }
+                        }
+                        pressed = false;
+                        break;
                     case MotionEvent.ACTION_MOVE:
                         end = System.currentTimeMillis();
-                        if (pressed && (end - start >= 200)) {
+                        if (pressed && (end - start >= 200) && !popupMenuShowing) {
                             // Showing the popup menu
                             PopupMenu menu = new PopupMenu(context, view1);
                             menu.getMenuInflater().inflate(R.menu.popup_menu_search, menu.getMenu());
                             menu.setOnMenuItemClickListener(menuItem -> {
                                 if (menuItem.getTitle().equals("Delete")) {
-                                    ViewHolder h = (ViewHolder) view1.getTag();
-                                    String id = h.ID.getText().toString();
-                                    id = id.substring(id.indexOf('M') + 1);
-                                    storage.deleteMatch(Long.parseLong(id));
-                                    int index = 0;
-                                    for (Searchable s : entryList) {
-                                        if (s.getIDInfo().equals("#M" + id)) {
-                                            break;
-                                        }
-                                        index++;
-                                    }
-                                    entryList.remove(index);
-                                    arrayList.remove(index);
+                                    storage.deleteMatch(((Match) searchable).getMatchID());
+                                    entryList.remove(searchable);
+                                    arrayList.remove(searchable);
 
                                     // Vanishing Animation of list item
                                     Animation animation = new ScaleAnimation(1, 1, 1, 0);
@@ -115,18 +134,20 @@ public class SearchAdapter extends BaseAdapter {
                                     view1.startAnimation(animation);
                                     view1.postDelayed(SearchAdapter.this::notifyDataSetChanged, 300);
                                 }
+                                popupMenuShowing = false;
                                 return true;
                             });
+                            menu.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                                @Override
+                                public void onDismiss(PopupMenu popupMenu) {
+                                    popupMenuShowing = false;
+                                }
+                            });
                             menu.show();
+                            popupMenuShowing = true;
 
                             start = 0;
                             end = 0;
-                            pressed = false;
-                        } else {
-                            // Click animation of list item
-                            Animation animation = new AlphaAnimation(0.3f, 1.0f);
-                            animation.setDuration(300);
-                            view1.startAnimation(animation);
                         }
                         break;
                 }
