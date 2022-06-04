@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -80,6 +81,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 TextInputLayout team2player2 = findViewById(R.id.team2player2);
                 TextView text;
                 EditText editText;
+                LinearLayout score3layout = findViewById(R.id.score3Container);
 
                 switch (checkedId) {
                     case R.id.singlesMatchSelector: // Singles match selected
@@ -99,6 +101,11 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         player4editText.setText("");
                         score1team1editText.setText("");
                         score1team2editText.setText("");
+                        score2team1editText.setText("");
+                        score2team2editText.setText("");
+                        score3team1editText.setText("");
+                        score3team2editText.setText("");
+                        score3layout.setVisibility(View.GONE);
                         break;
                     case R.id.doublesMatchSelector: // Doubles match selected
                         singlesMatch = false;
@@ -119,6 +126,11 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         player4editText.setText("");
                         score1team1editText.setText("");
                         score1team2editText.setText("");
+                        score2team1editText.setText("");
+                        score2team2editText.setText("");
+                        score3team1editText.setText("");
+                        score3team2editText.setText("");
+                        score3layout.setVisibility(View.GONE);
                         break;
                 }
 
@@ -255,7 +267,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                             score1team2editText.clearFocus();
                         }
                     }
-                }
+                } else showThirdSet();
             }
         });
         score1team1editText.setKeyImeChangeListener(keyImeChangeListener);
@@ -291,7 +303,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
                         }
                     }
-                }
+                } else showThirdSet();
             }
         });
         score1team2editText.setKeyImeChangeListener(keyImeChangeListener);
@@ -326,7 +338,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                             score2team2editText.clearFocus();
                         }
                     }
-                }
+                } else showThirdSet();
             }
         });
         score2team1editText.setKeyImeChangeListener(keyImeChangeListener);
@@ -362,7 +374,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
                         }
                     }
-                }
+                } else showThirdSet();
             }
         });
         score2team2editText.setKeyImeChangeListener(keyImeChangeListener);
@@ -581,6 +593,36 @@ public class RegisterMatchActivity extends AppCompatActivity {
         storage = Storage.getInstance(getApplicationContext());
         matchID = storage.getCurrentMatchID();
 
+    }
+
+    private void showThirdSet(){
+        LinearLayout score3layout = findViewById(R.id.score3Container);
+        if(score1team1editText.getText().length() != 0
+                &&score1team2editText.getText().length() != 0
+                &&score2team1editText.getText().length() != 0
+                &&score2team2editText.getText().length() != 0){
+            try{
+                int score11 = Integer.parseInt(score1team1editText.getText().toString());
+                int score12 = Integer.parseInt(score1team2editText.getText().toString());
+                int score21 = Integer.parseInt(score2team1editText.getText().toString());
+                int score22 = Integer.parseInt(score2team2editText.getText().toString());
+                if((score11 < score12 && score21 > score22
+                        || score11 > score12 && score21 < score22)
+                        && InputFilterScore.checkScore(score11,score12)
+                        && InputFilterScore.checkScore(score21,score22)){
+                    score3layout.setVisibility(View.VISIBLE);
+                } else{
+                    score3team1editText.setText("");
+                    score3team2editText.setText("");
+                    score3layout.setVisibility(View.GONE);
+                }
+            } catch (Exception e){
+                //ignored
+            }
+
+        } else{
+            score3layout.setVisibility(View.GONE);
+        }
     }
 
     private void hideKeyboard(View view){

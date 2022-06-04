@@ -154,7 +154,7 @@
                 android:textSize="18sp"
                 android:text="@string/firstSet"/>
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
@@ -199,7 +199,7 @@
                     android:textAlignment="center" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
@@ -223,7 +223,7 @@
                 android:textSize="18sp"
                 android:text="@string/secondSet"/>
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
@@ -268,7 +268,7 @@
                     android:textAlignment="center" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
@@ -283,7 +283,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -292,7 +293,7 @@
                 android:textSize="18sp"
                 android:text="@string/thirdSet"/>
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
@@ -337,7 +338,7 @@
                     android:textAlignment="center" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Space
+            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="2" />
