@@ -1,6 +1,8 @@
 package com.sensolic.badmintontrainer;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -56,6 +58,15 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView versionText =findViewById(R.id.version);
         versionText.setText(getString(R.string.version)+ BuildConfig.VERSION_NAME.toString());
+
+        Button b = findViewById(R.id.showChangelogButton);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StatsActivity.showChangelog();
+                finish();
+            }
+        });
     }
 
     @Override

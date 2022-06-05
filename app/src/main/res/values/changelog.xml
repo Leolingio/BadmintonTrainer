@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="changelog_text">
-        This is the text of a test changelog!
-        \nThis should be written in a new line
+        Badminton Trainer version 0.0.8 - Sensolic Official
+        \n\n\nBrand new features!
+        \n\nChangelog is now available!
+        \n- you can easily check all new features
+        \n\nNew design of menu buttons
+        \n- better navigating through app
+        \n\nMatch reviews are now possible
+        \n- but still limited
+        \n\n\nOther Changes:
+        \n\n- Fixed lots of bugs
+        \n\n- Added 3rd set
+        \n\n\nTotal time spent on this update:
+        \n- around 10 hours -
+        \n\n\n ~Sensolic TM~
     </string>
 
 </resources>
