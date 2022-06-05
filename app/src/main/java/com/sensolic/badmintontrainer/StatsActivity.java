@@ -13,12 +13,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
 import com.sensolic.badmintontrainer.search.SearchActivity;
 import com.sensolic.badmintontrainer.search.Searchable;
 import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
+import com.sensolic.badmintontrainer.statsFragments.MatchInfoFragment;
 import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
 
 public class StatsActivity extends AppCompatActivity {
@@ -29,6 +31,9 @@ public class StatsActivity extends AppCompatActivity {
     private static Searchable searchableToShow;
     private static AlertDialog changelog;
     private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
+    HomeFragment homeFragment = new HomeFragment();
+    LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+    MatchInfoFragment matchInfoFragment = new MatchInfoFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentSearch);
                 if(menuExpanded) closeMenu();
+                if(infoShowing) removeMatchTab();
             }
         });
 
@@ -65,6 +71,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentRegisterMatch);
                 if(menuExpanded) closeMenu();
+                if(infoShowing) removeMatchTab();
             }
         });
 
@@ -75,6 +82,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentSettings);
                 if(menuExpanded) closeMenu();
+                if(infoShowing) removeMatchTab();
             }
         });
 
@@ -99,15 +107,33 @@ public class StatsActivity extends AppCompatActivity {
 
     private void setUpTabs(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new HomeFragment(), "Home");
-        adapter.addFragment(new LeaderboardFragment(), "Leaderboard");
+        adapter.addFragment(homeFragment, "Home");
+        adapter.addFragment(leaderboardFragment, "Leaderboard");
 
         ViewPager vp = findViewById(R.id.viewPager);
         vp.setAdapter(adapter);
+        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position != 2 && infoShowing){
+                    removeMatchTab();
+                    vp.setCurrentItem(position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         TabLayout tl = findViewById(R.id.tabs);
         tl.setupWithViewPager(vp);
-
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
         tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
     }
@@ -159,11 +185,25 @@ public class StatsActivity extends AppCompatActivity {
         menuExpanded = true;
     }
 
+    private void removeMatchTab(){
+        infoShowing = false;
+        ViewPager vp = findViewById(R.id.viewPager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(homeFragment, "Home");
+        adapter.addFragment(leaderboardFragment, "Leaderboard");
+        vp.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onBackPressed() {
         if(menuExpanded){
             closeMenu();
-        } else{
+        } else if(infoShowing){
+            removeMatchTab();
+            ViewPager vp = findViewById(R.id.viewPager);
+            vp.setCurrentItem(1);
+        } else {
             super.onBackPressed();
         }
     }
@@ -179,6 +219,16 @@ public class StatsActivity extends AppCompatActivity {
         super.onResume();
         if(showSearchInfo){
             showSearchInfo = false;
+            infoShowing = true;
+            ViewPager vp = findViewById(R.id.viewPager);
+            ViewPagerAdapter adapter = (ViewPagerAdapter) vp.getAdapter();
+
+            assert adapter != null;
+            adapter.addFragment(matchInfoFragment, "Match");
+            adapter.notifyDataSetChanged();
+            vp.setCurrentItem(2);
+
+            matchInfoFragment.setInfo((Match) searchableToShow);
         }
     }
 }

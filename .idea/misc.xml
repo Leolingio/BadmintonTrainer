@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/drawable/ic_cancel_24.xml" value="0.196" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/drawable/ic_default_profile_24.xml" value="0.196" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/drawable/ic_menu_24.xml" value="0.196" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/drawable/ic_search_24.xml" value="0.196" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/drawable/ic_settings_24.xml" value="0.229" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/drawable/round_corners_shape.xml" value="0.195" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/activity_main.xml" value="0.12636033857315598" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/activity_register_match.xml" value="0.10912938331318017" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout-land/activity_stats.xml" value="0.10973397823458284" />
@@ -20,7 +22,7 @@
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/activity_test.xml" value="0.2062807881773399" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/changelog_layout.xml" value="0.1268472906403941" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_leaderboard.xml" value="0.141015625" />
-        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_matchinfo.xml" value="0.1180921052631579" />
+        <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_matchinfo.xml" value="0.25" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_player_search.xml" value="0.2062807881773399" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_ranking.xml" value="0.2062807881773399" />
         <entry key="..\:/workspace-intellij/BadmintonTrainer/app/src/main/res/layout/fragment_register_match.xml" value="0.2062807881773399" />
