@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -142,9 +141,11 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 hideKeyboard(group);
             }
         });
-
-        RadioButton singlesMatchSelector = findViewById(R.id.singlesMatchSelector);
-        singlesMatchSelector.setChecked(true);
+        if(Settings.getDefaultMatchType().equals("Singles")){
+            radioGroup.check(R.id.singlesMatchSelector);
+        } else{
+            radioGroup.check(R.id.doublesMatchSelector);
+        }
 
         CustomEditText.KeyImeChange keyImeChangeListener = new CustomEditText.KeyImeChange() {
             @Override

@@ -31,6 +31,8 @@
     <string name="settings_autocompleteScore">Automatically complete scores</string>
     <string name="version">Badminton Trainer - version \u0020</string>
 
+
+
     <!-- Content of RegisterMatch Activity -->
     <string name="registerMatchHeadline">Register Match</string>
     <string name="player1hint">Player 1: ID or name</string>
@@ -57,5 +59,7 @@
     <string name="matchTypeDoubles">Doubles</string>
     <string name="matchTypeSinglesInfo">Singles Match</string>
     <string name="matchTypeDoublesInfo">Doubles Match</string>
+    <string name="defaultMatchType_headline">Default Match Type</string>
+    <string name="showChangelog_button">Show changelog</string>
 
 </resources>

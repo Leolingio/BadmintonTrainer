@@ -11,6 +11,7 @@ public class Settings {
     private static boolean manualStartPos = true;
     private static boolean debugMode = false;
     private static boolean autocompleteScore = true;
+    private static char defaultMatchType = 'S';
 
 
     private Storage storage;
@@ -60,6 +61,17 @@ public class Settings {
     }
 
     /**
+     * This method can be used to get the value of defaultMatchType attribute
+     * @return  Value of defaultMatchType
+     */
+    public static String getDefaultMatchType(){
+        if(defaultMatchType == 'S'){
+            return "Singles";
+        }
+        return "Doubles";
+    }
+
+    /**
      * This method can be used to set the value of the manualStartPos
      * @param value The new value for manualStartPos
      */
@@ -81,6 +93,14 @@ public class Settings {
      */
     public static void setAutocompleteScore(boolean value){
         autocompleteScore = value;
+    }
+
+    /**
+     * This method can be used to set the value of defaultMatchType
+     * @param value The new value for defaultMatchType
+     */
+    public static void setDefaultMatchType(char value){
+        defaultMatchType = value;
     }
 
     /**
@@ -111,6 +131,12 @@ public class Settings {
                     case "autocompleteScore":
                         autocompleteScore = Boolean.parseBoolean(value);
                         break;
+                    case "defaultMatchType":
+                        if(value.equals("Singles")){
+                            defaultMatchType = 'S';
+                        } else if(value.equals("Doubles")){
+                            defaultMatchType = 'D';
+                        }
                     case "lastAppVersion":
                         try {
                             lastAppVersion = Integer.parseInt(value);

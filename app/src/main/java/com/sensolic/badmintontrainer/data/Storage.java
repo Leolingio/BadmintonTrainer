@@ -168,6 +168,11 @@ public class Storage {
                 System.out.println("ERROR in Saving Settings");
             }
         }
+        if(!changeSetting("defaultMatchType", Settings.getDefaultMatchType())){
+            if(!addSetting("defaultMatchType", Settings.getDefaultMatchType())){
+                System.out.println("ERROR in Saving Settings");
+            }
+        }
     }
 
     /**

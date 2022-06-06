@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,6 +68,28 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        RadioGroup radioGroup = findViewById(R.id.defaultMatchType);
+        if(Settings.getDefaultMatchType().equals("Singles")){
+            radioGroup.check(R.id.singlesMatchSelector);
+        } else{
+            radioGroup.check(R.id.doublesMatchSelector);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                switch (checkedId) {
+                    case R.id.singlesMatchSelector:
+                        Settings.setDefaultMatchType('S');
+                        save();
+                        break;
+                    case R.id.doublesMatchSelector:
+                        Settings.setDefaultMatchType('D');
+                        save();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -81,6 +104,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        save();
     }
 
     /**

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingsLayout"
     android:layout_width="match_parent"
@@ -6,71 +6,139 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".SettingsActivity">
 
-    <TextView
-        android:id="@+id/settingsHeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/marginSettings"
-        android:text="@string/settingsHeadline"
-        android:textColor="@color/colorSettings"
-        android:textSize="30sp" />
-
-    <CheckBox
-        android:id="@+id/setManualStartPositions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/settingsHeadline"
-        android:buttonTint="@color/colorSettings"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:text="@string/settings_manualStartPos"
-        android:textColor="@color/colorSettings"
-        android:textSize="20sp"
-        android:visibility="gone"/>
-
-    <CheckBox
-        android:id="@+id/setDebugMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setManualStartPositions"
-        android:buttonTint="@color/colorSettings"
-        android:layout_margin="10dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:text="@string/settings_debugMode"
-        android:textColor="@color/colorSettings"
-        android:textSize="20sp"
-        android:visibility="gone"/>
-
-    <CheckBox
-        android:id="@+id/setAutocompleteScore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/setDebugMode"
-        android:buttonTint="@color/colorSettings"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:text="@string/settings_autocompleteScore"
-        android:textColor="@color/colorSettings"
-        android:textSize="20sp"
-        android:visibility="visible"/>
-
-    <Button
-        android:id="@+id/showChangelogButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:text="Show changelog"
-        android:layout_below="@id/setAutocompleteScore"/>
-
-    <TextView
-        android:id="@+id/version"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/colorSettings"
-        android:textAlignment="center"/>
-</RelativeLayout>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/settingsHeadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/marginSettings"
+            android:text="@string/settingsHeadline"
+            android:textColor="@color/colorSettings"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/registerMatchHeadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settingsHeadline"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/registerMatchHeadline"
+            android:textColor="@color/colorSettings"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/setManualStartPositions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registerMatchHeadline"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:buttonTint="@color/colorSettings"
+            android:text="@string/settings_manualStartPos"
+            android:textColor="@color/colorSettings"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/setDebugMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setManualStartPositions"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_margin="20dp"
+            android:buttonTint="@color/colorSettings"
+            android:text="@string/settings_debugMode"
+            android:textColor="@color/colorSettings"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <CheckBox
+            android:id="@+id/setAutocompleteScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setDebugMode"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:buttonTint="@color/colorSettings"
+            android:gravity="center"
+            android:text="@string/settings_autocompleteScore"
+            android:textColor="@color/colorSettings"
+            android:textSize="15sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/defaultMatchTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setAutocompleteScore"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/defaultMatchType_headline"
+            android:textColor="@color/colorSettings"
+            android:textSize="15sp" />
+
+        <RadioGroup
+            android:id="@+id/defaultMatchType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/defaultMatchTypeText"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/singlesMatchSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorSettings"
+                android:text="@string/matchTypeSingles"
+                android:textColor="@color/colorSettings"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:id="@+id/doublesMatchSelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/colorSettings"
+                android:text="@string/matchTypeDoubles"
+                android:textColor="@color/colorSettings"
+                android:textSize="15sp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/showChangelogButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/defaultMatchType"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:text="@string/showChangelog_button" />
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/showChangelogButton"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorSettings" />
+
+    </RelativeLayout>
+</ScrollView>
