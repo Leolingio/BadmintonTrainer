@@ -1,19 +1,12 @@
 package com.sensolic.badmintontrainer;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.graphics.CourtDimensions;
@@ -42,7 +35,7 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+/*
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 
         setContentView(R.layout.activity_start);
@@ -101,7 +94,7 @@ public class StartActivity extends AppCompatActivity {
             loadingFeatherball();
             mainLayout.invalidate();
         }).start();
-
+*/
     }
 
     @Override
@@ -117,7 +110,7 @@ public class StartActivity extends AppCompatActivity {
     public void exitTraining(View view) {
         finish();
     }
-
+/*
     int counter = 0;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -238,7 +231,7 @@ public class StartActivity extends AppCompatActivity {
 
         mainLayout.invalidate();
     }
-
+*/
     /**
      * This method refreshes the positions.xml of all characters, based on the current score and serve
      *
@@ -276,6 +269,7 @@ public class StartActivity extends AppCompatActivity {
         view.setBackground(null);
     }
 
+/*
     private boolean newPosActivated = false;
 
     public void newPositions(View view) {
@@ -283,11 +277,11 @@ public class StartActivity extends AppCompatActivity {
             view.setClickable(false);
             newPosActivated = true;
             counter = 0;
-            storage.resetFile(false);
+            storage.resetFile("positions");
             Toast.makeText(this, "Tap the Position of the own player", Toast.LENGTH_SHORT).show();
         }
         else{
-            storage.resetFile(false);
+            storage.resetFile("positions");
             int[] i = new int[2];
             ownPlayer.getLocationOnScreen(i);
             float[] pos = new float[2];
@@ -417,12 +411,13 @@ public class StartActivity extends AppCompatActivity {
             rotate = false;
         }).start();
     }
-
+*/
     /**
      * Method to increment the score of player1
      * @param view Button that was pressed to execute this method
      */
     public void scoreIncrementPlayer1(View view){
+       /*
         Button btnSub = findViewById(R.id.score_sub_player1);
         Button btnAdd = findViewById(R.id.score_add_player1);
         TextView score = (TextView) findViewById(R.id.score_player1);
@@ -455,6 +450,7 @@ public class StartActivity extends AppCompatActivity {
         }
         scorePlayer1++;
         score.setText(String.valueOf(scorePlayer1));
+        */
     }
 
     /**
@@ -462,6 +458,7 @@ public class StartActivity extends AppCompatActivity {
      * @param view Button that was pressed to execute this method
      */
     public void scoreDecrementPlayer1(View view){
+        /*
         Button btnSub = findViewById(R.id.score_sub_player1);
         Button btnAdd = findViewById(R.id.score_add_player1);
         TextView score = (TextView) findViewById(R.id.score_player1);
@@ -486,6 +483,7 @@ public class StartActivity extends AppCompatActivity {
         }
         scorePlayer1--;
         score.setText(String.valueOf(scorePlayer1));
+        */
     }
 
     /**
@@ -493,6 +491,7 @@ public class StartActivity extends AppCompatActivity {
      * @param view Button that was pressed to execute this method
      */
     public void scoreIncrementPlayer2(View view){
+        /*
         Button btnSub = findViewById(R.id.score_sub_player2);
         Button btnAdd = findViewById(R.id.score_add_player2);
         TextView score = (TextView) findViewById(R.id.score_player2);
@@ -525,6 +524,7 @@ public class StartActivity extends AppCompatActivity {
         }
         scorePlayer2++;
         score.setText(String.valueOf(scorePlayer2));
+        */
     }
 
     /**
@@ -532,6 +532,7 @@ public class StartActivity extends AppCompatActivity {
      * @param view Button that was pressed to execute this method
      */
     public void scoreDecrementPlayer2(View view){
+        /*
         Button btnSub = findViewById(R.id.score_sub_player2);
         Button btnAdd = findViewById(R.id.score_add_player2);
         TextView score = (TextView) findViewById(R.id.score_player2);
@@ -556,5 +557,6 @@ public class StartActivity extends AppCompatActivity {
         }
         scorePlayer2--;
         score.setText(String.valueOf(scorePlayer2));
+        */
     }
 }

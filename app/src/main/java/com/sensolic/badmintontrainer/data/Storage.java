@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class Storage {
 
+    private final boolean showToasts = true;
     private static Storage instance;
     private long currentMatchID = -1;
     public static boolean isSaved = false;      // If Positions of Characters are saved
@@ -117,32 +118,27 @@ public class Storage {
 
     /**
      * This method deletes the dataFile
-     * @param showToast Should a toast be shown at the end
+     * @param filename Name of the file to be reset
      */
-    public void resetFile(boolean showToast){
-        File positions = new File(context.getFilesDir().getAbsolutePath()+"/data");
-        if(positions.exists()){
-            if(positions.delete()){
-                if(showToast) {
-                    Toast.makeText(context, "Successfully deleted existing file", Toast.LENGTH_LONG).show();
-                }
-            }
-            else{
-                if(showToast) {
-                    Toast.makeText(context, "Error while deleting file", Toast.LENGTH_LONG).show();
+    public void resetFile(String filename){
+        File toReset = new File(context.getFilesDir().getAbsolutePath()+"/"+filename);
+        if(toReset.exists()){
+            if(!toReset.delete()){
+                if(showToasts) {
+                    Toast.makeText(context, "Error while deleting "+filename+"  file", Toast.LENGTH_LONG).show();
                 }
             }
         }
         else {
-            if(showToast) {
-                Toast.makeText(context, "File does not exist already", Toast.LENGTH_SHORT).show();
+            if(showToasts) {
+                Toast.makeText(context, filename+" file does not exist already", Toast.LENGTH_SHORT).show();
             }
         }
         try {
-            positions.createNewFile();
+            toReset.createNewFile();
         } catch(Exception ignored){
-            if (showToast) {
-                Toast.makeText(context, "File could not be created", Toast.LENGTH_SHORT).show();
+            if (showToasts) {
+                Toast.makeText(context, filename+" File could not be created", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -199,7 +195,7 @@ public class Storage {
                 }
                 buffer = reader.readLine();
             }
-            resetFile(false);
+            resetFile("data");
 
             FileWriter w = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(w);
@@ -233,7 +229,7 @@ public class Storage {
                 buffer = reader.readLine();
             }
 
-            resetFile(false);
+            resetFile("data");
 
             FileWriter w = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(w);
@@ -321,7 +317,7 @@ public class Storage {
                 }
             }
 
-            resetFile(false);
+            resetFile("matches");
 
             FileWriter w = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(w);
@@ -377,7 +373,7 @@ public class Storage {
             }
             if(!existed) content = content + newContent;
 
-            resetFile(false);
+            resetFile("data");
 
             FileWriter w = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(w);
@@ -588,13 +584,13 @@ public class Storage {
                     buffer = reader.readLine();
                 }
 
-                resetFile(false);
+                resetFile("matches");
 
+                file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
                 FileWriter w = new FileWriter(file);
                 BufferedWriter writer = new BufferedWriter(w);
 
-                writer.write(content);
-                writer.append(toStore);
+                writer.write(content+toStore);
 
                 reader.close();
                 writer.close();
@@ -722,7 +718,7 @@ public class Storage {
                 }
             }
 
-            resetFile(false);
+            resetFile("matches");
 
             FileWriter w = new FileWriter(file);
             BufferedWriter writer = new BufferedWriter(w);

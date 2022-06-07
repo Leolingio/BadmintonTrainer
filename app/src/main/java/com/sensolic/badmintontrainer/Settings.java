@@ -23,6 +23,7 @@ public class Settings {
     private Settings(Context context){
         storage = Storage.getInstance(context);
         executeSettings(storage.getSettings());
+        storage.saveSettings();
         if(lastAppVersion != BuildConfig.VERSION_CODE){
             storage.showChangelog();
             lastAppVersion = BuildConfig.VERSION_CODE;
