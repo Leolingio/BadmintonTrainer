@@ -26,6 +26,7 @@ public class Player implements Searchable {
 
     /**
      *  Number of team, the player is playing in
+     *  -1 if currently no team
      */
     private int teamNumber;
 
@@ -63,5 +64,53 @@ public class Player implements Searchable {
     @Override
     public String getIDInfo() {
         return "#P"+playerID;
+    }
+
+    public long getPlayerID() {
+        return playerID;
+    }
+
+    public void setPlayerID(long playerID) {
+        this.playerID = playerID;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public int getRankingPoints() {
+        return rankingPoints;
+    }
+
+    public void setRankingPoints(int rankingPoints) {
+        this.rankingPoints = rankingPoints;
+    }
+
+    public int getMatchesPlayed() {
+        return matchesPlayed;
+    }
+
+    public void setMatchesPlayed(int matchesPlayed) {
+        this.matchesPlayed = matchesPlayed;
+    }
+
+    public int getTeamNumber() {
+        return teamNumber;
+    }
+
+    public void setTeamNumber(int teamNumber) {
+        this.teamNumber = teamNumber;
+    }
+
+    public char getMainHand() {
+        return mainHand;
+    }
+
+    public void setMainHand(char mainHand) {
+        this.mainHand = mainHand;
     }
 }

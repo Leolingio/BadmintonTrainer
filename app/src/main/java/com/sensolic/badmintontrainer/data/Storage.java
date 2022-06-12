@@ -27,28 +27,42 @@ public class Storage {
 
     private Storage(Context applicationContext) {
         context = applicationContext;
-        File data = new File(context.getFilesDir().getAbsolutePath()+"/data");
 
-        try {
-            if(!data.exists()) {
-                data.delete();
-                data.createNewFile();
+        File file;
+        for(int i = 0; i <= 3; i++){
+            if(i == 0){
+                file = new File(context.getFilesDir().getAbsolutePath()+"/data");
+            } else if(i == 1){
+                file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+            } else{
+                file = new File(context.getFilesDir().getAbsolutePath()+"/players");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                if(!file.exists()) {
+                    file.delete();
+                    file.createNewFile();
 
-        File matches = new File(context.getFilesDir().getAbsolutePath()+"/matches");
+                    if(i == 2){
+                        file = new File(context.getFilesDir().getAbsolutePath()+"/players");
+                        FileWriter w = new FileWriter(file);
+                        BufferedWriter writer = new BufferedWriter(w);
+                        Player player1 = new Player(1,"Daniil Pindiurin", 0, 0, -1,'r');
+                        Player player2 = new Player(2,"Rouven Wulandoko", 0, 0, -1,'r');
+                        Player player3 = new Player(3,"Aurelia Wulandoko", 0, 0, -1,'r');
+                        Player player4 = new Player(4,"Leo Hofmann", 0, 0, -1,'r');
+                        writer.write(convertPlayerToEntry(player1)+"\n");
+                        writer.write(convertPlayerToEntry(player2)+"\n");
+                        writer.write(convertPlayerToEntry(player3)+"\n");
+                        writer.write(convertPlayerToEntry(player4)+"\n");
 
-        try {
-            if(!matches.exists()) {
-                matches.delete();
-                matches.createNewFile();
+                        writer.close();
+                        w.close();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
     }
 
     public static Storage getInstance(Context context){
@@ -352,6 +366,7 @@ public class Storage {
         setCurrentMatchID(1);
         return 1;
     }
+
     public void setCurrentMatchID(long newMatchID){
         currentMatchID = newMatchID;
         String content = "";
@@ -396,18 +411,26 @@ public class Storage {
         String buffer = "";         // Here the matchEntry will be loaded to
         char c;
         try{
-            File file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
-            FileReader reader = new FileReader(file);
-            while(reader.ready()){
-                c = (char) reader.read();
-                if(c == '{'){
-                    buffer = c+"";
-                } else if(c == '}'){
-                    buffer = buffer+c;
-                    toAdd = convertEntryToObject(buffer);
-                    if(toAdd != null) list.add(toAdd);
+            File file;
+            FileReader reader;
+            for(int i = 0; i <= 1; i++){
+                if(i == 0){
+                    file = new File(context.getFilesDir().getAbsolutePath()+"/matches");
                 } else{
-                    buffer = buffer + c;
+                    file = new File(context.getFilesDir().getAbsolutePath()+"/players");
+                }
+                reader = new FileReader(file);
+                while(reader.ready()){
+                    c = (char) reader.read();
+                    if(c == '{'){
+                        buffer = c+"";
+                    } else if(c == '}'){
+                        buffer = buffer+c;
+                        toAdd = convertEntryToObject(buffer);
+                        if(toAdd != null) list.add(toAdd);
+                    } else{
+                        buffer = buffer + c;
+                    }
                 }
             }
         } catch(Exception e){
@@ -514,9 +537,9 @@ public class Storage {
                     matchesPlayed = Integer.parseInt(value);
                     break;
                 case "mainHand":
-                    if (value.equals("R")) {
+                    if (value.equals("right")) {
                         matchType = 'R';
-                    } else if (value.equals("L")) {
+                    } else if (value.equals("left")) {
                         matchType = 'L';
                     } else matchType = 'U';
                     break;
@@ -562,7 +585,7 @@ public class Storage {
                     return null;
             }
         } else if(objectType.equals("player")){
-            // TODO Add player code here, similar to match code above
+            return new Player(ID, playerName, rankingPoints, matchesPlayed, teamNumber, mainHand);
         }
         return null;
     }
@@ -622,8 +645,6 @@ public class Storage {
         String buffer;
         String toStore = "{"+System.lineSeparator()+ "objectType:match;" + System.lineSeparator();
 
-        //TODO Separate between match and player -> Searchable as return value
-
         // Add matchID attribute
         toStore = toStore + "id:" + match.getMatchID() +";" + System.lineSeparator();
 
@@ -665,6 +686,38 @@ public class Storage {
         } else if(match.getMatchDependency().equals("League")){
             toStore = toStore + "leagueID:" + match.getLeagueID() + ";" + System.lineSeparator();
             toStore = toStore + "teamNumber:" + match.getTeamNumber() + ";" + System.lineSeparator();
+        }
+        toStore = toStore + "}";
+
+        return toStore;
+    }
+
+    private String convertPlayerToEntry(Player player){
+        String buffer;
+        String toStore = "{"+System.lineSeparator()+ "objectType:player;" + System.lineSeparator();
+
+        // Add playerID attribute
+        toStore = toStore + "id:" + player.getPlayerID() +";" + System.lineSeparator();
+
+        // Add playerName attribute
+        toStore = toStore + "playerName:" + player.getPlayerName() + ";" + System.lineSeparator();
+
+        // Add rankingPoints attribute
+        toStore = toStore + "rankingPoints:" + player.getRankingPoints() + ";" + System.lineSeparator();
+
+        // Add matchesPlayed attribute
+        toStore = toStore + "matchesPlayed:" + player.getMatchesPlayed() + ";" + System.lineSeparator();
+
+        // Add teamNumber attribute
+        toStore = toStore + "teamNumber:" + player.getTeamNumber() + ";" + System.lineSeparator();
+
+        // Add mainHand attribute
+        if(player.getMainHand() == 'r'){
+            toStore = toStore + "mainHand:right;" + System.lineSeparator();
+        } else if(player.getMainHand() == 'l'){
+            toStore = toStore + "mainHand:left;" + System.lineSeparator();
+        } else{
+            toStore = toStore + "mainHand:unknown;" + System.lineSeparator();
         }
         toStore = toStore + "}";
 
