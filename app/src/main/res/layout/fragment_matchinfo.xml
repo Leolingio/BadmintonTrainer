@@ -1,229 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#483D8D"
     tools:context=".statsFragments.MatchInfoFragment">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:paddingBottom="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/matchInfoTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="Singles Match #M1"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/matchInfoTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:text="Singles Match #M1"
-                android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
-                android:background="@android:color/darker_gray" />
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/team1player1icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/round_corners_shape">
 
-                    <RelativeLayout
-                        android:id="@+id/team1player1icon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/round_corners_shape">
-
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/ic_default_profile_24"
-                            android:translationX="5dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/team1player1info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="Spieler 1 - #P1"
-                        android:textColor="#000"
-                        android:textSize="10sp" />
-
-                    <RelativeLayout
-                        android:id="@+id/team1player2icon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginTop="30dp"
-                        android:background="@drawable/round_corners_shape"
-                        android:visibility="visible">
-
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/ic_default_profile_24"
-                            android:translationX="5dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/team1player2info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="Spieler 2 - #P2"
-                        android:textColor="#000"
-                        android:textSize="10sp"
-                        android:visibility="visible" />
-
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_default_profile_24"
+                        android:translationX="5dp" />
+                </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/team1player1info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="vs"
-                    android:textAlignment="center"
-                    android:textColor="#1C86EE"
-                    android:textSize="80sp" />
+                    android:layout_marginTop="10dp"
+                    android:text="Spieler 1 - #P1"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/team1player2icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/round_corners_shape"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_default_profile_24"
+                        android:translationX="5dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/team1player2info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/team2player1icon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/round_corners_shape">
-
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/ic_default_profile_24"
-                            android:translationX="5dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/team2player1info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="Spieler 3 - #P3"
-                        android:textColor="#000"
-                        android:textSize="10sp" />
-
-                    <RelativeLayout
-                        android:id="@+id/team2player2icon"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginEnd="10dp"
-                        android:background="@drawable/round_corners_shape"
-                        android:visibility="visible">
-
-                        <ImageView
-                            android:layout_width="70dp"
-                            android:layout_height="70dp"
-                            android:src="@drawable/ic_default_profile_24"
-                            android:translationX="5dp"/>
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/team2player2info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:text="Spieler 4 - #P4"
-                        android:textColor="#000"
-                        android:textSize="10sp"
-                        android:visibility="visible" />
-
-                </LinearLayout>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Spieler 2 - #P2"
+                    android:textColor="#000"
+                    android:textSize="10sp"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="40dp"
-                android:background="@android:color/darker_gray" />
-
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Points"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="vs"
                 android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textColor="#1C86EE"
+                android:textSize="80sp" />
 
-            <TextView
-                android:id="@+id/first_set"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="First Set  -  21:0 "
-                android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="15sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/second_set"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Second Set  -  21:0 "
-                android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="15sp" />
+                <RelativeLayout
+                    android:id="@+id/team2player1icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/round_corners_shape">
 
-            <TextView
-                android:id="@+id/third_set"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="50dp"
-                android:text="Third Set  -  21:0 "
-                android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="15sp"
-                android:visibility="visible" />
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_default_profile_24"
+                        android:translationX="5dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/team2player1info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Spieler 3 - #P3"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <RelativeLayout
+                    android:id="@+id/team2player2icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/round_corners_shape"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_default_profile_24"
+                        android:translationX="5dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/team2player2info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Spieler 4 - #P4"
+                    android:textColor="#000"
+                    android:textSize="10sp"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
-</FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Points"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/first_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="First Set  -  21:0 "
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/second_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Second Set  -  21:0 "
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/third_set"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Third Set  -  21:0 "
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:visibility="visible" />
+    </LinearLayout>
+</ScrollView>

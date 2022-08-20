@@ -525,7 +525,7 @@ public class Storage {
                     break;
                 case "teamNumber":
                     teamNumber = Integer.parseInt(value);
-                    if(teamNumber < 0) return null;
+                    if(teamNumber < 0) teamNumber = -1;
                     break;
                 case "playerName":
                     playerName = value;

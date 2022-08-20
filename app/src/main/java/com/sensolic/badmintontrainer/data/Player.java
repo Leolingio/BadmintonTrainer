@@ -12,7 +12,7 @@ public class Player implements Searchable {
     /**
      *  Name of the player in format FIRSTNAME,LASTNAME
      */
-    private String playerName;
+    private String playerName = "";
 
     /**
      *  Current ranking points of the player
@@ -40,7 +40,21 @@ public class Player implements Searchable {
      */
     public Player(long playerID, String playerName, int rankingPoints, int matchesPlayed, int teamNumber, char mainHand){
         this.playerID = playerID;
-        this.playerName = playerName;
+        if(!playerName.contains(" ")){
+            for(int i = 0; i < playerName.length(); i++) {
+                if (i != 0) {
+                    if (Character.isUpperCase(playerName.charAt(i))) {
+                        this.playerName = this.playerName + " " + playerName.charAt(i);
+                    } else {
+                        this.playerName = this.playerName + playerName.charAt(i);
+                    }
+                } else {
+                    this.playerName = this.playerName + playerName.charAt(0);
+                }
+            }
+        } else{
+            this.playerName = playerName;
+        }
         this.rankingPoints = Math.max(rankingPoints, 0);
         this.matchesPlayed = Math.max(matchesPlayed,0);
         this.teamNumber = Math.max(teamNumber,-1);
