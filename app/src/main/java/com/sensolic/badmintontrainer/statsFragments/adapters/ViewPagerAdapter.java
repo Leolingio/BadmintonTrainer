@@ -4,13 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public final class ViewPagerAdapter extends FragmentPagerAdapter {
+public final class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private final ArrayList<Fragment> mFragmentList = new ArrayList<>();
     private final ArrayList<String> mFragmentTitleList = new ArrayList<>();
 
@@ -35,8 +36,12 @@ public final class ViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentTitleList.get(position);
     }
 
-    public final void addFragment(@NotNull Fragment fragment, @NotNull String title) {
+    public void addFragment(@NotNull Fragment fragment, @NotNull String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
+    }
+    @Override
+    public int getItemPosition(Object object){
+        return PagerAdapter.POSITION_NONE;
     }
 }

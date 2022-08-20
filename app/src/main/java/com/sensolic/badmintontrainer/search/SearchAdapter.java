@@ -87,10 +87,20 @@ public class SearchAdapter extends BaseAdapter {
                 //Identifying the match
                 ViewHolder h = (ViewHolder) view1.getTag();
                 String id = h.ID.getText().toString();
-                id = id.substring(id.indexOf('M') + 1);
+                boolean isMatch = false;
+                if(id.charAt(1) == 'M'){
+                    id = id.substring(id.indexOf('M') + 1);
+                    isMatch = true;
+                } else if(id.charAt(1) == 'P'){
+                    id = id.substring(id.indexOf('P') + 1);
+                } else{
+                    // Invalid ID-notation
+                    return false;
+                }
                 int index = 0;
                 for (Searchable s : entryList) {
-                    if (s.getIDInfo().equals("#M" + id)) {
+                    if (isMatch && s.getIDInfo().equals("#M" + id)
+                        || !isMatch && s.getIDInfo().equals("#P" + id)) {
                         break;
                     }
                     index++;

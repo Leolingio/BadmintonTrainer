@@ -14,6 +14,8 @@ import com.sensolic.badmintontrainer.data.Match;
 
 public class MatchInfoFragment extends Fragment {
 
+    private View view;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +26,13 @@ public class MatchInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_matchinfo, container, false);
+        view = inflater.inflate(R.layout.fragment_matchinfo, container, false);
+        return view;
     }
 
     public void setInfo(Match match){
         TextView textView;
         RelativeLayout icon;
-        View view = getView();
-        assert view != null;
 
         if(match.getMatchType() == 'S'){
             textView = view.findViewById(R.id.matchInfoTitle);

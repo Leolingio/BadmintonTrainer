@@ -14,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.sensolic.badmintontrainer.data.Match;
+import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
 import com.sensolic.badmintontrainer.search.SearchActivity;
@@ -21,6 +22,7 @@ import com.sensolic.badmintontrainer.search.Searchable;
 import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
 import com.sensolic.badmintontrainer.statsFragments.MatchInfoFragment;
+import com.sensolic.badmintontrainer.statsFragments.PlayerInfoFragment;
 import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
 
 public class StatsActivity extends AppCompatActivity {
@@ -34,6 +36,7 @@ public class StatsActivity extends AppCompatActivity {
     HomeFragment homeFragment = new HomeFragment();
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
     MatchInfoFragment matchInfoFragment = new MatchInfoFragment();
+    PlayerInfoFragment playerInfoFragment = new PlayerInfoFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentSearch);
                 if(menuExpanded) closeMenu();
-                if(infoShowing) removeMatchTab();
+                if(infoShowing) removeInfoTab();
             }
         });
 
@@ -71,7 +74,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentRegisterMatch);
                 if(menuExpanded) closeMenu();
-                if(infoShowing) removeMatchTab();
+                if(infoShowing) removeInfoTab();
             }
         });
 
@@ -82,7 +85,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentSettings);
                 if(menuExpanded) closeMenu();
-                if(infoShowing) removeMatchTab();
+                if(infoShowing) removeInfoTab();
             }
         });
 
@@ -121,7 +124,7 @@ public class StatsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 if(position != 2 && infoShowing){
-                    removeMatchTab();
+                    removeInfoTab();
                     vp.setCurrentItem(position);
                 }
             }
@@ -185,13 +188,13 @@ public class StatsActivity extends AppCompatActivity {
         menuExpanded = true;
     }
 
-    private void removeMatchTab(){
+    private void removeInfoTab(){
         infoShowing = false;
         ViewPager vp = findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        vp.setAdapter(adapter);
         adapter.addFragment(homeFragment, "Home");
         adapter.addFragment(leaderboardFragment, "Leaderboard");
-        vp.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
@@ -200,7 +203,7 @@ public class StatsActivity extends AppCompatActivity {
         if(menuExpanded){
             closeMenu();
         } else if(infoShowing){
-            removeMatchTab();
+            removeInfoTab();
             ViewPager vp = findViewById(R.id.viewPager);
             vp.setCurrentItem(1);
         } else {
@@ -224,11 +227,18 @@ public class StatsActivity extends AppCompatActivity {
             ViewPagerAdapter adapter = (ViewPagerAdapter) vp.getAdapter();
 
             assert adapter != null;
-            adapter.addFragment(matchInfoFragment, "Match");
+            if(searchableToShow instanceof Match){
+                adapter.addFragment(matchInfoFragment, "Match");
+            } else if(searchableToShow instanceof Player){
+                adapter.addFragment(playerInfoFragment, "Player");
+            }
             adapter.notifyDataSetChanged();
             vp.setCurrentItem(2);
-
-            matchInfoFragment.setInfo((Match) searchableToShow);
+            if(searchableToShow instanceof Match){
+                matchInfoFragment.setInfo((Match) searchableToShow);
+            } else if(searchableToShow instanceof Player){
+                playerInfoFragment.setInfo((Player) searchableToShow);
+            }
         }
     }
 }
