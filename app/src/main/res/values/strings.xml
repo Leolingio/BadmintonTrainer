@@ -32,7 +32,6 @@
     <string name="version">Badminton Trainer - version \u0020</string>
 
 
-
     <!-- Content of RegisterMatch Activity -->
     <string name="registerMatchHeadline">Register Match</string>
     <string name="player1hint">Player 1: ID or name</string>

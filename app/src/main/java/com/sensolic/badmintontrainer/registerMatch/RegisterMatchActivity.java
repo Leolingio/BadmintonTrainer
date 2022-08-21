@@ -529,7 +529,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                             s = s5.getText() + ":" + s6.getText();
                             scores[2] = s;
                         }
-                        Match matchNew = new Match(matchID, 'S', playerIDs, scores.length, scores);
+                        Match matchNew = new Match(storage, matchID, 'S', playerIDs, scores.length, scores);
                         storage.storeMatch(matchNew);
                         matchID++;
                         storage.setCurrentMatchID(matchID);
@@ -560,7 +560,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                             s = s5.getText() + ":" + s6.getText();
                             scores[2] = s;
                         }
-                        Match matchNew = new Match(matchID, 'D', playerIDs, scores.length, scores);
+                        Match matchNew = new Match(storage, matchID, 'D', playerIDs, scores.length, scores);
                         storage.storeMatch(matchNew);
                         matchID++;
                         storage.setCurrentMatchID(matchID);

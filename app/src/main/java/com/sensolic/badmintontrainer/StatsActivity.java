@@ -35,8 +35,8 @@ public class StatsActivity extends AppCompatActivity {
     private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
     HomeFragment homeFragment = new HomeFragment();
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
-    MatchInfoFragment matchInfoFragment = new MatchInfoFragment();
-    PlayerInfoFragment playerInfoFragment = new PlayerInfoFragment();
+    MatchInfoFragment matchInfoFragment;
+    PlayerInfoFragment playerInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +221,9 @@ public class StatsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if(showSearchInfo){
+            if(infoShowing){
+                removeInfoTab();
+            }
             showSearchInfo = false;
             infoShowing = true;
             ViewPager vp = findViewById(R.id.viewPager);
@@ -228,8 +231,10 @@ public class StatsActivity extends AppCompatActivity {
 
             assert adapter != null;
             if(searchableToShow instanceof Match){
+                matchInfoFragment = new MatchInfoFragment();
                 adapter.addFragment(matchInfoFragment, "Match");
             } else if(searchableToShow instanceof Player){
+                playerInfoFragment = new PlayerInfoFragment();
                 adapter.addFragment(playerInfoFragment, "Player");
             }
             adapter.notifyDataSetChanged();

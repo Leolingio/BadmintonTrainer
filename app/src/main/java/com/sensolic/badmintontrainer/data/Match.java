@@ -1,9 +1,10 @@
 package com.sensolic.badmintontrainer.data;
 
-import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.search.Searchable;
 
 public class Match implements Searchable {
+
+    Storage storage;
 
     /**
      * ID of the match without #M
@@ -18,7 +19,7 @@ public class Match implements Searchable {
     /**
      * IDs of all participating players
      */
-    private long playerOneID, playerTwoID, playerThreeID, playerFourID;
+    private long team1player1ID, team1player2ID, team2player1ID, team2player2ID;
 
     /**
      * Number of sets of the match - 2 or 3
@@ -49,19 +50,21 @@ public class Match implements Searchable {
      * @param setCount  number of sets
      * @param scores    Array with all scores depending on setCount
      */
-    public Match(long matchID, char matchType, long[] playerIDs, int setCount, String[] scores) {
+    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores) {
+        this.storage = storage;
+
         this.matchID = matchID;
         this.matchType = matchType;
 
         // Read our playerIDs
         if(matchType == 'S'){
-            playerOneID = playerIDs[0];
-            playerTwoID = playerIDs[1];
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
         } else{
-            playerOneID = playerIDs[0];
-            playerTwoID = playerIDs[1];
-            playerThreeID = playerIDs[2];
-            playerFourID = playerIDs[3];
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
+            team1player2ID = playerIDs[2];
+            team2player2ID = playerIDs[3];
         }
 
         this.setCount = setCount;
@@ -86,20 +89,22 @@ public class Match implements Searchable {
      * @param leagueID   ID of the league
      * @param teamNumber number of the team the player is playing in
      */
-    public Match(long matchID, char matchType, long[] playerIDs, int setCount, String[] scores,
+    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores,
                  long leagueID, int teamNumber) {
+        this.storage = storage;
+
         this.matchID = matchID;
         this.matchType = matchType;
 
         // Read our playerIDs
         if(matchType == 'S'){
-            playerOneID = playerIDs[0];
-            playerTwoID = playerIDs[1];
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
         } else{
-            playerOneID = playerIDs[0];
-            playerTwoID = playerIDs[1];
-            playerThreeID = playerIDs[2];
-            playerFourID = playerIDs[3];
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
+            team1player2ID = playerIDs[2];
+            team2player2ID = playerIDs[3];
         }
 
         this.setCount = setCount;
@@ -126,20 +131,22 @@ public class Match implements Searchable {
      * @param scores       Array with all scores depending on setCount
      * @param tournamentID ID of the tournament
      */
-    public Match(long matchID, char matchType, long[] playerIDs, int setCount, String[] scores,
+    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores,
                  long tournamentID) {
+        this.storage = storage;
+
         this.matchID = matchID;
         this.matchType = matchType;
 
         // Read our playerIDs
         if(matchType == 'S'){
-            playerOneID = playerIDs[0];
-            playerTwoID = playerIDs[1];
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
         } else{
-            playerOneID = playerIDs[0];
-            playerTwoID = playerIDs[1];
-            playerThreeID = playerIDs[2];
-            playerFourID = playerIDs[3];
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
+            team1player2ID = playerIDs[2];
+            team2player2ID = playerIDs[3];
         }
 
         this.setCount = setCount;
@@ -188,20 +195,20 @@ public class Match implements Searchable {
         return matchType;
     }
 
-    public long getPlayerOneID() {
-        return playerOneID;
+    public long getTeam1Player1ID() {
+        return team1player1ID;
     }
 
-    public long getPlayerTwoID() {
-        return playerTwoID;
+    public long getTeam1Player2ID() {
+        return team1player2ID;
     }
 
-    public long getPlayerThreeID() {
-        return playerThreeID;
+    public long getTeam2Player1ID() {
+        return team2player1ID;
     }
 
-    public long getPlayerFourID() {
-        return playerFourID;
+    public long getTeam2Player2ID() {
+        return team2player2ID;
     }
 
     public int getSetCount() {
@@ -234,6 +241,22 @@ public class Match implements Searchable {
 
     public int getTeamNumber() {
         return teamNumber;
+    }
+
+    public Player getTeam1Player1(){
+        return storage.getPlayerData(team1player1ID);
+    }
+
+    public Player getTeam1Player2(){
+        return storage.getPlayerData(team1player2ID);
+    }
+
+    public Player getTeam2Player1(){
+        return storage.getPlayerData(team2player1ID);
+    }
+
+    public Player getTeam2Player2(){
+        return storage.getPlayerData(team2player2ID);
     }
 
 }

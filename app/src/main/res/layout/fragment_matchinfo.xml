@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            android:text="Singles Match #M1"
+            android:text="Test Match"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="25sp"
@@ -58,12 +58,22 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/team1player1info"
+                    android:id="@+id/team1player1name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Spieler 1 - #P1"
+                    android:text="Player 1"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/team1player1ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="#P"
                     android:textColor="#000"
                     android:textSize="10sp" />
 
@@ -86,12 +96,22 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/team1player2info"
+                    android:id="@+id/team1player2name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Spieler 2 - #P2"
+                    android:text="Player 1"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/team1player2ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Player 2 - #P"
                     android:textColor="#000"
                     android:textSize="10sp"
                     android:visibility="visible" />
@@ -131,12 +151,22 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/team2player1info"
+                    android:id="@+id/team2player1name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Spieler 3 - #P3"
+                    android:text="Player 1"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/team2player1ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Player 3 - #P"
                     android:textColor="#000"
                     android:textSize="10sp" />
 
@@ -159,12 +189,22 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/team2player2info"
+                    android:id="@+id/team2player2name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Spieler 4 - #P4"
+                    android:text="Player 1"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/team2player2ID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="Player 4 - #P"
                     android:textColor="#000"
                     android:textSize="10sp"
                     android:visibility="visible" />
@@ -183,7 +223,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Points"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp"
@@ -194,7 +233,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="First Set  -  21:0 "
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -204,7 +242,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Second Set  -  21:0 "
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -214,7 +251,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Third Set  -  21:0 "
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp"
