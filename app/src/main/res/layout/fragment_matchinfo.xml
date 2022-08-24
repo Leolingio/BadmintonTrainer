@@ -224,6 +224,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:text="Result:"
             android:textColor="#000"
             android:textSize="15sp"
             android:textStyle="bold" />
