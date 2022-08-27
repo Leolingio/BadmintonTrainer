@@ -9,7 +9,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 32
         versionCode 8
-        versionName "0.0.8 - Sensolic Developer"
+        versionName "0.8 - Sensolic Developer"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
