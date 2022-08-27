@@ -30,6 +30,9 @@ public class StatsActivity extends AppCompatActivity {
     private static boolean menuExpanded = false;
     private static boolean showSearchInfo = false;
     private boolean infoShowing = false;
+    public static boolean linkedMatch = false;
+    private static Searchable searchableLastShown;
+    private static Searchable searchableCurrentlyShowing;
     private static Searchable searchableToShow;
     private static AlertDialog changelog;
     private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
@@ -190,6 +193,8 @@ public class StatsActivity extends AppCompatActivity {
 
     private void removeInfoTab(){
         infoShowing = false;
+        searchableLastShown = searchableCurrentlyShowing;
+        searchableCurrentlyShowing = null;
         ViewPager vp = findViewById(R.id.viewPager);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(adapter);
@@ -203,9 +208,17 @@ public class StatsActivity extends AppCompatActivity {
         if(menuExpanded){
             closeMenu();
         } else if(infoShowing){
-            removeInfoTab();
-            ViewPager vp = findViewById(R.id.viewPager);
-            vp.setCurrentItem(0);
+            if(linkedMatch && searchableLastShown != null){
+                searchableToShow = searchableLastShown;
+                searchableLastShown = null;
+                linkedMatch = false;
+                showSearchInfo = true;
+                startActivity(new Intent(getApplicationContext(),ReloadActivity.class));
+            } else {
+                removeInfoTab();
+                ViewPager vp = findViewById(R.id.viewPager);
+                vp.setCurrentItem(0);
+            }
         } else {
             super.onBackPressed();
         }
@@ -226,22 +239,23 @@ public class StatsActivity extends AppCompatActivity {
             }
             showSearchInfo = false;
             infoShowing = true;
+            searchableCurrentlyShowing = searchableToShow;
             ViewPager vp = findViewById(R.id.viewPager);
             ViewPagerAdapter adapter = (ViewPagerAdapter) vp.getAdapter();
 
             assert adapter != null;
-            if(searchableToShow instanceof Match){
+            if(searchableCurrentlyShowing instanceof Match){
                 matchInfoFragment = new MatchInfoFragment();
                 adapter.addFragment(matchInfoFragment, "Match");
-            } else if(searchableToShow instanceof Player){
+            } else if(searchableCurrentlyShowing instanceof Player){
                 playerInfoFragment = new PlayerInfoFragment();
                 adapter.addFragment(playerInfoFragment, "Player");
             }
             adapter.notifyDataSetChanged();
             vp.setCurrentItem(1);
-            if(searchableToShow instanceof Match){
+            if(searchableCurrentlyShowing instanceof Match){
                 matchInfoFragment.setInfo((Match) searchableToShow);
-            } else if(searchableToShow instanceof Player){
+            } else if(searchableCurrentlyShowing instanceof Player){
                 playerInfoFragment.setInfo((Player) searchableToShow);
             }
         }

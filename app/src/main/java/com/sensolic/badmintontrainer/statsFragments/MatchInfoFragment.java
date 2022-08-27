@@ -43,6 +43,7 @@ public class MatchInfoFragment extends Fragment {
                     Player toShow = currentShowing.getTeam1Player1();
                     if(toShow != null){
                         StatsActivity.showInfo(toShow);
+                        StatsActivity.linkedMatch = true;
                         startActivity(new Intent(getContext(),ReloadActivity.class));
                     } else{
                         Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -59,6 +60,7 @@ public class MatchInfoFragment extends Fragment {
                     Player toShow = currentShowing.getTeam1Player2();
                     if(toShow != null){
                         StatsActivity.showInfo(toShow);
+                        StatsActivity.linkedMatch = true;
                         startActivity(new Intent(getContext(),ReloadActivity.class));
                     } else{
                         Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -75,6 +77,7 @@ public class MatchInfoFragment extends Fragment {
                     Player toShow = currentShowing.getTeam2Player1();
                     if(toShow != null){
                         StatsActivity.showInfo(toShow);
+                        StatsActivity.linkedMatch = true;
                         startActivity(new Intent(getContext(),ReloadActivity.class));
                     } else{
                         Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -91,6 +94,7 @@ public class MatchInfoFragment extends Fragment {
                     Player toShow = currentShowing.getTeam2Player2();
                     if(toShow != null){
                         StatsActivity.showInfo(toShow);
+                        StatsActivity.linkedMatch = true;
                         startActivity(new Intent(getContext(),ReloadActivity.class));
                     } else{
                         Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
