@@ -111,7 +111,7 @@ public class StatsActivity extends AppCompatActivity {
     private void setUpTabs(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(homeFragment, "Home");
-        adapter.addFragment(leaderboardFragment, "Leaderboard");
+        //adapter.addFragment(leaderboardFragment, "Leaderboard");
 
         ViewPager vp = findViewById(R.id.viewPager);
         vp.setAdapter(adapter);
@@ -123,7 +123,7 @@ public class StatsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position != 2 && infoShowing){
+                if(position != 1 && infoShowing){
                     removeInfoTab();
                     vp.setCurrentItem(position);
                 }
@@ -138,7 +138,7 @@ public class StatsActivity extends AppCompatActivity {
         TabLayout tl = findViewById(R.id.tabs);
         tl.setupWithViewPager(vp);
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
-        tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
+        //tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
     }
 
     public static void showInfo(Searchable searchable){
@@ -194,7 +194,7 @@ public class StatsActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(adapter);
         adapter.addFragment(homeFragment, "Home");
-        adapter.addFragment(leaderboardFragment, "Leaderboard");
+        //adapter.addFragment(leaderboardFragment, "Leaderboard");
         adapter.notifyDataSetChanged();
     }
 
@@ -205,7 +205,7 @@ public class StatsActivity extends AppCompatActivity {
         } else if(infoShowing){
             removeInfoTab();
             ViewPager vp = findViewById(R.id.viewPager);
-            vp.setCurrentItem(1);
+            vp.setCurrentItem(0);
         } else {
             super.onBackPressed();
         }
@@ -238,7 +238,7 @@ public class StatsActivity extends AppCompatActivity {
                 adapter.addFragment(playerInfoFragment, "Player");
             }
             adapter.notifyDataSetChanged();
-            vp.setCurrentItem(2);
+            vp.setCurrentItem(1);
             if(searchableToShow instanceof Match){
                 matchInfoFragment.setInfo((Match) searchableToShow);
             } else if(searchableToShow instanceof Player){
