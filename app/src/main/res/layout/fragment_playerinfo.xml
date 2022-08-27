@@ -150,7 +150,8 @@
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/mainHand"
@@ -160,7 +161,8 @@
             android:text="Unknown"
             android:textAlignment="center"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

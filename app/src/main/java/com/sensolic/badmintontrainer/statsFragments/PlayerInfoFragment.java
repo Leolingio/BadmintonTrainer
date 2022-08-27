@@ -54,12 +54,14 @@ public class PlayerInfoFragment extends Fragment {
             if (player.getTeamNumber() != -1) {
                 textView.setText(player.getTeamNumber());
             }
+            /*
             textView = view.findViewById(R.id.mainHand);
             if (player.getMainHand() == 'R') {
                 textView.setText("Right handed");
             } else if (player.getMainHand() == 'L') {
                 textView.setText("Left handed");
             }
+            */
 
             showing = true;
         }
