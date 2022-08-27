@@ -62,6 +62,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center"
                     android:layout_marginTop="10dp"
                     android:text="Player 1"
                     android:textColor="#000"
@@ -73,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
                     android:text="#P"
                     android:textColor="#000"
                     android:textSize="10sp" />
@@ -101,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Player 1"
+                    android:layout_marginStart="5dp"
+                    android:text="Player 2"
                     android:textColor="#000"
                     android:textSize="10sp" />
 
@@ -111,8 +115,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="Player 2 - #P"
+                    android:text="#P"
                     android:textColor="#000"
+                    android:layout_marginStart="5dp"
                     android:textSize="10sp"
                     android:visibility="visible" />
 
@@ -156,7 +161,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Player 1"
+                    android:layout_marginEnd="5dp"
+                    android:text="Player 3"
                     android:textColor="#000"
                     android:textSize="10sp" />
 
@@ -166,7 +172,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
-                    android:text="Player 3 - #P"
+                    android:layout_marginEnd="5dp"
+                    android:text="#P"
                     android:textColor="#000"
                     android:textSize="10sp" />
 
@@ -194,7 +201,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:text="Player 1"
+                    android:layout_marginEnd="5dp"
+                    android:text="Player 4"
                     android:textColor="#000"
                     android:textSize="10sp" />
 
@@ -204,7 +212,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="3dp"
-                    android:text="Player 4 - #P"
+                    android:layout_marginEnd="5dp"
+                    android:text="#P"
                     android:textColor="#000"
                     android:textSize="10sp"
                     android:visibility="visible" />
