@@ -62,8 +62,8 @@ public class Match implements Searchable {
             team2player1ID = playerIDs[1];
         } else{
             team1player1ID = playerIDs[0];
-            team2player1ID = playerIDs[1];
-            team1player2ID = playerIDs[2];
+            team1player2ID = playerIDs[1];
+            team2player1ID = playerIDs[2];
             team2player2ID = playerIDs[3];
         }
 
@@ -102,8 +102,8 @@ public class Match implements Searchable {
             team2player1ID = playerIDs[1];
         } else{
             team1player1ID = playerIDs[0];
-            team2player1ID = playerIDs[1];
-            team1player2ID = playerIDs[2];
+            team1player2ID = playerIDs[1];
+            team2player1ID = playerIDs[2];
             team2player2ID = playerIDs[3];
         }
 
@@ -144,8 +144,8 @@ public class Match implements Searchable {
             team2player1ID = playerIDs[1];
         } else{
             team1player1ID = playerIDs[0];
-            team2player1ID = playerIDs[1];
-            team1player2ID = playerIDs[2];
+            team1player2ID = playerIDs[1];
+            team2player1ID = playerIDs[2];
             team2player2ID = playerIDs[3];
         }
 

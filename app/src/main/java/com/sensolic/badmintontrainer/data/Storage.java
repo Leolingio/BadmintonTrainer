@@ -569,8 +569,8 @@ public class Storage {
             } else {
                 players = new long[4];
                 players[0] = team1player1;
-                players[1] = team2player1;
-                players[2] = team1player2;
+                players[1] = team1player2;
+                players[2] = team2player1;
                 players[3] = team2player2;
             }
             String[] scores = new String[setCount];
