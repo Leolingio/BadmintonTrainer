@@ -53,95 +53,72 @@
                 android:hint="Doubles Match" />
         </RadioGroup>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/team1player1"
+        <AutoCompleteTextView
+            android:id="@+id/team1player1chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/matchTypeSelector"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:lines="1"
+            android:hint="Player 1: ID or name"
+            android:minWidth="233dp"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"/>
 
-            <com.sensolic.badmintontrainer.registerMatch.CustomEditText
-                android:id="@+id/player1editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:minWidth="233dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/team1player2"
+        <AutoCompleteTextView
+            android:id="@+id/team1player2chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/team1player1"
+            android:layout_below="@id/team1player1chooser"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp">
-
-            <com.sensolic.badmintontrainer.registerMatch.CustomEditText
-                android:id="@+id/player2editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:minWidth="233dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginEnd="30dp"
+            android:hint="Player 2: ID or name"
+            android:minWidth="233dp"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"/>
 
         <View
             android:id="@+id/playerSeparator1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/team1player2"
+            android:layout_below="@id/team1player2chooser"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/team2player1"
+        <AutoCompleteTextView
+            android:id="@+id/team2player1chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/playerSeparator1"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:hint="Player 3: ID or name"
+            android:minWidth="233dp"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"/>
 
-            <com.sensolic.badmintontrainer.registerMatch.CustomEditText
-                android:id="@+id/player3editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:minWidth="233dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/team2player2"
+        <AutoCompleteTextView
+            android:id="@+id/team2player2chooser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/team2player1"
+            android:layout_below="@id/team2player1chooser"
             android:layout_marginStart="30dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp">
-
-            <com.sensolic.badmintontrainer.registerMatch.CustomEditText
-                android:id="@+id/player4editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:minWidth="233dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginEnd="30dp"
+            android:hint="Player 4: ID or name"
+            android:minWidth="233dp"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"/>
 
         <LinearLayout
             android:id="@+id/score1Container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/team2player2"
+            android:layout_below="@id/team2player2chooser"
             android:layout_marginStart="30dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="30dp"

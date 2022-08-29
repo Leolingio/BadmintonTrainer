@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Storage {
@@ -810,8 +811,8 @@ public class Storage {
                 } else if (c == '}') {
                     buffer = buffer + c;
                     toAdd = convertEntryToObject(buffer);
-                    if(toAdd instanceof Player){
-                        if(((Player) toAdd).getPlayerID() == playerID){
+                    if (toAdd instanceof Player) {
+                        if (((Player) toAdd).getPlayerID() == playerID) {
                             return (Player) toAdd;
                         }
                     }
@@ -823,5 +824,35 @@ public class Storage {
             // ignored
         }
         return null;
+    }
+
+    public ArrayList<Player> getStoredPlayers() {
+        ArrayList<Player> result = new ArrayList<>();
+        Player toAdd;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        char c;
+        try {
+            File file;
+            FileReader reader;
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+            reader = new FileReader(file);
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    toAdd = (Player) convertEntryToObject(buffer);
+                    if (toAdd != null) result.add(toAdd);
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+
+        } catch (Exception e) {
+            // ignored
+        }
+        return result;
     }
 }

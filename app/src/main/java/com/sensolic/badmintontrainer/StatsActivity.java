@@ -66,7 +66,10 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentSearch);
                 if(menuExpanded) closeMenu();
-                if(infoShowing) removeInfoTab();
+                if(infoShowing){
+                    removeInfoTab();
+                    searchableLastShown = null;
+                }
             }
         });
 
@@ -77,7 +80,10 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentRegisterMatch);
                 if(menuExpanded) closeMenu();
-                if(infoShowing) removeInfoTab();
+                if(infoShowing){
+                    removeInfoTab();
+                    searchableLastShown = null;
+                }
             }
         });
 
@@ -88,7 +94,10 @@ public class StatsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(intentSettings);
                 if(menuExpanded) closeMenu();
-                if(infoShowing) removeInfoTab();
+                if(infoShowing){
+                    removeInfoTab();
+                    searchableLastShown = null;
+                }
             }
         });
 
@@ -128,6 +137,7 @@ public class StatsActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if(position != 1 && infoShowing){
                     removeInfoTab();
+                    searchableLastShown = null;
                     vp.setCurrentItem(position);
                 }
             }
@@ -142,6 +152,10 @@ public class StatsActivity extends AppCompatActivity {
         tl.setupWithViewPager(vp);
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
         //tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
+        View v = tl.getChildAt(0);
+        v.setMinimumWidth(0);
+        v.setPadding(0, v.getPaddingTop(), 0, v.getPaddingBottom());
+        tl.requestLayout();
     }
 
     public static void showInfo(Searchable searchable){
