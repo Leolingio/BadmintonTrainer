@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 public class Storage {
 
+    private static final boolean resetPlayers = false;
+    private static final boolean resetMatches = false;
     private final boolean showToasts = true;
     private static Storage instance;
     private long currentMatchID = -1;
@@ -30,7 +32,7 @@ public class Storage {
         context = applicationContext;
 
         File file;
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i < 3; i++) {
             if (i == 0) {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/data");
             } else if (i == 1) {
@@ -38,6 +40,8 @@ public class Storage {
             } else {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/players");
             }
+            if(resetPlayers && i == 2) file.delete();
+            if(resetMatches && i == 1) file.delete();
             try {
                 if (!file.exists()) {
                     file.delete();
@@ -854,5 +858,119 @@ public class Storage {
             // ignored
         }
         return result;
+    }
+
+    public void storePlayer(Player player){
+        // If already saved then just update the existing data
+        if (containsPlayer(player)) updatePlayer(player);
+        else {   // Create new entry for the match
+            String buffer;
+            String toStore = convertPlayerToEntry(player);
+
+            String content = "";
+            try {
+                File file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+                BufferedReader reader = new BufferedReader(new FileReader(file));
+                buffer = reader.readLine();
+                while (buffer != null) {
+                    content = content + buffer + System.lineSeparator();
+                    buffer = reader.readLine();
+                }
+
+                resetFile("players");
+
+                file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+                FileWriter w = new FileWriter(file);
+                BufferedWriter writer = new BufferedWriter(w);
+
+                writer.write(content + toStore);
+
+                reader.close();
+                writer.close();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
+
+    private void updatePlayer(Player player){
+        String content = "";
+        String newContent = convertPlayerToEntry(player);
+        String read;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        String toCompare;      // Here the substrings of buffer will be saved
+        boolean playerFound = false;
+        char c;
+        try {
+            File file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+            FileReader reader = new FileReader(file);
+
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    if(playerFound) content = content + buffer;
+                    else {
+                        read = buffer;
+
+                        read = read.replaceAll(" ", "");
+                        read = read.replaceAll("\n", "");
+
+                        toCompare = read.substring(1, read.indexOf(';'));
+                        read = read.substring(read.indexOf(';') + 1);
+                        do {
+                            if (toCompare.substring(0, toCompare.indexOf(':')).equals("id")
+                                    && toCompare.substring(toCompare.indexOf(':') + 1).equals(String.valueOf(player.getPlayerID()))) {
+                                content = content + newContent;
+                                playerFound = true;
+                                break;
+                            }
+                            if (!read.equals("}")) {
+                                toCompare = read.substring(0, read.indexOf(';'));
+                                read = read.substring(read.indexOf(';') + 1);
+                            } else toCompare = "";
+                        } while (toCompare.length() != 0);
+                        if (!playerFound) {
+                            content = content + buffer;
+                            buffer = "";
+                        }
+                    }
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+
+            resetFile("players");
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content);
+
+            reader.close();
+            writer.close();
+        } catch (Exception e) {
+            // ignored
+        }
+    }
+
+    private boolean containsPlayer(Player player){
+        String buffer;
+        try {
+            File file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while (buffer != null) {
+                if (buffer.contains("id:" + player.getPlayerID())) {
+                    return true;
+                }
+                buffer = reader.readLine();
+            }
+        } catch (Exception e) {
+            //ignored
+        }
+        return false;
     }
 }

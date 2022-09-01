@@ -951,6 +951,15 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     Match matchNew = new Match(storage, matchID, 'S', playerIDs, scores.length, scores);
                     storage.storeMatch(matchNew);
+
+                    // Update player-profiles
+                    Player buffer;
+                    for(int i = 0; i < 2; i++){
+                        buffer = storage.getPlayerData(playerIDs[i]);
+                        buffer.setMatchesPlayed(buffer.getMatchesPlayed()+1);
+                        storage.storePlayer(buffer);
+                    }
+
                     matchID++;
                     storage.setCurrentMatchID(matchID);
                     Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
@@ -1012,6 +1021,15 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     Match matchNew = new Match(storage, matchID, 'D', playerIDs, scores.length, scores);
                     storage.storeMatch(matchNew);
+
+                    // Update player-profiles
+                    Player buffer;
+                    for(int i = 0; i < 4; i++){
+                        buffer = storage.getPlayerData(playerIDs[i]);
+                        buffer.setMatchesPlayed(buffer.getMatchesPlayed()+1);
+                        storage.storePlayer(buffer);
+                    }
+
                     matchID++;
                     storage.setCurrentMatchID(matchID);
                     Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
