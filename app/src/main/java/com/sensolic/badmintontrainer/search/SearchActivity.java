@@ -1,6 +1,9 @@
 package com.sensolic.badmintontrainer.search;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -25,16 +28,6 @@ public class SearchActivity extends AppCompatActivity {
 
         storage = Storage.getInstance(getApplicationContext());
         listView = findViewById(R.id.listView);
-        /*
-        SearchEntry p1 = new SearchEntry("Player 1", "#P0001");
-        SearchEntry p2 = new SearchEntry("Player 2", "#P0002");
-        SearchEntry p3 = new SearchEntry("Player 3", "#P0003");
-        SearchEntry p4 = new SearchEntry("Player 4", "#P0004");
-
-        SearchEntry[] entries = new SearchEntry[]{
-                p1,p2,p3,p4
-        };
-         */
 
         ArrayList<Searchable> arrayList = new ArrayList<>();
 
@@ -47,7 +40,7 @@ public class SearchActivity extends AppCompatActivity {
 
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setIconified(false);
-        searchView.requestFocus();
+        searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -70,6 +63,5 @@ public class SearchActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             pullToRefresh.setRefreshing(false);
         });
-
     }
 }
