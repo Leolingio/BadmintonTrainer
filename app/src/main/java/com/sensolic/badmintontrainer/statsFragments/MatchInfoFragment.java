@@ -128,6 +128,25 @@ public class MatchInfoFragment extends Fragment {
                 textView.setText(match.getTeam2Player1().getPlayerName());
                 textView = view.findViewById(R.id.team2player1ID);
                 textView.setText("#" + match.getTeam2Player1ID());
+                if(match.getWinner() == 1){
+                    textView = view.findViewById(R.id.team1player1points);
+                    textView.setText("+"+match.getTeam1Player1points()+" Points");
+                    textView = view.findViewById(R.id.team1player2points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team2player1points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team2player2points);
+                    textView.setVisibility(View.INVISIBLE);
+                }else{
+                    textView = view.findViewById(R.id.team1player1points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team1player2points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team2player2points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team2player1points);
+                    textView.setText("+"+match.getTeam2Player1points()+" Points");
+                }
                 textView = view.findViewById(R.id.first_set);
                 textView.setText("First Set - " + match.getScoreFirst());
                 textView = view.findViewById(R.id.second_set);
@@ -171,6 +190,25 @@ public class MatchInfoFragment extends Fragment {
                 textView.setText(match.getTeam2Player2().getPlayerName());
                 textView = view.findViewById(R.id.team2player2ID);
                 textView.setText("#P" + match.getTeam2Player2ID());
+                if(match.getWinner() == 1){
+                    textView = view.findViewById(R.id.team1player1points);
+                    textView.setText("+"+match.getTeam1Player1points()+" Points");
+                    textView = view.findViewById(R.id.team1player2points);
+                    textView.setText("+"+match.getTeam1Player2points()+" Points");
+                    textView = view.findViewById(R.id.team2player1points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team2player2points);
+                    textView.setVisibility(View.INVISIBLE);
+                }else{
+                    textView = view.findViewById(R.id.team1player1points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team1player2points);
+                    textView.setVisibility(View.INVISIBLE);
+                    textView = view.findViewById(R.id.team2player1points);
+                    textView.setText("+"+match.getTeam2Player1points()+" Points");
+                    textView = view.findViewById(R.id.team2player2points);
+                    textView.setText("+"+match.getTeam2Player2points()+" Points");
+                }
                 textView = view.findViewById(R.id.first_set);
                 textView.setText("First Game - " + match.getScoreFirst());
                 textView = view.findViewById(R.id.second_set);

@@ -949,8 +949,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         s = s5.getText() + ":" + s6.getText();
                         scores[2] = s;
                     }
-                    Match matchNew = new Match(storage, matchID, 'S', playerIDs, scores.length, scores);
-                    storage.storeMatch(matchNew);
 
                     // Update player-profiles
                     int winnerTeam;
@@ -1001,6 +999,17 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     pointsWon = (int) helper;
                     winner.setRankingPoints(winner.getRankingPoints() + pointsWon);
                     storage.storePlayer(winner);
+
+                    int[] points = new int[2];
+                    if(winnerTeam == 1){
+                        points[0] = pointsWon;
+                    } else{
+                        points[1] = pointsWon;
+                    }
+
+                    Match matchNew = new Match(storage, matchID, 'S', playerIDs, scores.length, scores, points);
+                    storage.storeMatch(matchNew);
+
                     matchID++;
                     storage.setCurrentMatchID(matchID);
                     Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
@@ -1060,8 +1069,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         s = s5.getText() + ":" + s6.getText();
                         scores[2] = s;
                     }
-                    Match matchNew = new Match(storage, matchID, 'D', playerIDs, scores.length, scores);
-                    storage.storeMatch(matchNew);
 
                     // Update player-profiles
                     int winnerTeam;
@@ -1120,6 +1127,22 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     winners[1].setRankingPoints(winners[1].getRankingPoints() + pointsWon);
                     storage.storePlayer(winners[0]);
                     storage.storePlayer(winners[1]);
+
+                    int[] points = new int[4];
+                    if(winnerTeam == 1){
+                        points[0] = pointsWon;
+                        points[1] = pointsWon;
+                        points[2] = 0;
+                        points[3] = 0;
+                    } else{
+                        points[0] = 0;
+                        points[1] = 0;
+                        points[2] = pointsWon;
+                        points[3] = pointsWon;
+                    }
+
+                    Match matchNew = new Match(storage, matchID, 'D', playerIDs, scores.length, scores, points);
+                    storage.storeMatch(matchNew);
 
                     matchID++;
                     storage.setCurrentMatchID(matchID);

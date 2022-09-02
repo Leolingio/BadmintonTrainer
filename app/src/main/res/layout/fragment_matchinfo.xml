@@ -80,6 +80,17 @@
                     android:textColor="#000"
                     android:textSize="10sp" />
 
+                <TextView
+                    android:id="@+id/team1player1points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="+0 Points"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
                 <RelativeLayout
                     android:id="@+id/team1player2icon"
                     android:layout_width="80dp"
@@ -120,6 +131,17 @@
                     android:layout_marginStart="5dp"
                     android:textSize="10sp"
                     android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/team1player2points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="+0 Points"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
@@ -177,6 +199,17 @@
                     android:textColor="#000"
                     android:textSize="10sp" />
 
+                <TextView
+                    android:id="@+id/team2player1points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="+0 Points"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
+
                 <RelativeLayout
                     android:id="@+id/team2player2icon"
                     android:layout_width="80dp"
@@ -217,6 +250,17 @@
                     android:textColor="#000"
                     android:textSize="10sp"
                     android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/team2player2points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="+0 Points"
+                    android:textColor="#000"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 

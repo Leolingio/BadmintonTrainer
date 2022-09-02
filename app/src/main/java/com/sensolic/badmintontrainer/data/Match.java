@@ -22,6 +22,11 @@ public class Match implements Searchable {
     private long team1player1ID, team1player2ID, team2player1ID, team2player2ID;
 
     /**
+     * Points added to all participating players
+     */
+    private int team1player1points, team1player2points, team2player1points, team2player2points;
+
+    /**
      * Number of sets of the match - 2 or 3
      */
     private int setCount;
@@ -50,7 +55,7 @@ public class Match implements Searchable {
      * @param setCount  number of sets
      * @param scores    Array with all scores depending on setCount
      */
-    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores) {
+    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores, int[] points) {
         this.storage = storage;
 
         this.matchID = matchID;
@@ -65,6 +70,17 @@ public class Match implements Searchable {
             team1player2ID = playerIDs[1];
             team2player1ID = playerIDs[2];
             team2player2ID = playerIDs[3];
+        }
+
+        // Points
+        if(matchType == 'S'){
+            team1player1points = points[0];
+            team2player1points = points[1];
+        } else{
+            team1player1points = points[0];
+            team1player2points = points[1];
+            team2player1points = points[2];
+            team2player2points = points[3];
         }
 
         this.setCount = setCount;
@@ -89,8 +105,8 @@ public class Match implements Searchable {
      * @param leagueID   ID of the league
      * @param teamNumber number of the team the player is playing in
      */
-    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores,
-                 long leagueID, int teamNumber) {
+    public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount,
+                 String[] scores, int[] points, long leagueID, int teamNumber) {
         this.storage = storage;
 
         this.matchID = matchID;
@@ -105,6 +121,17 @@ public class Match implements Searchable {
             team1player2ID = playerIDs[1];
             team2player1ID = playerIDs[2];
             team2player2ID = playerIDs[3];
+        }
+
+        // Points
+        if(matchType == 'S'){
+            team1player1points = points[0];
+            team2player1points = points[1];
+        } else{
+            team1player1points = points[0];
+            team1player2points = points[1];
+            team2player1points = points[2];
+            team2player2points = points[3];
         }
 
         this.setCount = setCount;
@@ -132,7 +159,7 @@ public class Match implements Searchable {
      * @param tournamentID ID of the tournament
      */
     public Match(Storage storage, long matchID, char matchType, long[] playerIDs, int setCount, String[] scores,
-                 long tournamentID) {
+                 int[] points, long tournamentID) {
         this.storage = storage;
 
         this.matchID = matchID;
@@ -147,6 +174,17 @@ public class Match implements Searchable {
             team1player2ID = playerIDs[1];
             team2player1ID = playerIDs[2];
             team2player2ID = playerIDs[3];
+        }
+
+        // Points
+        if(matchType == 'S'){
+            team1player1points = points[0];
+            team2player1points = points[1];
+        } else{
+            team1player1points = points[0];
+            team1player2points = points[1];
+            team2player1points = points[2];
+            team2player2points = points[3];
         }
 
         this.setCount = setCount;
@@ -259,4 +297,32 @@ public class Match implements Searchable {
         return storage.getPlayerData(team2player2ID);
     }
 
+    public int getTeam1Player1points(){
+        return team1player1points;
+    }
+
+    public int getTeam1Player2points(){
+        return team1player2points;
+    }
+
+    public int getTeam2Player1points(){
+        return team2player1points;
+    }
+
+    public int getTeam2Player2points(){
+        return team2player2points;
+    }
+
+    public int getWinner(){
+        int first, second;
+        if(setCount == 3) {
+            first = Integer.parseInt(scoreThird.substring(0, scoreThird.indexOf(':')));
+            second = Integer.parseInt(scoreThird.substring(scoreThird.indexOf(':')+1));
+        } else{
+            first = Integer.parseInt(scoreSecond.substring(0, scoreSecond.indexOf(':')));
+            second = Integer.parseInt(scoreSecond.substring(scoreSecond.indexOf(':')+1));
+        }
+        if(first > second) return 1;
+        else return 2;
+    }
 }

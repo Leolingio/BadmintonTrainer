@@ -41,7 +41,11 @@ public class Storage {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/players");
             }
             if(resetPlayers && i == 2) file.delete();
-            if(resetMatches && i == 1) file.delete();
+            if(resetMatches && i == 1){
+                file.delete();
+                setCurrentMatchID(0);
+            }
+
             try {
                 if (!file.exists()) {
                     file.delete();
@@ -455,7 +459,8 @@ public class Storage {
                 tournamentID = 0, leagueID = 0;
         char matchType = '0', mainHand = '0';
         int setCount = 0, firstSetTeamOne = 0, firstSetTeamTwo = 0, secondSetTeamOne = 0, secondSetTeamTwo = 0,
-                thirdSetTeamOne = 0, thirdSetTeamTwo = 0, rankingPoints = 0, matchesPlayed = 0, teamNumber = 0;
+                thirdSetTeamOne = 0, thirdSetTeamTwo = 0, rankingPoints = 0, matchesPlayed = 0, teamNumber = 0,
+                team1player1points = 0, team1player2points = 0, team2player1points = 0, team2player2points = 0;
         String objectType = "";
         String matchDependency = "", playerName = "";
 
@@ -501,6 +506,22 @@ public class Storage {
                 case "team2player2":
                     team2player2 = Long.parseLong(value);
                     if (team2player2 < 0) return null;
+                    break;
+                case "team1player1points":
+                    team1player1points = Integer.parseInt(value);
+                    if (team1player1points < 0) return null;
+                    break;
+                case "team2player1points":
+                    team2player1points = Integer.parseInt(value);
+                    if (team2player1points < 0) return null;
+                    break;
+                case "team1player2points":
+                    team1player2points = Integer.parseInt(value);
+                    if (team1player2points < 0) return null;
+                    break;
+                case "team2player2points":
+                    team2player2points = Integer.parseInt(value);
+                    if (team2player2points < 0) return null;
                     break;
                 case "setCount":
                     setCount = Integer.parseInt(value);
@@ -566,16 +587,25 @@ public class Storage {
 
         if (objectType.equals("match")) {
             long[] players;
+            int[] points;
             if (matchType == 'S') {
                 players = new long[2];
+                points = new int[2];
                 players[0] = team1player1;
                 players[1] = team2player1;
+                points[0] = team1player1points;
+                points[1] = team2player1points;
             } else {
                 players = new long[4];
+                points = new int[4];
                 players[0] = team1player1;
                 players[1] = team1player2;
                 players[2] = team2player1;
                 players[3] = team2player2;
+                points[0] = team1player1points;
+                points[1] = team1player2points;
+                points[2] = team2player1points;
+                points[3] = team2player2points;
             }
             String[] scores = new String[setCount];
             if (!InputFilterScore.checkScore(firstSetTeamOne, firstSetTeamTwo)) return null;
@@ -588,11 +618,11 @@ public class Storage {
             }
             switch (matchDependency) {
                 case "Ranking":
-                    return new Match(instance, ID, matchType, players, setCount, scores);
+                    return new Match(instance, ID, matchType, players, setCount, scores, points);
                 case "Tournament":
-                    return new Match(instance, ID, matchType, players, setCount, scores, tournamentID);
+                    return new Match(instance, ID, matchType, players, setCount, scores, points, tournamentID);
                 case "League":
-                    return new Match(instance, ID, matchType, players, setCount, scores, leagueID, teamNumber);
+                    return new Match(instance, ID, matchType, players, setCount, scores, points, leagueID, teamNumber);
                 default:
                     return null;
             }
@@ -675,6 +705,14 @@ public class Storage {
         if (match.getMatchType() == 'D') {
             toStore = toStore + "team1player2:" + match.getTeam1Player2ID() + ";" + System.lineSeparator();
             toStore = toStore + "team2player2:" + match.getTeam2Player2ID() + ";" + System.lineSeparator();
+        }
+
+        // Points
+        toStore = toStore + "team1player1points:" + match.getTeam1Player1points() + ";" + System.lineSeparator();
+        toStore = toStore + "team2player1points:" + match.getTeam2Player1points() + ";" + System.lineSeparator();
+        if (match.getMatchType() == 'D') {
+            toStore = toStore + "team1player2points:" + match.getTeam1Player2points() + ";" + System.lineSeparator();
+            toStore = toStore + "team2player2points:" + match.getTeam2Player2points() + ";" + System.lineSeparator();
         }
 
         // Add set attributes
