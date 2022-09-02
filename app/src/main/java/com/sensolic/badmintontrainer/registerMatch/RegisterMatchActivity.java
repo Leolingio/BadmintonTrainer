@@ -953,13 +953,54 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     storage.storeMatch(matchNew);
 
                     // Update player-profiles
+                    int winnerTeam;
+                    int idx;
+
+                    if(scores.length == 3) idx = 2;
+                    else idx = 1;
+
+                    int a = Integer.parseInt(scores[idx].substring(0,scores[idx].indexOf(':')));
+                    int b = Integer.parseInt(scores[idx].substring(scores[idx].indexOf(':')+1));
+
+                    if(a > b) winnerTeam = 1;
+                    else winnerTeam = 2;
+
                     Player buffer;
+                    int[] pointsOfTeam = new int[2];
                     for(int i = 0; i < 2; i++){
                         buffer = storage.getPlayerData(playerIDs[i]);
+                        // Increment match count
                         buffer.setMatchesPlayed(buffer.getMatchesPlayed()+1);
+                        // Points
+                        pointsOfTeam[i] = buffer.getRankingPoints();
                         storage.storePlayer(buffer);
                     }
-
+                    Player winner;
+                    int pointsWon;
+                    double helper;
+                    if(winnerTeam == 1){
+                        winner = storage.getPlayerData(playerIDs[0]);
+                        if(pointsOfTeam[0] == 0){
+                            helper = 5;
+                        } else if(pointsOfTeam[1] == 0){
+                            helper = 5 * (1.0/pointsOfTeam[0]);
+                        } else{
+                            helper = 5 * (1.0*pointsOfTeam[1]/pointsOfTeam[0]);
+                        }
+                    } else{
+                        winner = storage.getPlayerData(playerIDs[1]);
+                        if(pointsOfTeam[1] == 0){
+                            helper = 5;
+                        } else if(pointsOfTeam[0] == 0){
+                            helper = 5 * (1.0/pointsOfTeam[1]);
+                        } else{
+                            helper = 5 * (1.0*pointsOfTeam[0]/pointsOfTeam[1]);
+                        }
+                    }
+                    helper = Math.round(helper);
+                    pointsWon = (int) helper;
+                    winner.setRankingPoints(winner.getRankingPoints() + pointsWon);
+                    storage.storePlayer(winner);
                     matchID++;
                     storage.setCurrentMatchID(matchID);
                     Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
@@ -1023,12 +1064,62 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     storage.storeMatch(matchNew);
 
                     // Update player-profiles
+                    int winnerTeam;
+                    int idx;
+
+                    if(scores.length == 3) idx = 2;
+                    else idx = 1;
+
+                    int a = Integer.parseInt(scores[idx].substring(0,scores[idx].indexOf(':')));
+                    int b = Integer.parseInt(scores[idx].substring(scores[idx].indexOf(':')+1));
+
+                    if(a > b) winnerTeam = 1;
+                    else winnerTeam = 2;
+
                     Player buffer;
+                    int[] pointsOfTeam = new int[2];
                     for(int i = 0; i < 4; i++){
                         buffer = storage.getPlayerData(playerIDs[i]);
+                        // Increment match count
                         buffer.setMatchesPlayed(buffer.getMatchesPlayed()+1);
+                        // Points
+                        if(i == 0 || i == 1) {
+                            pointsOfTeam[0] = pointsOfTeam[0] + buffer.getRankingPoints();
+                        } else {
+                            pointsOfTeam[1] = pointsOfTeam[1] + buffer.getRankingPoints();
+                        }
                         storage.storePlayer(buffer);
                     }
+                    Player[] winners = new Player[2];
+                    int pointsWon;
+                    double helper;
+                    if(winnerTeam == 1){
+                        winners[0] = storage.getPlayerData(playerIDs[0]);
+                        winners[1] = storage.getPlayerData(playerIDs[1]);
+                        if(pointsOfTeam[0] == 0){
+                            helper = 5;
+                        } else if(pointsOfTeam[1] == 0){
+                            helper = 5 * (1.0/pointsOfTeam[0]);
+                        } else{
+                            helper = 5 * (1.0*pointsOfTeam[1]/pointsOfTeam[0]);
+                        }
+                    } else{
+                        winners[0] = storage.getPlayerData(playerIDs[2]);
+                        winners[1] = storage.getPlayerData(playerIDs[3]);
+                        if(pointsOfTeam[1] == 0){
+                            helper = 5;
+                        } else if(pointsOfTeam[0] == 0){
+                            helper = 5 * (1.0/pointsOfTeam[1]);
+                        } else{
+                            helper = 5 * (1.0*pointsOfTeam[0]/pointsOfTeam[1]);
+                        }
+                    }
+                    helper = Math.round(helper);
+                    pointsWon = (int) helper;
+                    winners[0].setRankingPoints(winners[0].getRankingPoints() + pointsWon);
+                    winners[1].setRankingPoints(winners[1].getRankingPoints() + pointsWon);
+                    storage.storePlayer(winners[0]);
+                    storage.storePlayer(winners[1]);
 
                     matchID++;
                     storage.setCurrentMatchID(matchID);
