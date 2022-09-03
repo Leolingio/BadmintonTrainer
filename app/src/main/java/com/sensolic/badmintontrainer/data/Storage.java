@@ -304,6 +304,41 @@ public class Storage {
      * @param ID ID of the match
      */
     public boolean deleteMatch(long ID) {
+        // Adjust player profile stats
+        Match toDelete = getMatchData(ID);
+        Player team1player1, team1player2, team2player1, team2player2;
+        if(toDelete.getMatchType() == 'S'){
+            team1player1 = toDelete.getTeam1Player1();
+            team2player1 = toDelete.getTeam2Player1();
+            team1player1.setRankingPoints(team1player1.getRankingPoints()-toDelete.getTeam1Player1points());
+            team2player1.setRankingPoints(team2player1.getRankingPoints()-toDelete.getTeam2Player1points());
+
+            team1player1.setMatchesPlayed(team1player1.getMatchesPlayed()-1);
+            team2player1.setMatchesPlayed(team2player1.getMatchesPlayed()-1);
+
+            storePlayer(team1player1);
+            storePlayer(team2player1);
+        } else{
+            team1player1 = toDelete.getTeam1Player1();
+            team1player2 = toDelete.getTeam1Player2();
+            team2player1 = toDelete.getTeam2Player1();
+            team2player2 = toDelete.getTeam2Player2();
+            team1player1.setRankingPoints(team1player1.getRankingPoints()-toDelete.getTeam1Player1points());
+            team1player2.setRankingPoints(team1player2.getRankingPoints()-toDelete.getTeam1Player2points());
+            team2player1.setRankingPoints(team2player1.getRankingPoints()-toDelete.getTeam2Player1points());
+            team2player2.setRankingPoints(team2player2.getRankingPoints()-toDelete.getTeam2Player2points());
+
+            team1player1.setMatchesPlayed(team1player1.getMatchesPlayed()-1);
+            team1player2.setMatchesPlayed(team1player2.getMatchesPlayed()-1);
+            team2player1.setMatchesPlayed(team2player1.getMatchesPlayed()-1);
+            team2player2.setMatchesPlayed(team2player2.getMatchesPlayed()-1);
+
+            storePlayer(team1player1);
+            storePlayer(team1player2);
+            storePlayer(team2player1);
+            storePlayer(team2player2);
+        }
+
         String content = "";
         String read;
         String buffer = "";         // Here the matchEntry will be loaded to
@@ -837,7 +872,7 @@ public class Storage {
 
     public Player getPlayerData(long playerID) {
         Searchable toAdd;
-        String buffer = "";         // Here the matchEntry will be loaded to
+        String buffer = "";         // Here the playerEntry will be loaded to
         char c;
         try {
             File file;
@@ -856,6 +891,39 @@ public class Storage {
                     if (toAdd instanceof Player) {
                         if (((Player) toAdd).getPlayerID() == playerID) {
                             return (Player) toAdd;
+                        }
+                    }
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+        } catch (Exception e) {
+            // ignored
+        }
+        return null;
+    }
+
+    public Match getMatchData(long matchID){
+        Searchable toAdd;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        char c;
+        try {
+            File file;
+            FileReader reader;
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
+
+            reader = new FileReader(file);
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    toAdd = convertEntryToObject(buffer);
+                    if (toAdd instanceof Match) {
+                        if (((Match) toAdd).getMatchID() == matchID) {
+                            return (Match) toAdd;
                         }
                     }
                 } else {

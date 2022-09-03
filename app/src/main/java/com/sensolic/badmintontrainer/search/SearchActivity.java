@@ -1,9 +1,6 @@
 package com.sensolic.badmintontrainer.search;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.SearchView;
 
