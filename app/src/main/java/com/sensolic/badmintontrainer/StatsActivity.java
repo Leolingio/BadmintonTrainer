@@ -48,7 +48,7 @@ public class StatsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stats);
 
         // Changelog
-        AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this, R.style.AlertDialogTheme);
         builder.setMessage(getString(R.string.changelog_text))
                 .setTitle("What's new?");
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
