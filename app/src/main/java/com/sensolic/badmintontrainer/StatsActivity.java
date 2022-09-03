@@ -2,6 +2,7 @@ package com.sensolic.badmintontrainer;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -50,7 +51,12 @@ public class StatsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this);
         builder.setMessage(getString(R.string.changelog_text))
                 .setTitle("What's new?");
-
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                changelog.dismiss();
+            }
+        });
         changelog = builder.create();
 
         // Actions to-do on start-up of the app
