@@ -130,7 +130,8 @@
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/teamNumber"
@@ -140,7 +141,8 @@
             android:text="Currently not in a team"
             android:textAlignment="center"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="match_parent"

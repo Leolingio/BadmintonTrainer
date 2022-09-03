@@ -50,11 +50,11 @@ public class PlayerInfoFragment extends Fragment {
             textView.setText(player.getRankingPoints() + " Points");
             textView = view.findViewById(R.id.matchesPlayed);
             textView.setText("Total: " + player.getMatchesPlayed());
+            /*
             textView = view.findViewById(R.id.teamNumber);
             if (player.getTeamNumber() != -1) {
                 textView.setText(player.getTeamNumber());
             }
-            /*
             textView = view.findViewById(R.id.mainHand);
             if (player.getMainHand() == 'R') {
                 textView.setText("Right handed");
