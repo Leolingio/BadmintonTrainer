@@ -119,7 +119,7 @@ public class SearchAdapter extends BaseAdapter {
                         Animation animation = new AlphaAnimation(0.3f, 1.0f);
                         animation.setDuration(300);
                         view1.startAnimation(animation);
-                        if(!popupMenuShowing) {
+                        if(!popupMenuShowing){
                             StatsActivity.showInfo(searchable);
                             searchActivityInstance.finish();
                         }
@@ -156,8 +156,10 @@ public class SearchAdapter extends BaseAdapter {
                                 popupMenuShowing = false;
                             }
                         });
-                        menu.show();
-                        popupMenuShowing = true;
+                        if(searchable instanceof Match) {
+                            menu.show();
+                            popupMenuShowing = true;
+                        }
 
                         start = 0;
                         end = 0;
