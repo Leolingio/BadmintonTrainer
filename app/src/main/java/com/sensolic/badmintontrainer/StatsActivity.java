@@ -278,6 +278,7 @@ public class StatsActivity extends AppCompatActivity {
             } else if(searchableCurrentlyShowing instanceof Player){
                 playerInfoFragment.setInfo((Player) searchableToShow);
             }
+            closeMenu();
         }
     }
 }
