@@ -1,29 +1,35 @@
 package com.sensolic.badmintontrainer.registerMatch;
 
+import android.content.Context;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.sensolic.badmintontrainer.Settings;
 
 public class InputFilterScore implements InputFilter {
 
+    private RegisterMatchActivity linkToActivity;
     private int min, max;
     private EditText scoreThis;
     private EditText scoreOther;
 
-    public InputFilterScore(int min, int max, EditText scoreThis, EditText scoreOther) {
+    public InputFilterScore(int min, int max, EditText scoreThis, EditText scoreOther, RegisterMatchActivity link) {
         this.min = min;
         this.max = max;
         this.scoreThis = scoreThis;
         this.scoreOther = scoreOther;
+        linkToActivity = link;
     }
 
-    public InputFilterScore(String min, String max, EditText scoreThis, EditText scoreOther) {
+    public InputFilterScore(String min, String max, EditText scoreThis, EditText scoreOther, RegisterMatchActivity link) {
         this.min = Integer.parseInt(min);
         this.max = Integer.parseInt(max);
         this.scoreThis = scoreThis;
         this.scoreOther = scoreOther;
+        linkToActivity = link;
     }
 
     /**
@@ -68,7 +74,10 @@ public class InputFilterScore implements InputFilter {
         if(inputOther == -1 && (inputThis < 20) && (inputThis != 1)
                 && (inputThis != 2) && (inputThis != 3)){
             // Auto complete other score
-            if(Settings.autocompleteScore()) scoreOther.setText("21");
+            if(Settings.autocompleteScore()){
+                scoreOther.setText("21");
+                linkToActivity.clearFocus();
+            }
         } else if(inputOther != -1 && (inputThis >= 20 || inputOther >= 20)
                 && inputThis >= 10 && !checkScore(inputThis,inputOther)){
                 return "";

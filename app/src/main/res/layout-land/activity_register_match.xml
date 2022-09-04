@@ -149,7 +149,8 @@
                     android:inputType="number"
                     android:maxWidth="150dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:imeOptions="actionNext"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -173,7 +174,8 @@
                     android:inputType="number"
                     android:maxWidth="150dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:imeOptions="actionNext"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -218,7 +220,8 @@
                     android:inputType="number"
                     android:maxWidth="150dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:imeOptions="actionDone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -242,7 +245,8 @@
                     android:inputType="number"
                     android:maxWidth="150dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:imeOptions="actionDone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -288,7 +292,8 @@
                     android:inputType="number"
                     android:maxWidth="150dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:imeOptions="actionDone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -312,7 +317,8 @@
                     android:inputType="number"
                     android:maxWidth="150dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:imeOptions="actionDone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <View

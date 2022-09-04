@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
     boolean score2Team2 = false;
     boolean score3Team1 = false;
     boolean score3Team2 = false;
+    RelativeLayout container;
     CustomEditText score1team1editText;
     CustomEditText score1team2editText;
     CustomEditText score2team1editText;
@@ -68,6 +70,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_match);
 
         storage = Storage.getInstance(getApplicationContext());
+
+        container = findViewById(R.id.registerMatchContainer);
 
         ArrayList<Player> list = storage.getStoredPlayers();
         players = new String[list.size()];
@@ -224,6 +228,9 @@ public class RegisterMatchActivity extends AppCompatActivity {
             return true;
         });
         team1player1chooser.setOnKeyListener(onKeyListener);
+        team1player1chooser.setOnItemClickListener((adapterView, view, i, l) ->{
+            clearFocus();
+        });
 
         team1player2chooser.setAdapter(adapter);
         team1player2chooser.setOnFocusChangeListener((view, focused) -> {
@@ -349,6 +356,9 @@ public class RegisterMatchActivity extends AppCompatActivity {
             return true;
         });
         team1player2chooser.setOnKeyListener(onKeyListener);
+        team1player2chooser.setOnItemClickListener((adapterView, view, i, l) ->{
+            clearFocus();
+        });
 
         team2player1chooser.setAdapter(adapter);
         team2player1chooser.setOnFocusChangeListener((view, focused) -> {
@@ -474,6 +484,9 @@ public class RegisterMatchActivity extends AppCompatActivity {
             return true;
         });
         team2player1chooser.setOnKeyListener(onKeyListener);
+        team2player1chooser.setOnItemClickListener((adapterView, view, i, l) ->{
+            clearFocus();
+        });
 
         team2player2chooser.setAdapter(adapter);
         team2player2chooser.setOnFocusChangeListener((view, focused) -> {
@@ -599,6 +612,9 @@ public class RegisterMatchActivity extends AppCompatActivity {
             return true;
         });
         team2player2chooser.setOnKeyListener(onKeyListener);
+        team2player2chooser.setOnItemClickListener((adapterView, view, i, l) ->{
+            clearFocus();
+        });
 
         RadioGroup radioGroup = findViewById(R.id.matchTypeSelector);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -665,7 +681,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
             // Clear Focus
             clearFocus();
-            hideKeyboard(group);
         });
         if (Settings.getDefaultMatchType().equals("Singles")) {
             radioGroup.check(R.id.singlesMatchSelector);
@@ -680,7 +695,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
             closeActivity = false;
         };
 
-        score1team1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1team1editText, score1team2editText)});
+        score1team1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1team1editText, score1team2editText, this)});
         score1team1editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 score1team1editText.clearFocus();
@@ -702,14 +717,14 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                         score1team1editText.setText("21");
-                        score1team2editText.clearFocus();
+                        clearFocus();
                     }
                 }
             } else showThirdSet();
         });
         score1team1editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        score1team2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1team2editText, score1team1editText)});
+        score1team2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score1team2editText, score1team1editText, this)});
         score1team2editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 score1team2editText.clearFocus();
@@ -731,15 +746,14 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                         score1team2editText.setText("21");
-                        score1team2editText.clearFocus();
-
+                        clearFocus();
                     }
                 }
             } else showThirdSet();
         });
         score1team2editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        score2team1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score2team1editText, score2team2editText)});
+        score2team1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score2team1editText, score2team2editText, this)});
         score2team1editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 score2team1editText.clearFocus();
@@ -761,14 +775,14 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                         score2team1editText.setText("21");
-                        score2team2editText.clearFocus();
+                        clearFocus();
                     }
                 }
             } else showThirdSet();
         });
         score2team1editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        score2team2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score2team2editText, score2team1editText)});
+        score2team2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score2team2editText, score2team1editText, this)});
         score2team2editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 score2team2editText.clearFocus();
@@ -790,15 +804,14 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                         score2team2editText.setText("21");
-                        score2team2editText.clearFocus();
-
+                        clearFocus();
                     }
                 }
             } else showThirdSet();
         });
         score2team2editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        score3team1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score3team1editText, score3team2editText)});
+        score3team1editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score3team1editText, score3team2editText, this)});
         score3team1editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 score3team1editText.clearFocus();
@@ -820,14 +833,14 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                         score3team1editText.setText("21");
-                        score3team2editText.clearFocus();
+                        clearFocus();
                     }
                 }
             }
         });
         score3team1editText.setKeyImeChangeListener(keyImeChangeListener);
 
-        score3team2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score3team2editText, score3team1editText)});
+        score3team2editText.setFilters(new InputFilter[]{new InputFilterScore(0, 30, score3team2editText, score3team1editText, this)});
         score3team2editText.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 score3team2editText.clearFocus();
@@ -849,8 +862,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     }
                     if (scoreOther < 20 && scoreThis == -1 && Settings.autocompleteScore()) {
                         score3team2editText.setText("21");
-                        score3team2editText.clearFocus();
-
+                        clearFocus();
                     }
                 }
             }
@@ -1160,13 +1172,11 @@ public class RegisterMatchActivity extends AppCompatActivity {
                 }
             }
             clearFocus();
-            hideKeyboard(view);
         });
 
         RelativeLayout container = findViewById(R.id.registerMatchContainer);
         container.setOnClickListener(view -> {
             clearFocus();
-            hideKeyboard(view);
         });
 
         matchID = storage.getCurrentMatchID();
@@ -1184,8 +1194,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         clearFocus();
-        RelativeLayout layout = findViewById(R.id.registerMatchContainer);
-        hideKeyboard(layout);
         resetErrorText();
         super.onConfigurationChanged(newConfig);
     }
@@ -1230,7 +1238,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
         imm.showSoftInput(view, 0);
     }
 
-    private void clearFocus() {
+    public void clearFocus() {
         team1player1chooser.clearFocus();
         team1player2chooser.clearFocus();
         team2player1chooser.clearFocus();
@@ -1241,6 +1249,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
         score2team2editText.clearFocus();
         score3team1editText.clearFocus();
         score3team2editText.clearFocus();
+        hideKeyboard(container);
     }
 
     private void resetErrorText() {
