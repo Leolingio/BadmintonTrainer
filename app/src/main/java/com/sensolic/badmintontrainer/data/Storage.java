@@ -7,6 +7,7 @@ import com.sensolic.badmintontrainer.BuildConfig;
 import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.registerMatch.InputFilterScore;
+import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
 import com.sensolic.badmintontrainer.search.Searchable;
 
 import java.io.BufferedReader;
@@ -15,18 +16,24 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Storage {
 
+    public static final int PLAYER_ID_DIGITS = 4;
+    public static final int MATCH_ID_DIGITS = 6;
+    private static final boolean resetAll = false;
     private static final boolean resetPlayers = false;
     private static final boolean resetMatches = false;
     private final boolean showToasts = true;
     private static Storage instance;
-    private long currentMatchID = -1;
+    private long lastMatchID;
     public static boolean isSaved = false;      // If Positions of Characters are saved
-    private Context context;
+    private final Context context;
+    private ArrayList<Long> matchIDs = new ArrayList<>();
+    private ArrayList<Long> playerIDs = new ArrayList<>();
 
     private Storage(Context applicationContext) {
         context = applicationContext;
@@ -40,10 +47,9 @@ public class Storage {
             } else {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/players");
             }
-            if(resetPlayers && i == 2) file.delete();
-            if(resetMatches && i == 1){
+            if((resetAll || resetPlayers) && i == 2) file.delete();
+            if((resetAll || resetMatches) && i == 1){
                 file.delete();
-                setCurrentMatchID(0);
             }
 
             try {
@@ -55,10 +61,10 @@ public class Storage {
                         file = new File(context.getFilesDir().getAbsolutePath() + "/players");
                         FileWriter w = new FileWriter(file);
                         BufferedWriter writer = new BufferedWriter(w);
-                        Player player1 = new Player(1, "Daniil Pindiurin", 0, 0, -1, 'r');
-                        Player player2 = new Player(2, "Rouven Wulandoko", 0, 0, -1, 'r');
-                        Player player3 = new Player(3, "Aurelia Wulandoko", 0, 0, -1, 'r');
-                        Player player4 = new Player(4, "Leo Hofmann", 0, 0, -1, 'r');
+                        Player player1 = new Player(1302, "Daniil Pindiurin", 0, 0, -1, 'r');
+                        Player player2 = new Player(1303, "Rouven Wulandoko", 0, 0, -1, 'r');
+                        Player player3 = new Player(1304, "Aurelia Wulandoko", 0, 0, -1, 'r');
+                        Player player4 = new Player(1305, "Leo Hofmann", 0, 0, -1, 'r');
                         writer.write(convertPlayerToEntry(player1) + "\n");
                         writer.write(convertPlayerToEntry(player2) + "\n");
                         writer.write(convertPlayerToEntry(player3) + "\n");
@@ -72,6 +78,42 @@ public class Storage {
                 e.printStackTrace();
             }
         }
+        Searchable toAdd;
+        String buffer = "";         // Here the entries will be loaded to
+        char c;
+        try {
+            FileReader reader;
+            for (int k = 0; k <= 1; k++) {
+                if (k == 0) {
+                    file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
+                } else {
+                    file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+                }
+                reader = new FileReader(file);
+                while (reader.ready()) {
+                    c = (char) reader.read();
+                    if (c == '{') {
+                        buffer = c + "";
+                    } else if (c == '}') {
+                        buffer = buffer + c;
+                        toAdd = convertEntryToObject(buffer);
+                        if (toAdd instanceof Match){
+                            matchIDs.add(((Match) toAdd).getMatchID());
+                        } else if(toAdd instanceof Player){
+                            playerIDs.add(((Player) toAdd).getPlayerID());
+                        }
+                    } else {
+                        buffer = buffer + c;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // ignored
+        }
+        Comparator<Long> comp= (l1, l2) -> Math.toIntExact(l1-l2);
+        playerIDs.sort(comp);
+        matchIDs.sort(comp);
+        if(matchIDs.size() != 0) lastMatchID = matchIDs.get(matchIDs.size()-1);
     }
 
     public static Storage getInstance(Context context) {
@@ -393,63 +435,18 @@ public class Storage {
         } catch (Exception e) {
             // ignored
         }
+        if(result) matchIDs.remove(ID);
         return result;
     }
 
-    public long getCurrentMatchID() {
-        if (currentMatchID != -1) return currentMatchID;
-        String buffer;
-        try {
-            File file = new File(context.getFilesDir().getAbsolutePath() + "/data");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            buffer = reader.readLine();
-            while (buffer != null) {
-                if (buffer.contains("currentMatchID")) {
-                    buffer = buffer.substring(buffer.indexOf(':') + 1, buffer.length() - 1);
-                    return Long.parseLong(buffer);
-                }
-                buffer = reader.readLine();
-            }
-        } catch (Exception e) {
-            return -1;
-        }
-        setCurrentMatchID(1);
-        return 1;
+    public long getLastMatchID() {
+        if (lastMatchID != 0) return lastMatchID;
+        else return (long) Math.pow(10, MATCH_ID_DIGITS-1);
     }
 
-    public void setCurrentMatchID(long newMatchID) {
-        currentMatchID = newMatchID;
-        String content = "";
-        String newContent = "currentMatchID" + ":" + newMatchID + ";";
-        String buffer;
-        boolean existed = false;
-        try {
-            File file = new File(context.getFilesDir().getAbsolutePath() + "/data");
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            buffer = reader.readLine();
-            while (buffer != null) {
-                if (buffer.contains("currentMatchID")) {
-                    content = content + newContent + System.lineSeparator();
-                    existed = true;
-                } else {
-                    content = content + buffer + System.lineSeparator();
-                }
-                buffer = reader.readLine();
-            }
-            if (!existed) content = content + newContent;
-
-            resetFile("data");
-
-            FileWriter w = new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(w);
-
-            writer.write(content);
-
-            reader.close();
-            writer.close();
-        } catch (Exception e) {
-            //ignored
-        }
+    public void registerMatchID(long matchID) {
+        lastMatchID = matchID;
+        matchIDs.add(lastMatchID);
     }
 
     /**
@@ -459,7 +456,7 @@ public class Storage {
      */
     public void addStoredObjects(ArrayList<Searchable> list) {
         Searchable toAdd;
-        String buffer = "";         // Here the matchEntry will be loaded to
+        String buffer = "";         // Here the entries will be loaded to
         char c;
         try {
             File file;
@@ -1078,5 +1075,17 @@ public class Storage {
             //ignored
         }
         return false;
+    }
+
+    public long getNextFreeMatchID(){
+        long res = (long) Math.pow(10,MATCH_ID_DIGITS-1);
+        while (res != Math.pow(10,MATCH_ID_DIGITS)){
+            if(RegisterMatchActivity.isValidID(res, MATCH_ID_DIGITS)
+                    && !matchIDs.contains(res)){
+                return res;
+            }
+            res++;
+        }
+        return -1;
     }
 }

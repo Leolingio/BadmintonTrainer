@@ -71,6 +71,8 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
         storage = Storage.getInstance(getApplicationContext());
 
+        matchID = storage.getLastMatchID();
+
         container = findViewById(R.id.registerMatchContainer);
 
         ArrayList<Player> list = storage.getStoredPlayers();
@@ -1019,11 +1021,12 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         points[1] = pointsWon;
                     }
 
+                    matchID = getNextMatchID();
+
                     Match matchNew = new Match(storage, matchID, 'S', playerIDs, scores.length, scores, points);
                     storage.storeMatch(matchNew);
 
-                    matchID++;
-                    storage.setCurrentMatchID(matchID);
+                    storage.registerMatchID(matchID);
                     Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -1152,12 +1155,12 @@ public class RegisterMatchActivity extends AppCompatActivity {
                         points[2] = pointsWon;
                         points[3] = pointsWon;
                     }
+                    matchID = getNextMatchID();
 
                     Match matchNew = new Match(storage, matchID, 'D', playerIDs, scores.length, scores, points);
                     storage.storeMatch(matchNew);
 
-                    matchID++;
-                    storage.setCurrentMatchID(matchID);
+                    storage.registerMatchID(matchID);
                     Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -1179,7 +1182,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
             clearFocus();
         });
 
-        matchID = storage.getCurrentMatchID();
+        matchID = storage.getLastMatchID();
 
     }
 
@@ -1260,5 +1263,31 @@ public class RegisterMatchActivity extends AppCompatActivity {
     private boolean validatePlayer(String entry){
         Arrays.sort(players);
         return Arrays.binarySearch(players, entry) >= 0;
+    }
+
+    private long getNextMatchID(){
+        long next = matchID+1;
+        while(!isValidID(next, Storage.MATCH_ID_DIGITS)){
+            next++;
+            if(next == Math.pow(10, Storage.MATCH_ID_DIGITS)){
+                return storage.getNextFreeMatchID();
+            }
+        }
+        return next;
+    }
+
+    public static boolean isValidID(long ID, int length){
+        String s = String.valueOf(ID);
+        if(s.length() != length) return false;
+        char last = s.charAt(0), current;
+        for(int i = 1; i < s.length(); i++){
+            current = s.charAt(i);
+            if(last == current
+                    || Math.abs(last-current) == 1){
+                return false;
+            }
+            last = current;
+        }
+        return true;
     }
 }
