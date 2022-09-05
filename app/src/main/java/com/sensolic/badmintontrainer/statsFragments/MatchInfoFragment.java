@@ -123,11 +123,11 @@ public class MatchInfoFragment extends Fragment {
                 textView = view.findViewById(R.id.team1player1name);
                 textView.setText(match.getTeam1Player1().getPlayerName());
                 textView = view.findViewById(R.id.team1player1ID);
-                textView.setText("#" + match.getTeam1Player1ID());
+                textView.setText("#P" + match.getTeam1Player1ID());
                 textView = view.findViewById(R.id.team2player1name);
                 textView.setText(match.getTeam2Player1().getPlayerName());
                 textView = view.findViewById(R.id.team2player1ID);
-                textView.setText("#" + match.getTeam2Player1ID());
+                textView.setText("#P" + match.getTeam2Player1ID());
                 if(match.getWinner() == 1){
                     textView = view.findViewById(R.id.team1player1points);
                     textView.setText("+"+match.getTeam1Player1points()+" Points");
