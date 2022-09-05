@@ -30,12 +30,14 @@ public class StatsActivity extends AppCompatActivity {
 
     private static boolean menuExpanded = false;
     private static boolean showSearchInfo = false;
+    private boolean closeDialogShowing = false;
     private boolean infoShowing = false;
     public static boolean linkedMatch = false;
     private static Searchable searchableLastShown;
     private static Searchable searchableCurrentlyShowing;
     private static Searchable searchableToShow;
     private static AlertDialog changelog;
+    private static AlertDialog closeDialog;
     private FloatingActionButton searchButton, registerMatchButton, settingsButton, menuButton;
     HomeFragment homeFragment = new HomeFragment();
     LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
@@ -239,8 +241,34 @@ public class StatsActivity extends AppCompatActivity {
                 ViewPager vp = findViewById(R.id.viewPager);
                 vp.setCurrentItem(0);
             }
-        } else {
-            super.onBackPressed();
+        } else if(!closeDialogShowing){
+            showClosingDialog();
+        } else{
+            closeClosingDialog();
+        }
+    }
+
+    private void showClosingDialog(){
+        closeDialogShowing = true;
+        // Changelog
+        AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this, R.style.AlertDialogTheme);
+        builder.setMessage("Do you really want to exit?");
+        builder.setPositiveButton("Close", (dialogInterface, i) -> {
+            closeDialog.dismiss();
+            finish();
+        });
+        builder.setNegativeButton("Stay", (dialogInterface, i) -> {
+            closeDialog.dismiss();
+            closeDialogShowing = false;
+        });
+        closeDialog = builder.create();
+        closeDialog.show();
+    }
+
+    private void closeClosingDialog(){
+        if(closeDialogShowing){
+            closeDialogShowing = false;
+            closeDialog.dismiss();
         }
     }
 
