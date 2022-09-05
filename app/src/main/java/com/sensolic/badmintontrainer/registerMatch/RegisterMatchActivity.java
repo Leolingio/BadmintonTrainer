@@ -34,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.Settings;
+import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
@@ -1037,7 +1038,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     storage.storeMatch(matchNew);
 
                     storage.registerMatchID(matchID);
-                    Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
+                    StatsActivity.showInfo(matchNew);
                     finish();
                 } else {
                     if (!validatePlayer(team1player1chooser.getText().toString())) errorMessage = errorMessage + "Player 1 missing \n ";
@@ -1171,7 +1172,7 @@ public class RegisterMatchActivity extends AppCompatActivity {
                     storage.storeMatch(matchNew);
 
                     storage.registerMatchID(matchID);
-                    Toast.makeText(getApplicationContext(), "Successfully created match", Toast.LENGTH_SHORT).show();
+                    StatsActivity.showInfo(matchNew);
                     finish();
                 } else {
                     if (!validatePlayer(team1player1chooser.getText().toString())) errorMessage = errorMessage + "Team 1 Player 1 missing \n";
