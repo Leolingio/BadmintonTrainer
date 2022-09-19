@@ -1,20 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="changelog_text">
-        Badminton Trainer version 0.8 - Sensolic Official
-        \n\n\nBrand new features!
-        \n\nChangelog is now available!
-        \n- you can easily check all new features
-        \n\nNew design of menu buttons
-        \n- better navigating through app
-        \n\nMatch reviews are now possible
-        \n- but still limited
-        \n\n\nOther Changes:
-        \n\n- Fixed lots of bugs
-        \n\n- Added 3rd set
-        \n\n\nTotal time spent on this update:
-        \n- around 10 hours -
-        \n\n\n ~Sensolic TM~
+        \n<i>Badminton Trainer version 0.9 - Sensolic Official</i>
+        \n\n\n<b><u>Brand new features</u></b>
+        \n\n<b>Players - now players can be added to the app</b>
+        \n<i>Finally the heart concept has found its way into the app. Brand new player profile views
+            can be opened. Some interesting stats are available as well.</i>
+        \n\n<b>New points system - this is the basis for the leaderboard</b>
+        \n<i>We spent a lot of time creating a points system ensuring both, justice and fun.
+                The new system calculates the earned point according to your enemy\'s points. This allows
+                a competitive and fair system at once.</i>
+        \n\n\n<b><u>Other changes:</u></b>
+        \n\n<b>Added new settings options</b>
+        \n<i>Default match type - now you can select a match type which will be opened on startup
+                of match registration. This is the first step in personalizing the app.</i>
+        \n\n<b>Better storage system</b>
+        \n<i>Player data can now be stored. As well there have been various improvements and bug fixes.</i>
+        \n\n<b>New ID formats</b>
+        \n<i>Players and matches now have a new ID format. The IDs are defined by a specific
+                algorithm. This should reduce misunderstandings and disputes about similar or easy IDs.</i>
+        \n\n<b>Improved match registration</b>
+        \n<i>The match registration has got a huge update. Users aren\'t able to write invalid
+                player names anymore. The registration became more solid, easier and faster. </i>
+        \n\n<b>New app version format</b>
+        \n<i>The app version format has been changed to a 2 compound expression. Now app versions
+                will have the format \"xx.xx\"</i>
+        \n\n<b>Improved match view</b>
+        \n<i>Player profiles can now be opened by clicking on the player icon in match view.</i>
+        \n\n<b>Better navigation</b>
+        \n<i>For better navigation there are several back buttons in the left upper corners. They
+                are very intuitive and easy to understand.
+                \nThe changelog can be closed by a button now.
+                \nA new dialog pops out if user wants to exit the app by pressing the back button.
+                    This avoids unexpected closing of the app.</i>
+        \n\n\n<i>Total time spent on this update:
+        \n- around 27 hours -</i>
+        \n\n\n <b>~Sensolic TM~</b>
     </string>
 
 </resources>

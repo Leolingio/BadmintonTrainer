@@ -53,7 +53,7 @@ public class StatsActivity extends AppCompatActivity {
 
         // Changelog
         AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this, R.style.AlertDialogTheme);
-        builder.setMessage(getString(R.string.changelog_text))
+        builder.setMessage(getText(R.string.changelog_text))
                 .setTitle("What's new?");
         builder.setPositiveButton("Ok", (dialogInterface, i) -> changelog.dismiss());
         changelog = builder.create();
