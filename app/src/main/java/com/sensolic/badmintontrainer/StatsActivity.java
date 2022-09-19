@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -53,12 +55,7 @@ public class StatsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this, R.style.AlertDialogTheme);
         builder.setMessage(getString(R.string.changelog_text))
                 .setTitle("What's new?");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                changelog.dismiss();
-            }
-        });
+        builder.setPositiveButton("Ok", (dialogInterface, i) -> changelog.dismiss());
         changelog = builder.create();
 
         // Actions to-do on start-up of the app
@@ -69,44 +66,23 @@ public class StatsActivity extends AppCompatActivity {
 
         searchButton = findViewById(R.id.SearchButton);
         Intent intentSearch = new Intent(this, SearchActivity.class);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intentSearch);
-                if(menuExpanded) closeMenu();
-                if(infoShowing){
-                    removeInfoTab();
-                    searchableLastShown = null;
-                }
-            }
+        searchButton.setOnClickListener(view -> {
+            startActivity(intentSearch);
+            if(menuExpanded) closeMenu();
         });
 
         registerMatchButton = findViewById(R.id.RegisterMatchButton);
         Intent intentRegisterMatch = new Intent(this, RegisterMatchActivity.class);
-        registerMatchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intentRegisterMatch);
-                if(menuExpanded) closeMenu();
-                if(infoShowing){
-                    removeInfoTab();
-                    searchableLastShown = null;
-                }
-            }
+        registerMatchButton.setOnClickListener(view -> {
+            startActivity(intentRegisterMatch);
+            if(menuExpanded) closeMenu();
         });
 
         settingsButton = findViewById(R.id.SettingsButton);
         Intent intentSettings = new Intent(this, SettingsActivity.class);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intentSettings);
-                if(menuExpanded) closeMenu();
-                if(infoShowing){
-                    removeInfoTab();
-                    searchableLastShown = null;
-                }
-            }
+        settingsButton.setOnClickListener(view -> {
+            startActivity(intentSettings);
+            if(menuExpanded) closeMenu();
         });
 
         // Bring buttons in starting position
@@ -115,15 +91,11 @@ public class StatsActivity extends AppCompatActivity {
         settingsButton.setTranslationY(225);
 
         menuButton = findViewById(R.id.mainMenuButton);
-        menuButton.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void onClick(View view) {
-                if(menuExpanded) {
-                    closeMenu();
-                } else{
-                    expandMenu();
-                }
+        menuButton.setOnClickListener(view -> {
+            if(menuExpanded) {
+                closeMenu();
+            } else{
+                expandMenu();
             }
         });
     }
@@ -131,7 +103,7 @@ public class StatsActivity extends AppCompatActivity {
     private void setUpTabs(){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(homeFragment, "Home");
-        //adapter.addFragment(leaderboardFragment, "Leaderboard");
+        adapter.addFragment(leaderboardFragment, "Leaderboard");
 
         ViewPager vp = findViewById(R.id.viewPager);
         vp.setAdapter(adapter);
@@ -143,10 +115,10 @@ public class StatsActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                if(position != 1 && infoShowing){
-                    removeInfoTab();
-                    searchableLastShown = null;
-                    vp.setCurrentItem(position);
+                if(position == 1 && infoShowing) {
+                    if(playerInfoFragment != null){
+                        playerInfoFragment.showReloadImage();
+                    }
                 }
             }
 
@@ -159,11 +131,29 @@ public class StatsActivity extends AppCompatActivity {
         TabLayout tl = findViewById(R.id.tabs);
         tl.setupWithViewPager(vp);
         tl.getTabAt(0).setIcon(R.drawable.ic_home_24);
-        //tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
+        tl.getTabAt(1).setIcon(R.drawable.ic_leaderboard_24);
         View v = tl.getChildAt(0);
         v.setMinimumWidth(0);
         v.setPadding(0, v.getPaddingTop(), 0, v.getPaddingBottom());
         tl.requestLayout();
+        tl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getId() != 1){
+
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     public static void showInfo(Searchable searchable){
@@ -221,15 +211,16 @@ public class StatsActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         vp.setAdapter(adapter);
         adapter.addFragment(homeFragment, "Home");
-        //adapter.addFragment(leaderboardFragment, "Leaderboard");
+        adapter.addFragment(leaderboardFragment, "Leaderboard");
         adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onBackPressed() {
+        ViewPager vp = findViewById(R.id.viewPager);
         if(menuExpanded){
             closeMenu();
-        } else if(infoShowing){
+        } else if(infoShowing && vp.getCurrentItem() == 1){
             if(linkedMatch && searchableLastShown != null){
                 searchableToShow = searchableLastShown;
                 searchableLastShown = null;
@@ -238,8 +229,7 @@ public class StatsActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),ReloadActivity.class));
             } else {
                 removeInfoTab();
-                ViewPager vp = findViewById(R.id.viewPager);
-                vp.setCurrentItem(0);
+                vp.setCurrentItem(1);
             }
         } else if(!closeDialogShowing){
             showClosingDialog();
@@ -263,6 +253,12 @@ public class StatsActivity extends AppCompatActivity {
         });
         closeDialog = builder.create();
         closeDialog.show();
+        closeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                closeDialogShowing = false;
+            }
+        });
     }
 
     private void closeClosingDialog(){
@@ -289,15 +285,17 @@ public class StatsActivity extends AppCompatActivity {
             infoShowing = true;
             searchableCurrentlyShowing = searchableToShow;
             ViewPager vp = findViewById(R.id.viewPager);
-            ViewPagerAdapter adapter = (ViewPagerAdapter) vp.getAdapter();
+            ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+            vp.setAdapter(adapter);
+            adapter.addFragment(homeFragment, "Home");
 
-            assert adapter != null;
             if(searchableCurrentlyShowing instanceof Match){
                 matchInfoFragment = new MatchInfoFragment();
                 adapter.addFragment(matchInfoFragment, "Match");
             } else if(searchableCurrentlyShowing instanceof Player){
                 playerInfoFragment = new PlayerInfoFragment();
-                adapter.addFragment(playerInfoFragment, "Player");
+                adapter.addFragment(playerInfoFragment, ((Player)searchableToShow).getPlayerName());
+                playerInfoFragment.hideReloadImage();
             }
             adapter.notifyDataSetChanged();
             vp.setCurrentItem(1);

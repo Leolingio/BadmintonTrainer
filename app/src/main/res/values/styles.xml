@@ -15,7 +15,9 @@
     </style>
 
     <style name="CustomTabStyle" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">10sp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
