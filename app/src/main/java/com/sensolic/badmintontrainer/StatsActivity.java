@@ -243,7 +243,7 @@ public class StatsActivity extends AppCompatActivity {
         // Changelog
         AlertDialog.Builder builder = new AlertDialog.Builder(StatsActivity.this, R.style.AlertDialogTheme);
         builder.setMessage("Do you really want to exit?");
-        builder.setPositiveButton("Close", (dialogInterface, i) -> {
+        builder.setPositiveButton("Exit", (dialogInterface, i) -> {
             closeDialog.dismiss();
             finish();
         });
@@ -253,12 +253,7 @@ public class StatsActivity extends AppCompatActivity {
         });
         closeDialog = builder.create();
         closeDialog.show();
-        closeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                closeDialogShowing = false;
-            }
-        });
+        closeDialog.setOnDismissListener(dialogInterface -> closeDialogShowing = false);
     }
 
     private void closeClosingDialog(){
