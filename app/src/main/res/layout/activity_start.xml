@@ -86,7 +86,7 @@
         android:layout_marginTop="225dp"
         android:contentDescription="@string/featherBall"
         android:scaleType="fitCenter"
-        android:src="@drawable/featherball" />
+        android:src="@drawable/featherball_gold" />
 
     <ImageView
         android:id="@+id/selectedItemShower"

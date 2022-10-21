@@ -41,7 +41,7 @@ public class SearchAdapter extends BaseAdapter {
         this.searchActivityInstance = searchActivityInstance;
     }
 
-    public class ViewHolder{
+    public static class ViewHolder{
         TextView name, ID;
     }
 

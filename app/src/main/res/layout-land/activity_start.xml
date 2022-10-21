@@ -42,7 +42,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:contentDescription="@string/featherBall"
-        android:src="@drawable/featherball"
+        android:src="@drawable/featherball_gold"
         android:scaleType="fitCenter"
         android:layout_marginTop="635dp"
         android:layout_marginStart="310dp"/>

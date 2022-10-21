@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#00BFFF</color>
+    <color name="colorStatsActivity">#00DFFF</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorSettings">#FFFFFF</color>
     <color name="colorRegisterMatch">#FFFFFF</color>

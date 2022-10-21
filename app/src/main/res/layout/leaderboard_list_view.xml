@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/featherballIcon"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/featherball_gold"
+            android:translationX="5dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/rankNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="textStart"
+            android:text="1."
+            android:textColor="?android:textColorHint"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            tools:ignore="RtlCompat" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/playerIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/round_corners_shape">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_default_profile_24"
+            android:translationX="5dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:textAlignment="textStart"
+        android:text="Example Name"
+        android:textColor="?android:textColorHint"
+        android:textSize="15sp"
+        tools:ignore="RtlCompat" />
+
+    <TextView
+        android:id="@+id/ID"
+        android:layout_width="wrap_content"
+        android:minWidth="100dp"
+        android:gravity="center"
+        android:textAlignment="textStart"
+        android:layout_height="50dp"
+        android:textColor="?android:textColorHint"
+        android:textSize="15sp"
+        tools:ignore="RtlCompat"
+        android:visibility="gone"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/points"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="Example Points"
+        android:textAlignment="textStart"
+        android:layout_height="50dp"
+        android:textColor="?android:textColorHint"
+        android:textSize="15sp"
+        tools:ignore="RtlCompat" />
+
+</LinearLayout>
