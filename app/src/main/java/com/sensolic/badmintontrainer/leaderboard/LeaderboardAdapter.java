@@ -4,33 +4,27 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
 import com.sensolic.badmintontrainer.StatsActivity;
-import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
-import com.sensolic.badmintontrainer.search.Searchable;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 public class LeaderboardAdapter extends BaseAdapter {
 
@@ -113,6 +107,10 @@ public class LeaderboardAdapter extends BaseAdapter {
                 break;
             default:
                 holder.featherballIcon.setVisibility(View.GONE);
+                holder.rankNumber.setGravity(Gravity.CENTER);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(view.getResources().getDimensionPixelSize(R.dimen.sizeLeaderboardListItems), view.getResources().getDimensionPixelSize(R.dimen.sizeLeaderboardListItems));
+                params.setMargins(view.getResources().getDimensionPixelSize(R.dimen.marginLeaderboardListItems),0,view.getResources().getDimensionPixelSize(R.dimen.marginLeaderboardListItems),0);
+                holder.rankNumber.setLayoutParams(params);
                 break;
         }
         holder.name.setText(playerList.get(position).getInfo());

@@ -4,4 +4,6 @@
     <dimen name="margin_court_tablet">40dp</dimen>
     <dimen name="marginSettings">20dp</dimen>
     <dimen name="marginRegisterMatch">30dp</dimen>
+    <dimen name="marginLeaderboardListItems">10dp</dimen>
+    <dimen name="sizeLeaderboardListItems">30dp</dimen>
 </resources>

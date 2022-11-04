@@ -1,4 +1,4 @@
-package com.sensolic.badmintontrainer.statsFragments.adapters;
+package com.sensolic.badmintontrainer.statsFragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

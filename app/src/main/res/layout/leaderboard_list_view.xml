@@ -16,20 +16,23 @@
         <ImageView
             android:id="@+id/featherballIcon"
             android:layout_width="30dp"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:src="@drawable/featherball_gold"
-            android:translationX="5dp"
-            android:visibility="gone"/>
+            android:translationX="5dp"/>
 
         <TextView
             android:id="@+id/rankNumber"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAlignment="textStart"
+            android:textAlignment="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
             android:text="1."
             android:textColor="?android:textColorHint"
             android:textStyle="bold"
@@ -44,7 +47,8 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         android:layout_gravity="center"
-        android:background="@drawable/round_corners_shape">
+        android:background="@drawable/round_corners_shape"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="30dp"
@@ -58,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:gravity="center"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:text="Example Name"
         android:textColor="?android:textColorHint"
         android:textSize="15sp"
@@ -69,7 +73,7 @@
         android:layout_width="wrap_content"
         android:minWidth="100dp"
         android:gravity="center"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:layout_height="50dp"
         android:textColor="?android:textColorHint"
         android:textSize="15sp"
@@ -87,7 +91,7 @@
         android:layout_marginEnd="10dp"
         android:gravity="center"
         android:text="Example Points"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:layout_height="50dp"
         android:textColor="?android:textColorHint"
         android:textSize="15sp"

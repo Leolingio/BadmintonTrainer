@@ -1,17 +1,13 @@
 package com.sensolic.badmintontrainer;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +22,7 @@ import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 import com.sensolic.badmintontrainer.statsFragments.LeaderboardFragment;
 import com.sensolic.badmintontrainer.statsFragments.MatchInfoFragment;
 import com.sensolic.badmintontrainer.statsFragments.PlayerInfoFragment;
-import com.sensolic.badmintontrainer.statsFragments.adapters.ViewPagerAdapter;
+import com.sensolic.badmintontrainer.statsFragments.ViewPagerAdapter;
 
 public class StatsActivity extends AppCompatActivity {
 
