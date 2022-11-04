@@ -33,9 +33,8 @@ public class LeaderboardAdapter extends BaseAdapter {
     LayoutInflater inflater;
     List<Player> playerList;
     ArrayList<Player> arrayList;
-    StatsActivity statsActivityInstance;
 
-    public LeaderboardAdapter(Context context, List<Player> entryList, StatsActivity statsActivityInstance) {
+    public LeaderboardAdapter(Context context, List<Player> entryList) {
         this.context = context;
         this.playerList = entryList;
         inflater = LayoutInflater.from(context);
@@ -43,7 +42,6 @@ public class LeaderboardAdapter extends BaseAdapter {
         arrayList = new ArrayList<>();
         arrayList.addAll(entryList);
         storage = Storage.getInstance(context);
-        this.statsActivityInstance = statsActivityInstance;
     }
 
     public static class ViewHolder {

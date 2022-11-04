@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorStatsActivity"
     tools:context=".statsFragments.MatchInfoFragment">
 
@@ -12,17 +13,25 @@
         android:paddingBottom="40dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/matchInfoTitle"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginTop="50dp"
+            app:contentInsetStartWithNavigation="0dp">
+
+        <TextView
+            android:id="@+id/matchInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Test Match"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="25sp"
             android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <View
             android:layout_width="match_parent"

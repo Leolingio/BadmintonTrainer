@@ -1,5 +1,6 @@
 package com.sensolic.badmintontrainer.statsFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.ReloadActivity;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
@@ -46,12 +48,14 @@ public class LeaderboardFragment extends Fragment {
 
         ArrayList<Player> arrayList = storage.getStoredPlayers();
 
-        adapter = new LeaderboardAdapter(view.getContext(), arrayList, new StatsActivity());
+        adapter = new LeaderboardAdapter(view.getContext(), arrayList);
 
         listView.setAdapter(adapter);
 
         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(() -> {
+            adapter = new LeaderboardAdapter(view.getContext(), storage.getStoredPlayers());
+            listView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             pullToRefresh.setRefreshing(false);
         });
