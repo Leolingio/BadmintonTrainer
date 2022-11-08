@@ -11,36 +11,100 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="Recent Matches:"
-            android:textColor="@color/colorSettings"
-            android:textSize="20sp" />
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:text="Recent Matches:"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/refreshRecentMatches"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/reload_icon" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/recentMatches"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_height="115dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1" />
 
         <TextView
+            android:id="@+id/emptyRecentMatchesText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:text="Recommended Matches:"
-            android:textColor="@color/colorSettings"
-            android:textSize="20sp" />
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Currently no recent matches"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:text="Recommended Matches:"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/refreshRecommendedMatches"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/reload_icon" />
+        </LinearLayout>
 
         <ListView
             android:id="@+id/recommendedMatches"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
-
+        <TextView
+            android:id="@+id/emptyRecommendedMatchesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Currently not available"
+            android:visibility="visible"/>
     </LinearLayout>
 </ScrollView>

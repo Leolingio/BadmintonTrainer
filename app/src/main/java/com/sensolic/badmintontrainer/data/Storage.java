@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class Storage {
 
@@ -38,16 +40,18 @@ public class Storage {
         context = applicationContext;
 
         File file;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (i == 0) {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/data");
             } else if (i == 1) {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
-            } else {
+            } else if(i == 2){
                 file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+            } else{
+                file = new File(context.getFilesDir().getAbsolutePath() + "/recentMatches");
             }
             if((resetAll || resetPlayers) && i == 2) file.delete();
-            if((resetAll || resetMatches) && i == 1){
+            if((resetAll || resetMatches) && (i == 1 || i == 3)){
                 file.delete();
             }
 
@@ -438,7 +442,14 @@ public class Storage {
         } catch (Exception e) {
             // ignored
         }
-        if(result) matchIDs.remove(ID);
+        if(result){
+            matchIDs.remove(ID);
+
+            // Check if deleted match was in recent matches
+            ArrayList<Match> recentMatches = getStoredRecentMatches();
+            recentMatches.removeIf(m -> m.getMatchID() == ID);
+            storeRecentMatches(recentMatches);
+        }
         return result;
     }
 
@@ -698,6 +709,14 @@ public class Storage {
                 // ignore
             }
         }
+        // Update the recent matches
+        ArrayList<Match> recentMatches = getStoredRecentMatches();
+        if(recentMatches.size() >= 4){
+            recentMatches.remove(0);
+        }
+        recentMatches.add(match);
+        storeRecentMatches(recentMatches);
+
     }
 
     private boolean containsMatch(Match match) {
@@ -1003,7 +1022,7 @@ public class Storage {
         String content = "";
         String newContent = convertPlayerToEntry(player);
         String read;
-        String buffer = "";         // Here the matchEntry will be loaded to
+        String buffer = "";         // Here the playerEntry will be loaded to
         String toCompare;      // Here the substrings of buffer will be saved
         boolean playerFound = false;
         char c;
@@ -1148,6 +1167,64 @@ public class Storage {
             // ignored
         }
         return result;
+    }
+
+    public ArrayList<Match> getStoredRecentMatches(){
+        ArrayList<Match> result = new ArrayList<>();
+        Match toAdd;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        char c;
+        try {
+            File file;
+            FileReader reader;
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/recentMatches");
+            reader = new FileReader(file);
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    toAdd = (Match) convertEntryToObject(buffer);
+                    if (toAdd != null) result.add(toAdd);
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            // ignored
+        }
+        return result;
+    }
+
+    private void storeRecentMatches(ArrayList<Match> toStore){
+        if(toStore == null || toStore.size() == 0) return;
+
+        String newRecentMatches = "";
+        String buffer;
+
+        for(Match m : toStore){
+            buffer = convertMatchToEntry(m);
+            newRecentMatches = newRecentMatches+buffer+"\n";
+        }
+
+        try {
+            File file;
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/recentMatches");
+
+            resetFile("recentMatches");
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(newRecentMatches);
+            writer.close();
+        } catch(Exception e){
+            //ignored
+        }
     }
 }
 
