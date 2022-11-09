@@ -1200,7 +1200,7 @@ public class Storage {
     }
 
     private void storeRecentMatches(ArrayList<Match> toStore){
-        if(toStore == null || toStore.size() == 0) return;
+        if(toStore == null || toStore.size() == 0) resetFile("recentMatches");
 
         String newRecentMatches = "";
         String buffer;

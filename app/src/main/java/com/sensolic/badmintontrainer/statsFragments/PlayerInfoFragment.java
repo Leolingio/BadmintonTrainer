@@ -1,15 +1,12 @@
 package com.sensolic.badmintontrainer.statsFragments;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +19,7 @@ import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PlayerInfoFragment extends Fragment {
 
@@ -55,11 +52,30 @@ public class PlayerInfoFragment extends Fragment {
 
         reloadImage = view.findViewById(R.id.reloadImage);
         reloadImage.setOnClickListener(view -> {
+            AtomicBoolean ready = new AtomicBoolean(false);
+            Thread t = new Thread(() -> {
+                for(int i = 0; i <= 180; i++) {
+                    reloadImage.setRotation(i);
+                    reloadImage.invalidate();
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                        //ignored
+                    }
+                    reloadImage.setRotation(0);
+                }
+                ready.set(true);
+            });
+            t.start();
             toShow = Storage.getInstance(view.getContext()).getPlayerData(toShow.getPlayerID());
             StatsActivity.showInfo(toShow);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             startActivity(new Intent(view.getContext(), ReloadActivity.class));
         });
-        reloadImage.setVisibility(View.GONE);
 
         return view;
     }

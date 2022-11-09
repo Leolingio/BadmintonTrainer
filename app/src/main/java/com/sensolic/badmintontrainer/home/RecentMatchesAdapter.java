@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -139,14 +140,22 @@ public class RecentMatchesAdapter extends BaseAdapter {
                 index++;
             }
             Match match = matchList.get(index);
-            /*
+
             if(storage.getMatchData(match.getMatchID()) == null){
-                matchList.remove(match);
-                notifyDataSetChanged();
+                if(holder.matchInfoTitle.getVisibility() == View.GONE){
+                    return false;
+                }
+                holder.matchInfoTitle.setVisibility(View.GONE);
+                holder.team1player1.setVisibility(View.GONE);
+                holder.team1player2.setVisibility(View.GONE);
+                holder.team2player1.setVisibility(View.GONE);
+                holder.team2player2.setVisibility(View.GONE);
+                holder.score1.setVisibility(View.GONE);
+                holder.score2.setVisibility(View.GONE);
+                holder.score3.setVisibility(View.GONE);
                 Toast.makeText(context, "This match doesn't exist", Toast.LENGTH_SHORT).show();
                 return false;
             }
-             */
 
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:

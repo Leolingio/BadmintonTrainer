@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -63,16 +65,34 @@ public class HomeFragment extends Fragment {
         recentMatches.setAdapter(recentMatchAdapter);
 
         Button refreshRecentMatches = view.findViewById(R.id.refreshRecentMatches);
-        refreshRecentMatches.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ArrayList<Match> arrayList = storage.getStoredRecentMatches();
-                recentMatchAdapter = new RecentMatchesAdapter(view.getContext(), arrayList);
-                recentMatches.setAdapter(recentMatchAdapter);
-                recentMatchAdapter.notifyDataSetChanged();
-                int height = (int) (115 * getResources().getDisplayMetrics().density);
-                ViewGroup.LayoutParams params = recentMatches.getLayoutParams();
-                params.height = height * arrayList.size();
+        refreshRecentMatches.setOnClickListener(view1 -> {
+            Thread t = new Thread(() -> {
+                for(int i = 0; i <= 180; i++) {
+                    refreshRecentMatches.setRotation(i);
+                    refreshRecentMatches.invalidate();
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException e) {
+                        //ignored
+                    }
+                    refreshRecentMatches.setRotation(0);
+                }
+            });
+            t.start();
+
+            ArrayList<Match> list = storage.getStoredRecentMatches();
+            recentMatchAdapter = new RecentMatchesAdapter(view1.getContext(), list);
+            recentMatches.setAdapter(recentMatchAdapter);
+            recentMatchAdapter.notifyDataSetChanged();
+            int height = (int) (115 * getResources().getDisplayMetrics().density);
+            ViewGroup.LayoutParams params = recentMatches.getLayoutParams();
+            params.height = height * list.size();
+            if(list.size() == 0){
+                recentMatches.setVisibility(View.GONE);
+                emptyRecentMatchText.setVisibility(View.VISIBLE);
+            } else{
+                recentMatches.setVisibility(View.VISIBLE);
+                emptyRecentMatchText.setVisibility(View.GONE);
             }
         });
 
