@@ -31,11 +31,71 @@
         </androidx.appcompat.widget.Toolbar>
 
         <TextView
-            android:id="@+id/registerMatchHeadline"
+            android:id="@+id/generalHeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
             android:layout_marginStart="20dp"
+            android:text="General"
+            android:textColor="@color/colorSettings"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/recommendationsHeadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/generalHeadline"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Recommendations:"
+            android:textColor="@color/colorSettings"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/singlesPointDiffText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recommendationsHeadline"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Max point difference in Singles"
+            android:textColor="@color/colorSettings"
+            android:textSize="15sp" />
+        <SeekBar
+            android:id="@+id/seekBarSingles"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/singlesPointDiffText"
+            android:max="50"/>
+
+        <TextView
+            android:id="@+id/doublesPointDiffText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seekBarSingles"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="Max point difference in Doubles"
+            android:textColor="@color/colorSettings"
+            android:textSize="15sp" />
+        <SeekBar
+            android:id="@+id/seekBarDoubles"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/doublesPointDiffText"
+            android:max="100"/>
+
+        <TextView
+            android:id="@+id/registerMatchHeadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seekBarDoubles"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
             android:text="@string/registerMatchHeadline"
             android:textColor="@color/colorSettings"
             android:textSize="20sp" />

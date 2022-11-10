@@ -19,7 +19,7 @@ public class Match implements Searchable {
     /**
      * IDs of all participating players
      */
-    private long team1player1ID, team1player2ID, team2player1ID, team2player2ID;
+    private long team1player1ID = -1, team1player2ID = -1, team2player1ID = -1, team2player2ID = -1;
 
     /**
      * Points added to all participating players

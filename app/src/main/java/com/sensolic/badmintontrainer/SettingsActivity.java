@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.sensolic.badmintontrainer.data.Storage;
+import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
+
+import org.w3c.dom.Text;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -39,31 +43,69 @@ public class SettingsActivity extends AppCompatActivity {
         storage = Storage.getInstance(getApplicationContext());
         settings = Settings.getInstance(getApplicationContext());
 
-        manualStartPos = findViewById(R.id.setManualStartPositions);
-        manualStartPos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        TextView maxPointDiffSinglesText = findViewById(R.id.singlesPointDiffText);
+        TextView maxPointDiffDoublesText = findViewById(R.id.doublesPointDiffText);
+        SeekBar singlesDiffSeekBar = findViewById(R.id.seekBarSingles);
+        SeekBar doublesDiffSeekBar = findViewById(R.id.seekBarDoubles);
+
+        maxPointDiffSinglesText.setText("Max point difference in Singles: "+HomeFragment.SINGLES_PLAYER_DIFFERENCE+" Points");
+        maxPointDiffDoublesText.setText("Max point difference in Doubles: "+HomeFragment.DOUBLES_PLAYER_DIFFERENCE+" Points");
+
+        singlesDiffSeekBar.setProgress(HomeFragment.SINGLES_PLAYER_DIFFERENCE);
+        doublesDiffSeekBar.setProgress(HomeFragment.DOUBLES_PLAYER_DIFFERENCE);
+
+        singlesDiffSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Settings.setManualStartPos(b);
-                save();
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                maxPointDiffSinglesText.setText("Max point difference in Singles: "+progress+" Points");
+                HomeFragment.SINGLES_PLAYER_DIFFERENCE = progress;
             }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        doublesDiffSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                maxPointDiffDoublesText.setText("Max point difference in Doubles: "+progress+" Points");
+                HomeFragment.DOUBLES_PLAYER_DIFFERENCE = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        manualStartPos = findViewById(R.id.setManualStartPositions);
+        manualStartPos.setOnCheckedChangeListener((compoundButton, b) -> {
+            Settings.setManualStartPos(b);
+            save();
         });
 
         debugMode = findViewById(R.id.setDebugMode);
-        debugMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Settings.setDebugMode(b);
-                save();
-            }
+        debugMode.setOnCheckedChangeListener((compoundButton, b) -> {
+            Settings.setDebugMode(b);
+            save();
         });
 
         autocompleteScore = findViewById(R.id.setAutocompleteScore);
-        autocompleteScore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Settings.setAutocompleteScore(b);
-                save();
-            }
+        autocompleteScore.setOnCheckedChangeListener((compoundButton, b) -> {
+            Settings.setAutocompleteScore(b);
+            save();
         });
 
         refreshSettings();
@@ -72,12 +114,9 @@ public class SettingsActivity extends AppCompatActivity {
         versionText.setText(getString(R.string.version)+ BuildConfig.VERSION_NAME.toString());
 
         Button b = findViewById(R.id.showChangelogButton);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StatsActivity.showChangelog();
-                finish();
-            }
+        b.setOnClickListener(view -> {
+            StatsActivity.showChangelog();
+            finish();
         });
 
         RadioGroup radioGroup = findViewById(R.id.defaultMatchType);
@@ -86,19 +125,16 @@ public class SettingsActivity extends AppCompatActivity {
         } else{
             radioGroup.check(R.id.doublesMatchSelector);
         }
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                switch (checkedId) {
-                    case R.id.singlesMatchSelector:
-                        Settings.setDefaultMatchType('S');
-                        save();
-                        break;
-                    case R.id.doublesMatchSelector:
-                        Settings.setDefaultMatchType('D');
-                        save();
-                        break;
-                }
+        radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
+            switch (checkedId) {
+                case R.id.singlesMatchSelector:
+                    Settings.setDefaultMatchType('S');
+                    save();
+                    break;
+                case R.id.doublesMatchSelector:
+                    Settings.setDefaultMatchType('D');
+                    save();
+                    break;
             }
         });
     }
