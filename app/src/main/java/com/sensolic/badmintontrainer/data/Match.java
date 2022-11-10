@@ -62,10 +62,10 @@ public class Match implements Searchable {
         this.matchType = matchType;
 
         // Read our playerIDs
-        if(matchType == 'S'){
+        if (matchType == 'S') {
             team1player1ID = playerIDs[0];
             team2player1ID = playerIDs[1];
-        } else{
+        } else {
             team1player1ID = playerIDs[0];
             team1player2ID = playerIDs[1];
             team2player1ID = playerIDs[2];
@@ -73,23 +73,26 @@ public class Match implements Searchable {
         }
 
         // Points
-        if(matchType == 'S'){
-            team1player1points = points[0];
-            team2player1points = points[1];
-        } else{
-            team1player1points = points[0];
-            team1player2points = points[1];
-            team2player1points = points[2];
-            team2player2points = points[3];
+        if(matchID != -2) {
+            if (matchType == 'S') {
+                team1player1points = points[0];
+                team2player1points = points[1];
+            } else {
+                team1player1points = points[0];
+                team1player2points = points[1];
+                team2player1points = points[2];
+                team2player2points = points[3];
+            }
         }
 
         this.setCount = setCount;
 
-        // Read our set count
-        scoreFirst = scores[0];
-        scoreSecond = scores[1];
-        if(setCount == 3 && scores.length == 3) scoreThird = scores[2];
-
+        if (matchID != -2) {
+            // Read our set count
+            scoreFirst = scores[0];
+            scoreSecond = scores[1];
+            if (setCount == 3 && scores.length == 3) scoreThird = scores[2];
+        }
         matchDependency = "Ranking";
     }
 
@@ -113,10 +116,10 @@ public class Match implements Searchable {
         this.matchType = matchType;
 
         // Read our playerIDs
-        if(matchType == 'S'){
+        if (matchType == 'S') {
             team1player1ID = playerIDs[0];
             team2player1ID = playerIDs[1];
-        } else{
+        } else {
             team1player1ID = playerIDs[0];
             team1player2ID = playerIDs[1];
             team2player1ID = playerIDs[2];
@@ -124,10 +127,10 @@ public class Match implements Searchable {
         }
 
         // Points
-        if(matchType == 'S'){
+        if (matchType == 'S') {
             team1player1points = points[0];
             team2player1points = points[1];
-        } else{
+        } else {
             team1player1points = points[0];
             team1player2points = points[1];
             team2player1points = points[2];
@@ -139,7 +142,7 @@ public class Match implements Searchable {
         // Read our set count
         scoreFirst = scores[0];
         scoreSecond = scores[1];
-        if(setCount == 3) scoreThird = scores[2];
+        if (setCount == 3) scoreThird = scores[2];
 
         this.leagueID = leagueID;
         this.teamNumber = teamNumber;
@@ -166,10 +169,10 @@ public class Match implements Searchable {
         this.matchType = matchType;
 
         // Read our playerIDs
-        if(matchType == 'S'){
+        if (matchType == 'S') {
             team1player1ID = playerIDs[0];
             team2player1ID = playerIDs[1];
-        } else{
+        } else {
             team1player1ID = playerIDs[0];
             team1player2ID = playerIDs[1];
             team2player1ID = playerIDs[2];
@@ -177,10 +180,10 @@ public class Match implements Searchable {
         }
 
         // Points
-        if(matchType == 'S'){
+        if (matchType == 'S') {
             team1player1points = points[0];
             team2player1points = points[1];
-        } else{
+        } else {
             team1player1points = points[0];
             team1player2points = points[1];
             team2player1points = points[2];
@@ -192,7 +195,7 @@ public class Match implements Searchable {
         // Read our set count
         scoreFirst = scores[0];
         scoreSecond = scores[1];
-        if(setCount == 3 && scores.length == 3) scoreThird = scores[2];
+        if (setCount == 3 && scores.length == 3) scoreThird = scores[2];
 
         this.tournamentID = tournamentID;
 
@@ -281,48 +284,48 @@ public class Match implements Searchable {
         return teamNumber;
     }
 
-    public Player getTeam1Player1(){
+    public Player getTeam1Player1() {
         return storage.getPlayerData(team1player1ID);
     }
 
-    public Player getTeam1Player2(){
+    public Player getTeam1Player2() {
         return storage.getPlayerData(team1player2ID);
     }
 
-    public Player getTeam2Player1(){
+    public Player getTeam2Player1() {
         return storage.getPlayerData(team2player1ID);
     }
 
-    public Player getTeam2Player2(){
+    public Player getTeam2Player2() {
         return storage.getPlayerData(team2player2ID);
     }
 
-    public int getTeam1Player1points(){
+    public int getTeam1Player1points() {
         return team1player1points;
     }
 
-    public int getTeam1Player2points(){
+    public int getTeam1Player2points() {
         return team1player2points;
     }
 
-    public int getTeam2Player1points(){
+    public int getTeam2Player1points() {
         return team2player1points;
     }
 
-    public int getTeam2Player2points(){
+    public int getTeam2Player2points() {
         return team2player2points;
     }
 
-    public int getWinner(){
+    public int getWinner() {
         int first, second;
-        if(setCount == 3) {
+        if (setCount == 3) {
             first = Integer.parseInt(scoreThird.substring(0, scoreThird.indexOf(':')));
-            second = Integer.parseInt(scoreThird.substring(scoreThird.indexOf(':')+1));
-        } else{
+            second = Integer.parseInt(scoreThird.substring(scoreThird.indexOf(':') + 1));
+        } else {
             first = Integer.parseInt(scoreSecond.substring(0, scoreSecond.indexOf(':')));
-            second = Integer.parseInt(scoreSecond.substring(scoreSecond.indexOf(':')+1));
+            second = Integer.parseInt(scoreSecond.substring(scoreSecond.indexOf(':') + 1));
         }
-        if(first > second) return 1;
+        if (first > second) return 1;
         else return 2;
     }
 }
