@@ -1,5 +1,7 @@
 package com.sensolic.badmintontrainer.statsFragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
@@ -21,15 +24,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import kotlinx.coroutines.sync.Mutex;
 
 public class HomeFragment extends Fragment {
 
     private static boolean refreshDone = false;
-    public static int SINGLES_PLAYER_DIFFERENCE = 20;
+    public static int SINGLES_PLAYER_DIFFERENCE = 1;
     public static int DOUBLES_PLAYER_DIFFERENCE = 40;
+    private View view;
     private int recentMatchHeight;
     private int recommendedMatchHeight;
-    private ArrayList[] recommendedMatchesHistory = new ArrayList[5];
+    private final ArrayList[] recommendedMatchesHistory = new ArrayList[5];
     Storage storage;
     ListView recentMatches;
     ListView recommendedMatches;
@@ -52,7 +61,7 @@ public class HomeFragment extends Fragment {
         recommendedMatches = view.findViewById(R.id.recommendedMatches);
 
         recentMatchHeight = (int) (115 * getResources().getDisplayMetrics().density);
-        recommendedMatchHeight = (int) (125 * getResources().getDisplayMetrics().density);
+        recommendedMatchHeight = (int) (127 * getResources().getDisplayMetrics().density);
 
         ArrayList<Match> arrayList = storage.getStoredRecentMatches();
 
@@ -71,8 +80,10 @@ public class HomeFragment extends Fragment {
 
         recentMatches.setAdapter(recentMatchAdapter);
 
+        Lock lockRefreshRecentMatchesButton = new ReentrantLock(true);
         Button refreshRecentMatches = view.findViewById(R.id.refreshRecentMatches);
         refreshRecentMatches.setOnClickListener(view1 -> {
+            lockRefreshRecentMatchesButton.lock();
             refreshDone = false;
             Thread t = new Thread(() -> {
                 while (!refreshDone) {
@@ -104,6 +115,7 @@ public class HomeFragment extends Fragment {
                 emptyRecentMatchText.setVisibility(View.GONE);
             }
             refreshDone = true;
+            lockRefreshRecentMatchesButton.unlock();
         });
 
         arrayList = generateRecommendedMatches();
@@ -117,16 +129,19 @@ public class HomeFragment extends Fragment {
             emptyRecommendedMatchText.setVisibility(View.GONE);
             ViewGroup.LayoutParams params = recommendedMatches.getLayoutParams();
             params.height = recommendedMatchHeight * arrayList.size();
+            recommendedMatches.setLayoutParams(params);
         }
 
         recommendedMatchesAdapter = new RecommendedMatchesAdapter(view.getContext(), arrayList);
 
         recommendedMatches.setAdapter(recommendedMatchesAdapter);
 
+        Lock lockRefreshRecommendedMatchesButton = new ReentrantLock(true);
         Button refreshRecommendedMatches = view.findViewById(R.id.refreshRecommendedMatches);
         refreshRecommendedMatches.setOnClickListener(view1 -> {
+            lockRefreshRecommendedMatchesButton.lock();
             refreshDone = false;
-            Thread t = new Thread(() -> {
+            new Thread(() -> {
                 while (!refreshDone) {
                     for (int i = 0; i <= 180; i++) {
                         refreshRecommendedMatches.setRotation(i);
@@ -139,161 +154,33 @@ public class HomeFragment extends Fragment {
                         refreshRecommendedMatches.setRotation(0);
                     }
                 }
-            });
-            t.start();
+            }).start();
 
-            ArrayList<Match> list = generateRecommendedMatches();
-            recommendedMatchesAdapter = new RecommendedMatchesAdapter(view1.getContext(), list);
-            recommendedMatches.setAdapter(recommendedMatchesAdapter);
-            recommendedMatchesAdapter.notifyDataSetChanged();
-            ViewGroup.LayoutParams params = recommendedMatches.getLayoutParams();
-            params.height = recommendedMatchHeight * list.size();
-            if (list.size() == 0) {
-                recommendedMatches.setVisibility(View.GONE);
-                emptyRecommendedMatchText.setVisibility(View.VISIBLE);
-            } else {
-                recommendedMatches.setVisibility(View.VISIBLE);
-                emptyRecommendedMatchText.setVisibility(View.GONE);
-            }
+            refreshRecommendedMatches();
+
             refreshDone = true;
+            lockRefreshRecommendedMatchesButton.unlock();
         });
+
+        this.view = view;
 
         return view;
     }
 
-    private ArrayList<Match> getRecommendedMatches(ArrayList<Match> avoidMatches) {
-
-        if (avoidMatches != null && avoidMatches.size() != 0) {
-            boolean added = false;
-            for (int i = 0; i < recommendedMatchesHistory.length; i++) {
-                if (recommendedMatchesHistory[i] == null) {
-                    recommendedMatchesHistory[i] = avoidMatches;
-                    added = true;
-                    break;
-                }
-            }
-            if (!added) {
-                for (int i = 0; i < recommendedMatchesHistory.length - 1; i++) {
-                    recommendedMatchesHistory[i] = recommendedMatchesHistory[i + 1];
-                }
-                recommendedMatchesHistory[recommendedMatchesHistory.length - 1] = avoidMatches;
-            }
-        }
-
-        ArrayList<Match> result = new ArrayList<>();
-
-        ArrayList<Player> players = storage.getStoredPlayers();
-
-        ArrayList<Player>[] prefPlayers = new ArrayList[players.size()];
-        for (int i = 0; i < prefPlayers.length; i++) {
-            prefPlayers[i] = new ArrayList<>();
-        }
-
-        boolean[] paired = new boolean[players.size()];
-
-        ArrayList<Player> pref;
-
-        // Singles Matches
-
-        for (int i = 0; i < 5; i++) {
-
-            for (Player p : players) {
-                if (paired[players.indexOf(p)]) continue;
-                pref = new ArrayList<>();
-                for (Player player : players) {
-                    if (p.getPlayerID() != player.getPlayerID()) {
-                        if (!paired[players.indexOf(player)]
-                                && Math.abs(p.getRankingPoints() - player.getRankingPoints()) <= SINGLES_PLAYER_DIFFERENCE) {
-
-                            pref.add(player);
-                        }
-                    }
-                }
-                if (pref.size() > 0) {
-                    pref.sort(Comparator.comparingInt(Player::getRankingPoints).reversed());
-                    ArrayList<Match> toAvoid = new ArrayList<>();
-                    for (ArrayList list : recommendedMatchesHistory) {
-                        if (list != null && list.size() != 0) {
-                            toAvoid.addAll(list);
-                        }
-                    }
-                    if (toAvoid.size() != 0) {
-                        for (Match m : toAvoid) {
-                            if (m.getMatchType() == 'S'
-                                    && m.getTeam2Player1().getPlayerID() == pref.get(0).getPlayerID()) {
-                                pref.remove(pref.get(0));
-                                break;
-                            }
-                        }
-                        if (pref.size() == 0) continue;
-                    }
-                    Match m = new Match(storage, -2, 'S', new long[]{p.getPlayerID(),
-                            pref.get(0).getPlayerID()}, -2, null, null);
-                    result.add(m);
-                    paired[players.indexOf(p)] = true;
-                    paired[players.indexOf(pref.get(0))] = true;
-                }
-            }
-        }
-
-        Arrays.fill(paired, false);
-
-        // Doubles Matches
-
-        for (int i = 0; i < 5; i++) {
-
-            for (Player p : players) {
-                if (paired[players.indexOf(p)]) continue;
-                pref = new ArrayList<>();
-                for (Player player : players) {
-                    if (p.getPlayerID() != player.getPlayerID()) {
-                        if (!paired[players.indexOf(player)]
-                                && Math.abs(p.getRankingPoints() - player.getRankingPoints()) <= DOUBLES_PLAYER_DIFFERENCE) {
-
-                            pref.add(player);
-                        }
-                    }
-                }
-                if (pref.size() > 2) {
-                    pref.sort(Comparator.comparingInt(Player::getRankingPoints).reversed());
-                    ArrayList<Match> toAvoid = new ArrayList<>();
-                    for (ArrayList list : recommendedMatchesHistory) {
-                        if (list != null && list.size() != 0) {
-                            toAvoid.addAll(list);
-                        }
-                    }
-                    if (toAvoid.size() != 0) {
-                        for (Match m : toAvoid) {
-                            if (m.getMatchType() == 'D'
-                                    && m.getTeam1Player2().getPlayerID() == pref.get(1).getPlayerID()) {
-                                pref.remove(pref.get(1));
-                                break;
-                            }
-                        }
-                        if (pref.size() < 3) continue;
-                    }
-                    Match m = new Match(storage, -2, 'D', new long[]{p.getPlayerID(),
-                            pref.get(1).getPlayerID(), pref.get(0).getPlayerID(),
-                            pref.get(3).getPlayerID()}, -2, null, null);
-                    result.add(m);
-                    paired[players.indexOf(p)] = true;
-                    paired[players.indexOf(pref.get(0))] = true;
-                    paired[players.indexOf(pref.get(1))] = true;
-                    paired[players.indexOf(pref.get(2))] = true;
-                }
-            }
-        }
-
-        return result;
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshRecommendedMatches();
     }
 
     /**
-     *  This method generate new recommendations based on all stored players
-     *  Previous generated matches will not be generated again -> saved in recommendedMatchesHistory
+     * This method generate new recommendations based on all stored players
+     * Previous generated matches will not be generated again -> saved in recommendedMatchesHistory
+     *
      * @return List of new generated recommended matches
      */
-    private ArrayList<Match> generateRecommendedMatches(){
-        // Getting all stored players form storage and sorting them
+    private ArrayList<Match> generateRecommendedMatches() {
+        // Getting all stored players from storage and sorting them
         ArrayList<Player> sortedPlayerList = storage.getStoredPlayers();
         sortedPlayerList.sort(Comparator.comparingInt(Player::getRankingPoints).reversed());
 
@@ -303,16 +190,17 @@ public class HomeFragment extends Fragment {
 
         // Build up list with all previous matches
         ArrayList<Match> previousMatches = new ArrayList<>();
-        for(ArrayList list : recommendedMatchesHistory){
-            if(list != null) {
+        for (ArrayList list : recommendedMatchesHistory) {
+            if (list != null) {
                 previousMatches.addAll(list);
             }
         }
 
         // Find out Singles recommendations
-        for(Player player1 : sortedPlayerList){
-            for(Player player2 : sortedPlayerList){
-                if(Math.abs(player1.getRankingPoints()-player2.getRankingPoints()) <= SINGLES_PLAYER_DIFFERENCE){
+        for (Player player1 : sortedPlayerList) {
+            for (int k = 0; k < sortedPlayerList.size(); k++) {
+                Player player2 = sortedPlayerList.get(k);
+                if (Math.abs(player1.getRankingPoints() - player2.getRankingPoints()) <= SINGLES_PLAYER_DIFFERENCE) {
                     // Player inside point range -> create new recommendation
                     Match m = new Match(storage, -2, 'S',
                             new long[]{player1.getPlayerID(), player2.getPlayerID()},
@@ -320,24 +208,24 @@ public class HomeFragment extends Fragment {
 
                     boolean valid = true;
                     // Check if same match was previously recommended
-                    for(Match prev : previousMatches){
-                        if(sameParticipants(prev,m)){
+                    for (Match prev : previousMatches) {
+                        if (sameParticipants(prev, m)) {
                             valid = false;
                             break;
                         }
                     }
 
                     // Check if same match is already recommended
-                    for(Match recom : allPossibleSinglesRecommendations){
-                        if(sameParticipants(recom,m)){
+                    for (Match recom : allPossibleSinglesRecommendations) {
+                        if (sameParticipants(recom, m)) {
                             valid = false;
                             break;
                         }
                     }
 
-                    if(valid){
+                    if (valid) {
                         // Match is completely new and can be recommended
-                        if(isValidMatch(m)) {
+                        if (isValidMatch(m)) {
                             allPossibleSinglesRecommendations.add(m);
                         }
                     }
@@ -346,35 +234,29 @@ public class HomeFragment extends Fragment {
         }
 
         // Find out Doubles recommendations
-        for(Player player : sortedPlayerList){
-            for(int k = 0; k < sortedPlayerList.size(); k = k+3){
-                if((k+2) < sortedPlayerList.size()) {
-                    int pointsTeam1, pointsTeam2;
-                    Player player1, player2, player3;
-                    for(int i = 0; i < 3 ; i++) {
-                        // Variate teams -> all variations of 4 players
-                        if(i == 0){
-                            player1 = sortedPlayerList.get(k);
-                            player2 = sortedPlayerList.get(k+1);
-                            player3 = sortedPlayerList.get(k+2);
-                        } else if(i == 1){
-                            player1 = sortedPlayerList.get(k+1);
-                            player2 = sortedPlayerList.get(k);
-                            player3 = sortedPlayerList.get(k+2);
-                        } else{
-                            player1 = sortedPlayerList.get(k+2);
-                            player2 = sortedPlayerList.get(k+1);
-                            player3 = sortedPlayerList.get(k);
-                        }
+        for (int l = 0; l < sortedPlayerList.size(); l++) {                     // Team 1 Player 1
+            for (int k = 0; k < sortedPlayerList.size(); k++) {                 // Team 1 Player 2
+                if (k == l) continue;
+                for (int i = 0; i < sortedPlayerList.size(); i++) {             // Team 2 Player 1
+                    if (i == k || i == l) continue;
+                    for (int j = 0; j < sortedPlayerList.size(); j++) {         // Team 2 Player 2
+                        if (j == i || j == k || j == l) continue;
+                        Player player1 = sortedPlayerList.get(l);
+                        Player player2 = sortedPlayerList.get(k);
+                        Player player3 = sortedPlayerList.get(i);
+                        Player player4 = sortedPlayerList.get(j);
+
+                        int pointsTeam1, pointsTeam2;
                         // Calculate team points
-                        pointsTeam1 = player.getRankingPoints() + player1.getRankingPoints();
-                        pointsTeam2 = player2.getRankingPoints() + player3.getRankingPoints();
-                        if (Math.abs(pointsTeam1 - pointsTeam2) <= SINGLES_PLAYER_DIFFERENCE) {
+                        pointsTeam1 = player1.getRankingPoints() + player2.getRankingPoints();
+                        pointsTeam2 = player3.getRankingPoints() + player4.getRankingPoints();
+
+                        if (Math.abs(pointsTeam1 - pointsTeam2) <= DOUBLES_PLAYER_DIFFERENCE) {
                             // Player inside point range -> create new recommendation
                             Match m = new Match(storage, -2, 'D',
-                                    new long[]{player.getPlayerID(), player1.getPlayerID(),
-                                            player2.getPlayerID(),
-                                            player3.getPlayerID()},
+                                    new long[]{player1.getPlayerID(), player2.getPlayerID(),
+                                            player3.getPlayerID(),
+                                            player4.getPlayerID()},
                                     -2, null, null);
 
                             boolean valid = true;
@@ -396,7 +278,7 @@ public class HomeFragment extends Fragment {
 
                             if (valid) {
                                 // Match is completely new and can be recommended
-                                if(isValidMatch(m)) {
+                                if (isValidMatch(m)) {
                                     allPossibleDoublesRecommendations.add(m);
                                 }
                             }
@@ -409,59 +291,84 @@ public class HomeFragment extends Fragment {
         // Random select of recommendations
         // Pick 2 Singles matches
         Random rand = new Random();
-        int idx1 = rand.nextInt(allPossibleSinglesRecommendations.size());
-        int idx2 = rand.nextInt(allPossibleSinglesRecommendations.size());
-        while(idx2 == idx1){
+
+        int idx1;
+        int idx2;
+
+        if (allPossibleSinglesRecommendations.size() == 0) {
+            idx1 = idx2 = -1;
+        } else if (allPossibleSinglesRecommendations.size() == 1) {
+            idx1 = 0;
+            idx2 = -1;
+        } else if (allPossibleSinglesRecommendations.size() == 2) {
+            idx1 = 0;
+            idx2 = 1;
+        } else {
+            idx1 = rand.nextInt(allPossibleSinglesRecommendations.size());
             idx2 = rand.nextInt(allPossibleSinglesRecommendations.size());
+            while (idx2 == idx1) {
+                idx2 = rand.nextInt(allPossibleSinglesRecommendations.size());
+            }
         }
 
         // Creating result list and adding Singles matches
         ArrayList<Match> result = new ArrayList<>();
-        result.add(allPossibleSinglesRecommendations.get(idx1));
-        result.add(allPossibleSinglesRecommendations.get(idx2));
+        if (idx1 != -1) result.add(allPossibleSinglesRecommendations.get(idx1));
+        if (idx2 != -1) result.add(allPossibleSinglesRecommendations.get(idx2));
 
-        // Pick 2 Singles matches
-        idx1 = rand.nextInt(allPossibleDoublesRecommendations.size());
-        idx2 = rand.nextInt(allPossibleDoublesRecommendations.size());
-        while(idx2 == idx1){
+        // Pick 2 Doubles matches
+        if (allPossibleDoublesRecommendations.size() == 0) {
+            idx1 = idx2 = -1;
+        } else if (allPossibleDoublesRecommendations.size() == 1) {
+            idx1 = 0;
+            idx2 = -1;
+        } else if (allPossibleDoublesRecommendations.size() == 2) {
+            idx1 = 0;
+            idx2 = 1;
+        } else {
+            idx1 = rand.nextInt(allPossibleDoublesRecommendations.size());
             idx2 = rand.nextInt(allPossibleDoublesRecommendations.size());
+            while (idx2 == idx1) {
+                idx2 = rand.nextInt(allPossibleDoublesRecommendations.size());
+            }
         }
 
-        result.add(allPossibleDoublesRecommendations.get(idx1));
-        result.add(allPossibleDoublesRecommendations.get(idx2));
+        if (idx1 != -1) result.add(allPossibleDoublesRecommendations.get(idx1));
+        if (idx2 != -1) result.add(allPossibleDoublesRecommendations.get(idx2));
 
         // Store in history
-        for(int i = 0; i < recommendedMatchesHistory.length; i++){
-            if(recommendedMatchesHistory[i] == null || recommendedMatchesHistory[i].size() == 0){
+        for (int i = 0; i < recommendedMatchesHistory.length; i++) {
+            if (recommendedMatchesHistory[i] == null || recommendedMatchesHistory[i].size() == 0) {
                 // Found empty list in history -> add current list
                 recommendedMatchesHistory[i] = result;
                 return result;
             }
         }
         // Delete oldest history entry and add the current one
-        for(int i = 0; i < recommendedMatchesHistory.length-1; i++){
-            recommendedMatchesHistory[i] = recommendedMatchesHistory[i+1];
+        for (int i = 0; i < recommendedMatchesHistory.length - 1; i++) {
+            recommendedMatchesHistory[i] = recommendedMatchesHistory[i + 1];
         }
-        recommendedMatchesHistory[recommendedMatchesHistory.length-1] = result;
+        recommendedMatchesHistory[recommendedMatchesHistory.length - 1] = result;
         return result;
     }
 
     /**
      * This method examines if the participants of the matches are equal
+     *
      * @param a First match
      * @param b Second match
-     * @return  true if matches have equal participants
-     *          also counts mirrored matches as equal
-     *          false: if participants are different or
-     *          participant order is different or
-     *          matches are not of same type ('S'/'D' or pending/complete)
+     * @return true if matches have equal participants
+     * also counts mirrored matches as equal
+     * false: if participants are different or
+     * participant order is different or
+     * matches are not of same type ('S'/'D' or pending/complete)
      */
-    private boolean sameParticipants(Match a, Match b){
+    private boolean sameParticipants(Match a, Match b) {
         // Invalid inputs
-        if(a == null || b == null) return false;
+        if (a == null || b == null) return false;
 
-        // Unequal matchType
-        if(a.getMatchID() != b.getMatchID() || a.getMatchType() != b.getMatchType()) return false;
+        // Same ID or unequal matchType
+        if (a.getMatchID() != b.getMatchID() || a.getMatchType() != b.getMatchType()) return false;
 
         // Getting all playerIDs from both matches
         long aTeam1player1 = a.getTeam1Player1ID();
@@ -475,8 +382,8 @@ public class HomeFragment extends Fragment {
         long bTeam2player2 = b.getTeam2Player2ID();
 
         // Singles Match -> check if equal order or mirrored order
-        if(a.getMatchType() == 'S'){
-            if(aTeam1player1 == bTeam1player1
+        if (a.getMatchType() == 'S') {
+            if (aTeam1player1 == bTeam1player1
                     && aTeam2player1 == bTeam2player1
                     || aTeam2player1 == bTeam1player1
                     && aTeam1player1 == bTeam2player1)
@@ -484,27 +391,27 @@ public class HomeFragment extends Fragment {
         }
 
         // Doubles Match -> check if equal order or mirrored order or same teams with different order
-        if(a.getMatchType() == 'D'){
+        if (a.getMatchType() == 'D') {
             // Check first team of a
             boolean equal =
-                       aTeam1player1 == bTeam1player1       // equal order
-                    && aTeam1player2 == bTeam1player2
-                    || aTeam1player1 == bTeam2player1       // mirrored order
-                    && aTeam1player2 == bTeam2player2
-                    || aTeam1player1 == bTeam1player2       // same teams a1 and b1
-                    && aTeam1player2 == bTeam1player1
-                    || aTeam1player1 == bTeam2player2       // same teams a1 and b2
-                    && aTeam1player2 == bTeam2player1;
+                    aTeam1player1 == bTeam1player1       // equal order
+                            && aTeam1player2 == bTeam1player2
+                            || aTeam1player1 == bTeam2player1       // mirrored order
+                            && aTeam1player2 == bTeam2player2
+                            || aTeam1player1 == bTeam1player2       // same teams a1 and b1
+                            && aTeam1player2 == bTeam1player1
+                            || aTeam1player1 == bTeam2player2       // same teams a1 and b2
+                            && aTeam1player2 == bTeam2player1;
 
             // Check second team of a
-            if(aTeam2player1 == bTeam2player1               // equal order
+            if (aTeam2player1 == bTeam2player1               // equal order
                     && aTeam2player2 == bTeam2player2
                     || aTeam2player1 == bTeam1player1       // mirrored order
                     && aTeam2player2 == bTeam1player2
                     || aTeam2player1 == bTeam1player2       // same teams a2 and b1
                     && aTeam2player2 == bTeam1player1
                     || aTeam2player1 == bTeam2player2       // same teams a2 and b2
-                    && aTeam2player2 == bTeam2player1){
+                    && aTeam2player2 == bTeam2player1) {
                 // matches have equal participants and teams
                 return equal;
             }
@@ -513,20 +420,52 @@ public class HomeFragment extends Fragment {
         return false;
     }
 
-    private boolean isValidMatch(Match m){
+    /**
+     *  This method checks if a match is valid
+     * @param m The match that should be checked
+     * @return true if match is valid, else false
+     */
+    private boolean isValidMatch(Match m) {
         long player1 = m.getTeam1Player1ID();
         long player2 = m.getTeam1Player2ID();
         long player3 = m.getTeam2Player1ID();
         long player4 = m.getTeam2Player2ID();
-        if(player1 != -1){
-            if(player1 == player2 || player1 == player3 || player1 == player4) return false;
+        if (player1 != -1) {
+            if (player1 == player2 || player1 == player3 || player1 == player4) return false;
         }
-        if(player2 != -1){
-            if(player2 == player3 || player2 == player4) return false;
+        if (player2 != -1) {
+            if (player2 == player3 || player2 == player4) return false;
         }
-        if(player3 != -1){
-            if(player3 == player4) return false;
+        if (player3 != -1) {
+            if (player3 == player4) return false;
         }
         return true;
+    }
+
+    /**
+     *  This method refreshes the recommended matches view
+     */
+    public void refreshRecommendedMatches() {
+        ArrayList<Match> arrayList = generateRecommendedMatches();
+
+        TextView emptyRecommendedMatchText = view.findViewById(R.id.emptyRecommendedMatchesText);
+        if (arrayList.size() == 0) {
+            recommendedMatches.setVisibility(View.GONE);
+            emptyRecommendedMatchText.setVisibility(View.VISIBLE);
+        } else {
+            recommendedMatches.setVisibility(View.VISIBLE);
+            emptyRecommendedMatchText.setVisibility(View.GONE);
+            ViewGroup.LayoutParams params = recommendedMatches.getLayoutParams();
+            params.height = recommendedMatchHeight * arrayList.size();
+            recommendedMatches.setLayoutParams(params);
+        }
+
+        recommendedMatchesAdapter = new RecommendedMatchesAdapter(view.getContext(), arrayList);
+
+        recommendedMatches.setAdapter(recommendedMatchesAdapter);
+
+        recommendedMatchesAdapter.notifyDataSetChanged();
+
+        recommendedMatches.invalidate();
     }
 }
