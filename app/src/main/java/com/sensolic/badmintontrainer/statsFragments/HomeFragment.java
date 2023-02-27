@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
@@ -33,8 +34,6 @@ import kotlinx.coroutines.sync.Mutex;
 public class HomeFragment extends Fragment {
 
     private static boolean refreshDone = false;
-    public static int SINGLES_PLAYER_DIFFERENCE = 1;
-    public static int DOUBLES_PLAYER_DIFFERENCE = 40;
     private View view;
     private int recentMatchHeight;
     private int recommendedMatchHeight;
@@ -200,7 +199,7 @@ public class HomeFragment extends Fragment {
         for (Player player1 : sortedPlayerList) {
             for (int k = 0; k < sortedPlayerList.size(); k++) {
                 Player player2 = sortedPlayerList.get(k);
-                if (Math.abs(player1.getRankingPoints() - player2.getRankingPoints()) <= SINGLES_PLAYER_DIFFERENCE) {
+                if (Math.abs(player1.getRankingPoints() - player2.getRankingPoints()) <= Settings.singlesPlayerDifference()) {
                     // Player inside point range -> create new recommendation
                     Match m = new Match(storage, -2, 'S',
                             new long[]{player1.getPlayerID(), player2.getPlayerID()},
@@ -251,7 +250,7 @@ public class HomeFragment extends Fragment {
                         pointsTeam1 = player1.getRankingPoints() + player2.getRankingPoints();
                         pointsTeam2 = player3.getRankingPoints() + player4.getRankingPoints();
 
-                        if (Math.abs(pointsTeam1 - pointsTeam2) <= DOUBLES_PLAYER_DIFFERENCE) {
+                        if (Math.abs(pointsTeam1 - pointsTeam2) <= Settings.doublesPlayerDifference()) {
                             // Player inside point range -> create new recommendation
                             Match m = new Match(storage, -2, 'D',
                                     new long[]{player1.getPlayerID(), player2.getPlayerID(),

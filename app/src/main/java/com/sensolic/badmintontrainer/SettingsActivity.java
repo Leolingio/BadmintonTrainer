@@ -27,6 +27,8 @@ public class SettingsActivity extends AppCompatActivity {
     private CheckBox manualStartPos;
     private CheckBox debugMode;
     private CheckBox autocompleteScore;
+    private SeekBar singlesDiffSeekBar;
+    private SeekBar doublesDiffSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,22 +45,14 @@ public class SettingsActivity extends AppCompatActivity {
         storage = Storage.getInstance(getApplicationContext());
         settings = Settings.getInstance(getApplicationContext());
 
-        TextView maxPointDiffSinglesText = findViewById(R.id.singlesPointDiffText);
-        TextView maxPointDiffDoublesText = findViewById(R.id.doublesPointDiffText);
-        SeekBar singlesDiffSeekBar = findViewById(R.id.seekBarSingles);
-        SeekBar doublesDiffSeekBar = findViewById(R.id.seekBarDoubles);
-
-        maxPointDiffSinglesText.setText("Max point difference in Singles: "+HomeFragment.SINGLES_PLAYER_DIFFERENCE+" Points");
-        maxPointDiffDoublesText.setText("Max point difference in Doubles: "+HomeFragment.DOUBLES_PLAYER_DIFFERENCE+" Points");
-
-        singlesDiffSeekBar.setProgress(HomeFragment.SINGLES_PLAYER_DIFFERENCE);
-        doublesDiffSeekBar.setProgress(HomeFragment.DOUBLES_PLAYER_DIFFERENCE);
+        singlesDiffSeekBar = findViewById(R.id.seekBarSingles);
+        doublesDiffSeekBar = findViewById(R.id.seekBarDoubles);
 
         singlesDiffSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                maxPointDiffSinglesText.setText("Max point difference in Singles: "+progress+" Points");
-                HomeFragment.SINGLES_PLAYER_DIFFERENCE = progress;
+                Settings.setSinglesPlayerDifference(progress);
+                refreshPlayerDiffText();
             }
 
             @Override
@@ -71,12 +65,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
-
         doublesDiffSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                maxPointDiffDoublesText.setText("Max point difference in Doubles: "+progress+" Points");
-                HomeFragment.DOUBLES_PLAYER_DIFFERENCE = progress;
+                Settings.setDoublesPlayerDifference(progress);
+                refreshPlayerDiffText();
             }
 
             @Override
@@ -109,6 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         refreshSettings();
+        refreshPlayerDiffText();
 
         TextView versionText =findViewById(R.id.version);
         versionText.setText(getString(R.string.version)+ BuildConfig.VERSION_NAME.toString());
@@ -161,6 +155,18 @@ public class SettingsActivity extends AppCompatActivity {
         manualStartPos.setChecked(Settings.manualStartPos());
         debugMode.setChecked(Settings.debugMode());
         autocompleteScore.setChecked(Settings.autocompleteScore());
+        singlesDiffSeekBar.setProgress(Settings.singlesPlayerDifference());
+        doublesDiffSeekBar.setProgress(Settings.doublesPlayerDifference());
+    }
+
+    /**
+     * This method refreshes the text corresponding to the player difference progress-bar
+     */
+    private void refreshPlayerDiffText() {
+        TextView maxPointDiffSinglesText = findViewById(R.id.singlesPointDiffText);
+        TextView maxPointDiffDoublesText = findViewById(R.id.doublesPointDiffText);
+        maxPointDiffSinglesText.setText("Max point difference in Singles: "+Settings.singlesPlayerDifference()+" Points");
+        maxPointDiffDoublesText.setText("Max point difference in Doubles: "+Settings.doublesPlayerDifference()+" Points");
     }
 
     /**

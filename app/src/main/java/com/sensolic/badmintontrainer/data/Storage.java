@@ -233,11 +233,25 @@ public class Storage {
                 System.out.println("ERROR in Saving Settings");
             }
         }
+
+        if (!changeSetting("singlesPlayerDiff", Settings.singlesPlayerDifference() + "")) {
+            if (!addSetting("singlesPlayerDiff", Settings.singlesPlayerDifference() + "")) {
+                System.out.println("ERROR in Saving Settings");
+            }
+        }
+
+        if (!changeSetting("doublesPlayerDiff", Settings.doublesPlayerDifference()+ "")) {
+            if (!addSetting("doublesPlayerDiff", Settings.doublesPlayerDifference()+ "")) {
+                System.out.println("ERROR in Saving Settings");
+            }
+        }
+
         if (!changeSetting("autocompleteScore", Settings.autocompleteScore() + "")) {
             if (!addSetting("autocompleteScore", Settings.autocompleteScore() + "")) {
                 System.out.println("ERROR in Saving Settings");
             }
         }
+
         if (!changeSetting("defaultMatchType", Settings.getDefaultMatchType())) {
             if (!addSetting("defaultMatchType", Settings.getDefaultMatchType())) {
                 System.out.println("ERROR in Saving Settings");
@@ -477,9 +491,9 @@ public class Storage {
             FileReader reader;
             for (int i = 0; i <= 1; i++) {
                 if (i == 0) {
-                    file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
-                } else {
                     file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+                } else {
+                    file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
                 }
                 reader = new FileReader(file);
                 while (reader.ready()) {

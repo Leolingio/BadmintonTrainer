@@ -12,6 +12,8 @@ public class Settings {
     private static boolean debugMode = false;
     private static boolean autocompleteScore = true;
     private static char defaultMatchType = 'S';
+    private static int singlesPlayerDifference = 10;
+    private static int doublesPlayerDifference = 20;
 
 
     private Storage storage;
@@ -55,10 +57,26 @@ public class Settings {
 
     /**
      * This method can be used to get the value of autocompleteScore attribute
-     * @return  Value of debugMode
+     * @return  Value of autocompleteScore
      */
     public static boolean autocompleteScore(){
         return autocompleteScore;
+    }
+
+    /**
+     * This method can be used to get the value of singlesPlayerDifference attribute
+     * @return  Value of singlesPlayerDifference
+     */
+    public static int singlesPlayerDifference(){
+        return singlesPlayerDifference;
+    }
+
+    /**
+     * This method can be used to get the value of doublesPlayerDifference attribute
+     * @return  Value of doublesPlayerDifference
+     */
+    public static int doublesPlayerDifference(){
+        return doublesPlayerDifference;
     }
 
     /**
@@ -105,6 +123,22 @@ public class Settings {
     }
 
     /**
+     * This method can be used to set the value of singlesPlayerDifference
+     * @param value The new value for singlesPlayerDifference
+     */
+    public static void setSinglesPlayerDifference(int value){
+        singlesPlayerDifference = value;
+    }
+
+    /**
+     * This method can be used to set the value of doublesPlayerDifference
+     * @param value The new value for doublesPlayerDifference
+     */
+    public static void setDoublesPlayerDifference(int value){
+        doublesPlayerDifference = value;
+    }
+
+    /**
      * This method decodes and executes the returned String of the Storage object
      * @param code returned String of Storage
      */
@@ -128,6 +162,12 @@ public class Settings {
                         break;
                     case "debugMode":
                         debugMode = Boolean.parseBoolean(value);
+                        break;
+                    case "singlesPlayerDiff":
+                        singlesPlayerDifference = Integer.parseInt(value);
+                        break;
+                    case "doublesPlayerDiff":
+                        doublesPlayerDifference = Integer.parseInt(value);
                         break;
                     case "autocompleteScore":
                         autocompleteScore = Boolean.parseBoolean(value);
