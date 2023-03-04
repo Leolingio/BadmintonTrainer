@@ -29,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
     private CheckBox autocompleteScore;
     private SeekBar singlesDiffSeekBar;
     private SeekBar doublesDiffSeekBar;
+    private SeekBar textSizeSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,25 @@ public class SettingsActivity extends AppCompatActivity {
 
         storage = Storage.getInstance(getApplicationContext());
         settings = Settings.getInstance(getApplicationContext());
+
+        textSizeSeekBar = findViewById(R.id.seekBarTextSize);
+        textSizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                Settings.setTextSize(progress);
+                refreshTextSizeText();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         singlesDiffSeekBar = findViewById(R.id.seekBarSingles);
         doublesDiffSeekBar = findViewById(R.id.seekBarDoubles);
@@ -103,9 +123,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         refreshSettings();
         refreshPlayerDiffText();
+        refreshTextSizeText();
 
         TextView versionText =findViewById(R.id.version);
-        versionText.setText(getString(R.string.version)+ BuildConfig.VERSION_NAME.toString());
+        versionText.setText(getString(R.string.version)+ BuildConfig.VERSION_NAME);
 
         Button b = findViewById(R.id.showChangelogButton);
         b.setOnClickListener(view -> {
@@ -157,6 +178,7 @@ public class SettingsActivity extends AppCompatActivity {
         autocompleteScore.setChecked(Settings.autocompleteScore());
         singlesDiffSeekBar.setProgress(Settings.singlesPlayerDifference());
         doublesDiffSeekBar.setProgress(Settings.doublesPlayerDifference());
+        textSizeSeekBar.setProgress(Settings.textSize());
     }
 
     /**
@@ -167,6 +189,26 @@ public class SettingsActivity extends AppCompatActivity {
         TextView maxPointDiffDoublesText = findViewById(R.id.doublesPointDiffText);
         maxPointDiffSinglesText.setText("Max point difference in Singles: "+Settings.singlesPlayerDifference()+" Points");
         maxPointDiffDoublesText.setText("Max point difference in Doubles: "+Settings.doublesPlayerDifference()+" Points");
+    }
+
+    /**
+     * This method refreshes the text corresponding to the player difference progress-bar
+     */
+    private void refreshTextSizeText() {
+        TextView textSizeText = findViewById(R.id.textSizeText);
+        String val  = "";
+        switch(Settings.textSize()){
+            case 1:
+                val = "small";
+                break;
+            case 2:
+                val = "normal";
+                break;
+            case 3:
+                val = "large";
+                break;
+        }
+        textSizeText.setText("Text Size: " + val);
     }
 
     /**

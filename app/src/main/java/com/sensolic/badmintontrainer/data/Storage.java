@@ -234,6 +234,12 @@ public class Storage {
             }
         }
 
+        if (!changeSetting("textSize", Settings.textSize() + "")) {
+            if (!addSetting("textSize", Settings.textSize() + "")) {
+                System.out.println("ERROR in Saving Settings");
+            }
+        }
+
         if (!changeSetting("singlesPlayerDiff", Settings.singlesPlayerDifference() + "")) {
             if (!addSetting("singlesPlayerDiff", Settings.singlesPlayerDifference() + "")) {
                 System.out.println("ERROR in Saving Settings");

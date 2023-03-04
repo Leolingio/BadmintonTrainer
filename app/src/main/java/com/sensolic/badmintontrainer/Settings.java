@@ -14,6 +14,7 @@ public class Settings {
     private static char defaultMatchType = 'S';
     private static int singlesPlayerDifference = 10;
     private static int doublesPlayerDifference = 20;
+    private static int textSize = 2;
 
 
     private Storage storage;
@@ -80,6 +81,14 @@ public class Settings {
     }
 
     /**
+     * This method can be used to get the value of textSize attribute
+     * @return  Value of textSize
+     */
+    public static int textSize(){
+        return textSize;
+    }
+
+    /**
      * This method can be used to get the value of defaultMatchType attribute
      * @return  Value of defaultMatchType
      */
@@ -139,6 +148,14 @@ public class Settings {
     }
 
     /**
+     * This method can be used to set the value of textSize
+     * @param value The new value for textSize
+     */
+    public static void setTextSize(int value){
+        textSize = value;
+    }
+
+    /**
      * This method decodes and executes the returned String of the Storage object
      * @param code returned String of Storage
      */
@@ -162,6 +179,9 @@ public class Settings {
                         break;
                     case "debugMode":
                         debugMode = Boolean.parseBoolean(value);
+                        break;
+                    case "textSize":
+                        textSize = Integer.parseInt(value);
                         break;
                     case "singlesPlayerDiff":
                         singlesPlayerDifference = Integer.parseInt(value);
