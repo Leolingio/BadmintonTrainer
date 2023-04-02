@@ -6,6 +6,13 @@ import com.sensolic.badmintontrainer.data.Storage;
 
 public class Settings {
 
+    public static final int TEXTSIZE_SMALL_HEADER = 13;
+    public static final int TEXTSIZE_SMALL_TEXT = 10;
+    public static final int TEXTSIZE_NORMAL_HEADER = 15;
+    public static final int TEXTSIZE_NORMAL_TEXT = 12;
+    public static final int TEXTSIZE_BIG_HEADER = 17;
+    public static final int TEXTSIZE_BIG_TEXT = 14;
+
     private static int lastAppVersion = -1;
     private static Settings instance;
     private static boolean manualStartPos = true;

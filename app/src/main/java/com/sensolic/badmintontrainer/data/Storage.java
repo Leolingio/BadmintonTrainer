@@ -721,7 +721,7 @@ public class Storage {
                 FileWriter w = new FileWriter(file);
                 BufferedWriter writer = new BufferedWriter(w);
 
-                writer.write(content + toStore);
+                writer.write(content + System.lineSeparator() + toStore);
 
                 reader.close();
                 writer.close();
@@ -1028,7 +1028,7 @@ public class Storage {
                 FileWriter w = new FileWriter(file);
                 BufferedWriter writer = new BufferedWriter(w);
 
-                writer.write(content + toStore);
+                writer.write(content + System.lineSeparator() +toStore);
 
                 reader.close();
                 writer.close();

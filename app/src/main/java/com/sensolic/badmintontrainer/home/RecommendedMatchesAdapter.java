@@ -10,11 +10,13 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
@@ -42,6 +44,7 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         TextView matchInfoTitle, team1player1, team1player2, team2player1, team2player2;
+        Button saveMatch;
     }
 
     @Override
@@ -67,6 +70,22 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         ViewHolder holder;
+        float sizeHead = 0, sizeText = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                break;
+        }
+
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.recommended_matches_list_view, null);
@@ -76,6 +95,7 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
             holder.team1player2 = view.findViewById(R.id.team1player2);
             holder.team2player1 = view.findViewById(R.id.team2player1);
             holder.team2player2 = view.findViewById(R.id.team2player2);
+            holder.saveMatch = view.findViewById(R.id.saveMatch);
 
             view.setTag(holder);
         } else {
@@ -108,6 +128,13 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
         }
 
         view.setClickable(false);
+
+        holder.matchInfoTitle.setTextSize(sizeHead);
+        holder.team1player1.setTextSize(sizeText);
+        holder.team1player2.setTextSize(sizeText);
+        holder.team2player1.setTextSize(sizeText);
+        holder.team2player2.setTextSize(sizeText);
+        holder.saveMatch.setTextSize(sizeText);
 
         return view;
     }

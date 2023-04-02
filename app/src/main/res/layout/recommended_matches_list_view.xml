@@ -69,10 +69,12 @@
                 android:text="Team2Player2" />
         </LinearLayout>
     </LinearLayout>
-    <TextView
+    <Button
         android:id="@+id/saveMatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="?android:textColorHint"
         android:text="-&gt; Save for later &lt;-"/>
 </LinearLayout>

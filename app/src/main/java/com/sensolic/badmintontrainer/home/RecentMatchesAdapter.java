@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
@@ -74,6 +75,22 @@ public class RecentMatchesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         ViewHolder holder;
+        float sizeHead = 0, sizeText = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                break;
+        }
+
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.recent_match_list_view, null);
@@ -182,6 +199,14 @@ public class RecentMatchesAdapter extends BaseAdapter {
             return true;
         });
 
+        holder.matchInfoTitle.setTextSize(sizeHead);
+        holder.team1player1.setTextSize(sizeText);
+        holder.team1player2.setTextSize(sizeText);
+        holder.team2player1.setTextSize(sizeText);
+        holder.team2player2.setTextSize(sizeText);
+        holder.score1.setTextSize(sizeText);
+        holder.score2.setTextSize(sizeText);
+        holder.score3.setTextSize(sizeText);
         return view;
     }
 

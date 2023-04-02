@@ -2,14 +2,17 @@ package com.sensolic.badmintontrainer.statsFragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
@@ -55,22 +58,23 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        this.view = view;
+
         storage = Storage.getInstance(view.getContext());
         recentMatches = view.findViewById(R.id.recentMatches);
         recommendedMatches = view.findViewById(R.id.recommendedMatches);
 
-        recentMatchHeight = (int) (115 * getResources().getDisplayMetrics().density);
-        recommendedMatchHeight = (int) (127 * getResources().getDisplayMetrics().density);
+        refreshTextSize();
 
         ArrayList<Match> arrayList = storage.getStoredRecentMatches();
 
-        TextView emptyRecentMatchText = view.findViewById(R.id.emptyRecentMatchesText);
+        final TextView[] emptyRecentMatchText = {view.findViewById(R.id.emptyRecentMatchesText)};
         if (arrayList.size() == 0) {
             recentMatches.setVisibility(View.GONE);
-            emptyRecentMatchText.setVisibility(View.VISIBLE);
+            emptyRecentMatchText[0].setVisibility(View.VISIBLE);
         } else {
             recentMatches.setVisibility(View.VISIBLE);
-            emptyRecentMatchText.setVisibility(View.GONE);
+            emptyRecentMatchText[0].setVisibility(View.GONE);
             ViewGroup.LayoutParams params = recentMatches.getLayoutParams();
             params.height = recentMatchHeight * arrayList.size();
         }
@@ -100,6 +104,7 @@ public class HomeFragment extends Fragment {
             });
             t.start();
 
+            emptyRecentMatchText[0] = view.findViewById(R.id.emptyRecentMatchesText);
             ArrayList<Match> list = storage.getStoredRecentMatches();
             recentMatchAdapter = new RecentMatchesAdapter(view1.getContext(), list);
             recentMatches.setAdapter(recentMatchAdapter);
@@ -108,10 +113,10 @@ public class HomeFragment extends Fragment {
             params.height = recentMatchHeight * list.size();
             if (list.size() == 0) {
                 recentMatches.setVisibility(View.GONE);
-                emptyRecentMatchText.setVisibility(View.VISIBLE);
+                emptyRecentMatchText[0].setVisibility(View.VISIBLE);
             } else {
                 recentMatches.setVisibility(View.VISIBLE);
-                emptyRecentMatchText.setVisibility(View.GONE);
+                emptyRecentMatchText[0].setVisibility(View.GONE);
             }
             refreshDone = true;
             lockRefreshRecentMatchesButton.unlock();
@@ -161,8 +166,6 @@ public class HomeFragment extends Fragment {
             lockRefreshRecommendedMatchesButton.unlock();
         });
 
-        this.view = view;
-
         return view;
     }
 
@@ -170,6 +173,8 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         refreshRecommendedMatches();
+        refreshRecentMatches();
+        refreshTextSize();
     }
 
     /**
@@ -444,7 +449,7 @@ public class HomeFragment extends Fragment {
     /**
      *  This method refreshes the recommended matches view
      */
-    public void refreshRecommendedMatches() {
+    private void refreshRecommendedMatches() {
         ArrayList<Match> arrayList = generateRecommendedMatches();
 
         TextView emptyRecommendedMatchText = view.findViewById(R.id.emptyRecommendedMatchesText);
@@ -466,5 +471,67 @@ public class HomeFragment extends Fragment {
         recommendedMatchesAdapter.notifyDataSetChanged();
 
         recommendedMatches.invalidate();
+    }
+
+    private void refreshTextSize(){
+        if(view == null) return;
+        TextView recommendedMatchesHeader = view.findViewById(R.id.recommendedMatchesHeader);
+        TextView recentMatchesHeader = view.findViewById(R.id.recentMatchesHeader);
+
+        if(recommendedMatchesHeader == null || recentMatchesHeader == null) return;
+
+        float txtsizeHead = 0;
+        int recent = 0, recomm = 0;
+        switch(Settings.textSize()){
+            case 1:
+                txtsizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                recent = 100;
+                recomm = 145;
+                break;
+            case 2:
+                txtsizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                recent = 110;
+                recomm = 155;
+                break;
+            case 3:
+                txtsizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                recent = 125;
+                recomm = 160;
+                break;
+        }
+        recommendedMatchesHeader.setTextSize(txtsizeHead);
+        recentMatchesHeader.setTextSize(txtsizeHead);
+
+        // Refresh layout sizes
+        recentMatchHeight = (int) (recent * getResources().getDisplayMetrics().density);
+        recommendedMatchHeight = (int) (recomm * getResources().getDisplayMetrics().density);
+
+    }
+
+    /**
+     *  This method refreshes the recent matches view
+     */
+    private void refreshRecentMatches() {
+        ArrayList<Match> arrayList = storage.getStoredRecentMatches();
+
+        TextView emptyRecentMatchText = view.findViewById(R.id.emptyRecentMatchesText);
+        if (arrayList.size() == 0) {
+            recentMatches.setVisibility(View.GONE);
+            emptyRecentMatchText.setVisibility(View.VISIBLE);
+        } else {
+            recentMatches.setVisibility(View.VISIBLE);
+            emptyRecentMatchText.setVisibility(View.GONE);
+            ViewGroup.LayoutParams params = recentMatches.getLayoutParams();
+            params.height = recentMatchHeight * arrayList.size();
+            recentMatches.setLayoutParams(params);
+        }
+
+        recentMatchAdapter = new RecentMatchesAdapter(view.getContext(), arrayList);
+
+        recentMatches.setAdapter(recentMatchAdapter);
+
+        recentMatchAdapter.notifyDataSetChanged();
+
+        recentMatches.invalidate();
     }
 }
