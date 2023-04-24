@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -179,6 +180,51 @@ public class SettingsActivity extends AppCompatActivity {
         singlesDiffSeekBar.setProgress(Settings.singlesPlayerDifference());
         doublesDiffSeekBar.setProgress(Settings.doublesPlayerDifference());
         textSizeSeekBar.setProgress(Settings.textSize());
+
+        float sizeHead = 0, sizeText = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                break;
+        }
+
+        // Setting up correct text sizes
+        TextView tv = findViewById(R.id.settingsHeadline);
+        tv.setTextSize(sizeHead * 2);
+        tv = findViewById(R.id.generalHeadline);
+        tv.setTextSize(sizeHead + 2);
+        tv = findViewById(R.id.textSizeText);
+        tv.setTextSize(sizeText + 2);
+        tv = findViewById(R.id.recommendationsHeadline);
+        tv.setTextSize(sizeHead + 2);
+        tv = findViewById(R.id.singlesPointDiffText);
+        tv.setTextSize(sizeText + 2);
+        tv = findViewById(R.id.doublesPointDiffText);
+        tv.setTextSize(sizeText + 2);
+        tv = findViewById(R.id.registerMatchHeadline);
+        tv.setTextSize(sizeHead + 2);
+        CheckBox cb = findViewById(R.id.setAutocompleteScore);
+        cb.setTextSize(sizeText + 2);
+        tv = findViewById(R.id.defaultMatchTypeText);
+        tv.setTextSize(sizeText + 2);
+        RadioButton rb = findViewById(R.id.singlesMatchSelector);
+        rb.setTextSize(sizeText + 2);
+        rb = findViewById(R.id.doublesMatchSelector);
+        rb.setTextSize(sizeText + 2);
+        tv = findViewById(R.id.version);
+        tv.setTextSize(sizeText + 2);
+
+        Button b = findViewById(R.id.showChangelogButton);
+        b.setTextSize(sizeText);
     }
 
     /**

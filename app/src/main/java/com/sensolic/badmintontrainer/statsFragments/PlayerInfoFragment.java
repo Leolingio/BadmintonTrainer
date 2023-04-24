@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
@@ -76,6 +78,50 @@ public class PlayerInfoFragment extends Fragment {
             }
             startActivity(new Intent(view.getContext(), ReloadActivity.class));
         });
+
+        float sizeHead = 0, sizeText = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                break;
+        }
+
+        // Change size of texts
+        TextView tv = view.findViewById(R.id.playerInfoTitle);
+        tv.setTextSize(1.5f * sizeHead);
+        tv = view.findViewById(R.id.playerName);
+        tv.setTextSize(sizeHead);
+        tv = view.findViewById(R.id.playerID);
+        tv.setTextSize(sizeHead);
+        tv = view.findViewById(R.id.rankingPointsText);
+        tv.setTextSize(sizeHead);
+        tv = view.findViewById(R.id.rankingPoints);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.matchesPlayedText);
+        tv.setTextSize(sizeHead);
+        tv = view.findViewById(R.id.matchesPlayed);
+        tv.setTextSize(sizeText);
+
+        // Change size of reload image
+        reloadImage.getLayoutParams().height = (int)(8 * sizeHead);
+        reloadImage.getLayoutParams().width = (int)(8 * sizeHead);
+
+        // Player Icon
+        RelativeLayout rl = view.findViewById(R.id.playerIcon);
+        rl.getLayoutParams().height = (int)(15 * sizeHead);
+        rl.getLayoutParams().width = (int)(15 * sizeHead);
+        ImageView iv = view.findViewById(R.id.playerIconInside);
+        iv.getLayoutParams().height = (int)(15 * sizeHead) - 28;
+        iv.getLayoutParams().width = (int)(15 * sizeHead) - 28;
 
         return view;
     }

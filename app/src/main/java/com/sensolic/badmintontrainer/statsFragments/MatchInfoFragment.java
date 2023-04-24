@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
@@ -46,69 +48,57 @@ public class MatchInfoFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(false);
 
         RelativeLayout team1player1icon = view.findViewById(R.id.team1player1icon);
-        team1player1icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(currentShowing != null){
-                    Player toShow = currentShowing.getTeam1Player1();
-                    if(toShow != null){
-                        StatsActivity.showInfo(toShow);
-                        StatsActivity.linkedMatch = true;
-                        startActivity(new Intent(getContext(),ReloadActivity.class));
-                    } else{
-                        Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
-                    }
+        team1player1icon.setOnClickListener(view -> {
+            if(currentShowing != null){
+                Player toShow = currentShowing.getTeam1Player1();
+                if(toShow != null){
+                    StatsActivity.showInfo(toShow);
+                    StatsActivity.linkedMatch = true;
+                    startActivity(new Intent(getContext(),ReloadActivity.class));
+                } else{
+                    Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         RelativeLayout team1player2icon = view.findViewById(R.id.team1player2icon);
-        team1player2icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(currentShowing != null){
-                    Player toShow = currentShowing.getTeam1Player2();
-                    if(toShow != null){
-                        StatsActivity.showInfo(toShow);
-                        StatsActivity.linkedMatch = true;
-                        startActivity(new Intent(getContext(),ReloadActivity.class));
-                    } else{
-                        Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
-                    }
+        team1player2icon.setOnClickListener(view -> {
+            if(currentShowing != null){
+                Player toShow = currentShowing.getTeam1Player2();
+                if(toShow != null){
+                    StatsActivity.showInfo(toShow);
+                    StatsActivity.linkedMatch = true;
+                    startActivity(new Intent(getContext(),ReloadActivity.class));
+                } else{
+                    Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         RelativeLayout team2player1icon = view.findViewById(R.id.team2player1icon);
-        team2player1icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(currentShowing != null){
-                    Player toShow = currentShowing.getTeam2Player1();
-                    if(toShow != null){
-                        StatsActivity.showInfo(toShow);
-                        StatsActivity.linkedMatch = true;
-                        startActivity(new Intent(getContext(),ReloadActivity.class));
-                    } else{
-                        Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
-                    }
+        team2player1icon.setOnClickListener(view -> {
+            if(currentShowing != null){
+                Player toShow = currentShowing.getTeam2Player1();
+                if(toShow != null){
+                    StatsActivity.showInfo(toShow);
+                    StatsActivity.linkedMatch = true;
+                    startActivity(new Intent(getContext(),ReloadActivity.class));
+                } else{
+                    Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
         RelativeLayout team2player2icon = view.findViewById(R.id.team2player2icon);
-        team2player2icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(currentShowing != null){
-                    Player toShow = currentShowing.getTeam2Player2();
-                    if(toShow != null){
-                        StatsActivity.showInfo(toShow);
-                        StatsActivity.linkedMatch = true;
-                        startActivity(new Intent(getContext(),ReloadActivity.class));
-                    } else{
-                        Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
-                    }
+        team2player2icon.setOnClickListener(view -> {
+            if(currentShowing != null){
+                Player toShow = currentShowing.getTeam2Player2();
+                if(toShow != null){
+                    StatsActivity.showInfo(toShow);
+                    StatsActivity.linkedMatch = true;
+                    startActivity(new Intent(getContext(),ReloadActivity.class));
+                } else{
+                    Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,6 +106,88 @@ public class MatchInfoFragment extends Fragment {
         if(!showing && currentShowing != null){
             setInfo(currentShowing);
         }
+
+        float sizeHead = 0, sizeText = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                break;
+        }
+
+        // Change size of texts
+        TextView tv = view.findViewById(R.id.matchInfoTitle);
+        tv.setTextSize(1.5f * sizeHead);
+        tv = view.findViewById(R.id.vsText);
+        tv.setTextSize(2f * sizeHead);
+        tv = view.findViewById(R.id.resultText);
+        tv.setTextSize(sizeHead);
+        tv = view.findViewById(R.id.first_set);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.second_set);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.third_set);
+        tv.setTextSize(sizeText);
+
+        //Team 1 Player 1
+        tv = view.findViewById(R.id.team1player1name);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team1player1ID);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team1player1points);
+        tv.setTextSize(sizeText);
+        team1player1icon.getLayoutParams().height = (int)(15 * sizeHead);
+        team1player1icon.getLayoutParams().width = (int)(15 * sizeHead);
+        ImageView iv = view.findViewById(R.id.team1player1iconInside);
+        iv.getLayoutParams().height = (int)(15 * sizeHead) - 28;
+        iv.getLayoutParams().width = (int)(15 * sizeHead) - 28;
+
+        //Team 1 Player 2
+        tv = view.findViewById(R.id.team1player2name);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team1player2ID);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team1player2points);
+        tv.setTextSize(sizeText);
+        team1player2icon.getLayoutParams().height = (int)(15 * sizeHead);
+        team1player2icon.getLayoutParams().width = (int)(15 * sizeHead);
+        iv = view.findViewById(R.id.team1player2iconInside);
+        iv.getLayoutParams().height = (int)(15 * sizeHead) - 28;
+        iv.getLayoutParams().width = (int)(15 * sizeHead) - 28;
+
+        //Team 2 Player 1
+        tv = view.findViewById(R.id.team2player1name);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team2player1ID);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team2player1points);
+        tv.setTextSize(sizeText);
+        team2player1icon.getLayoutParams().height = (int)(15 * sizeHead);
+        team2player1icon.getLayoutParams().width = (int)(15 * sizeHead);
+        iv = view.findViewById(R.id.team2player1iconInside);
+        iv.getLayoutParams().height = (int)(15 * sizeHead) - 28;
+        iv.getLayoutParams().width = (int)(15 * sizeHead) - 28;
+
+        //Team 2 Player 2
+        tv = view.findViewById(R.id.team2player2name);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team2player2ID);
+        tv.setTextSize(sizeText);
+        tv = view.findViewById(R.id.team2player2points);
+        tv.setTextSize(sizeText);
+        team2player2icon.getLayoutParams().height = (int)(15 * sizeHead);
+        team2player2icon.getLayoutParams().width = (int)(15 * sizeHead);
+        iv = view.findViewById(R.id.team2player2iconInside);
+        iv.getLayoutParams().height = (int)(15 * sizeHead) - 28;
+        iv.getLayoutParams().width = (int)(15 * sizeHead) - 28;
 
         return view;
     }

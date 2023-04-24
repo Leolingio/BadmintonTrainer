@@ -21,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -92,6 +93,22 @@ public class RegisterMatchActivity extends AppCompatActivity {
         for (Player p : list) {
             players[index] = p.getPlayerName() + " - " + p.getIDInfo();
             index++;
+        }
+
+        float sizeHead = 0, sizeText = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                break;
         }
 
         // Setup edittext references
@@ -1195,6 +1212,38 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
         matchID = storage.getLastMatchID();
 
+        TextView tv = findViewById(R.id.registerMatchHeadline);
+        tv.setTextSize(sizeHead * 2);
+
+        RadioButton rb = findViewById(R.id.singlesMatchSelector);
+        rb.setTextSize(sizeText);
+        rb = findViewById(R.id.doublesMatchSelector);
+        rb.setTextSize(sizeText);
+
+        team1player1chooser.setTextSize(sizeHead);
+        team1player2chooser.setTextSize(sizeHead);
+        team2player1chooser.setTextSize(sizeHead);
+        team2player2chooser.setTextSize(sizeHead);
+
+        score1team1editText.setTextSize(sizeHead);
+        score2team1editText.setTextSize(sizeHead);
+        score3team1editText.setTextSize(sizeHead);
+        score1team2editText.setTextSize(sizeHead);
+        score2team2editText.setTextSize(sizeHead);
+        score3team2editText.setTextSize(sizeHead);
+
+        tv = findViewById(R.id.set1text);
+        tv.setTextSize(sizeHead);
+        tv = findViewById(R.id.set2text);
+        tv.setTextSize(sizeHead);
+        tv = findViewById(R.id.separatorScore1);
+        tv.setTextSize(sizeHead);
+        tv = findViewById(R.id.separatorScore2);
+        tv.setTextSize(sizeHead);
+        tv = findViewById(R.id.errorText);
+        tv.setTextSize(sizeHead);
+
+        submitButton.setTextSize(sizeText);
     }
 
     @Override

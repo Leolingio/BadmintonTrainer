@@ -6,6 +6,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -165,24 +169,9 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     private void closeMenu(){
-        searchButton.animate().translationY(575).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                searchButton.setVisibility(View.GONE);
-            }
-        });
-        registerMatchButton.animate().translationY(400).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                registerMatchButton.setVisibility(View.GONE);
-            }
-        });;
-        settingsButton.animate().translationY(225).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                settingsButton.setVisibility(View.GONE);
-            }
-        });;
+        searchButton.animate().translationY(575).withEndAction(() -> searchButton.setVisibility(View.GONE));
+        registerMatchButton.animate().translationY(400).withEndAction(() -> registerMatchButton.setVisibility(View.GONE));;
+        settingsButton.animate().translationY(225).withEndAction(() -> settingsButton.setVisibility(View.GONE));;
 
 
         menuButton.setImageDrawable(getApplicationContext().getDrawable(R.drawable.ic_menu_24));
@@ -299,6 +288,9 @@ public class StatsActivity extends AppCompatActivity {
                 playerInfoFragment.setInfo((Player) searchableToShow);
             }
             closeMenu();
+        }
+        if(leaderboardFragment != null){
+            leaderboardFragment.refreshLeaderboard();
         }
     }
 

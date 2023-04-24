@@ -135,6 +135,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/set1text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?android:textColorHint"
@@ -164,6 +165,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/separatorScore1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -206,6 +208,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/set2text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="?android:textColorHint"
@@ -235,6 +238,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/separatorScore2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -360,6 +364,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:textAllCaps="false"
             android:text="@string/submitButton" />
 
     </RelativeLayout>

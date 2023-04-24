@@ -21,7 +21,7 @@
             app:contentInsetStartWithNavigation="0dp">
 
             <TextView
-                android:id="@+id/matchInfoTitle"
+                android:id="@+id/playerInfoTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -57,13 +57,14 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/team1player1icon"
+                android:id="@+id/playerIcon"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:background="@drawable/round_corners_shape">
 
                 <ImageView
+                    android:id="@+id/playerIconInside"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:src="@drawable/ic_default_profile_24"
@@ -102,6 +103,7 @@
             android:background="@android:color/darker_gray" />
 
         <TextView
+            android:id="@+id/rankingPointsText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ranking-Points"
@@ -121,6 +123,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/matchesPlayedText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

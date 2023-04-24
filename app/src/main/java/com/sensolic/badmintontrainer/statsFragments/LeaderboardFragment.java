@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 public class LeaderboardFragment extends Fragment {
 
+    View view;
     Storage storage;
     ListView listView;
     LeaderboardAdapter adapter;
@@ -54,12 +55,19 @@ public class LeaderboardFragment extends Fragment {
 
         SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(() -> {
-            adapter = new LeaderboardAdapter(view.getContext(), storage.getStoredPlayers());
-            listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            refreshLeaderboard();
             pullToRefresh.setRefreshing(false);
         });
 
+        this.view = view;
+
         return view;
+    }
+
+    public void refreshLeaderboard(){
+        if(view == null) return;
+        adapter = new LeaderboardAdapter(view.getContext(), storage.getStoredPlayers());
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

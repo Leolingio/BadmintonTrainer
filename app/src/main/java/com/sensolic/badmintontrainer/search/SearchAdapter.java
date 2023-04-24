@@ -14,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Storage;
@@ -68,6 +69,20 @@ public class SearchAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         ViewHolder holder;
+
+        float sizeHead = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                break;
+        }
+
         if(view == null){
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.search_list_view, null);
@@ -168,6 +183,9 @@ public class SearchAdapter extends BaseAdapter {
             }
             return true;
         });
+
+        holder.name.setTextSize(sizeHead);
+        holder.ID.setTextSize(sizeHead);
 
         return view;
     }

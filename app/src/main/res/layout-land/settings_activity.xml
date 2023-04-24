@@ -216,6 +216,7 @@
             android:layout_below="@id/defaultMatchType"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="80dp"
+            android:textAllCaps="false"
             android:text="@string/showChangelog_button" />
 
         <TextView

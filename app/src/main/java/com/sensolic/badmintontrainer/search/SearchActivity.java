@@ -1,7 +1,10 @@
 package com.sensolic.badmintontrainer.search;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -13,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.sensolic.badmintontrainer.R;
+import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
@@ -34,6 +38,24 @@ public class SearchActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        float sizeHead = 0;
+        switch(Settings.textSize()){
+            case 1:
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                break;
+            case 2:
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                break;
+            case 3:
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                break;
+        }
+
+        SearchView searchView = findViewById(R.id.searchView);
+        AutoCompleteTextView search_text = (AutoCompleteTextView) searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
+        search_text.setTextColor(Color.WHITE);
+        search_text.setTextSize(sizeHead);
+
         storage = Storage.getInstance(getApplicationContext());
         listView = findViewById(R.id.listView);
 
@@ -45,8 +67,6 @@ public class SearchActivity extends AppCompatActivity {
 
         listView.setAdapter(adapter);
 
-
-        SearchView searchView = findViewById(R.id.searchView);
         searchView.setIconified(false);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
