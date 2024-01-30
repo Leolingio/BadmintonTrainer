@@ -1,5 +1,6 @@
 package com.sensolic.badmintontrainer.search;
 
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.sensolic.badmintontrainer.R;
@@ -53,7 +55,8 @@ public class SearchActivity extends AppCompatActivity {
 
         SearchView searchView = findViewById(R.id.searchView);
         AutoCompleteTextView search_text = (AutoCompleteTextView) searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
-        search_text.setTextColor(Color.WHITE);
+        int textColorHint = obtainStyledAttributes(new TypedValue().data, new int[]{android.R.attr.textColorHint}).getColor(0, 0);
+        search_text.setTextColor(textColorHint);
         search_text.setTextSize(sizeHead);
 
         storage = Storage.getInstance(getApplicationContext());
