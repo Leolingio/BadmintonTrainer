@@ -1391,5 +1391,35 @@ public class Storage {
         }
         return result;
     }
+
+    public ArrayList<Match> getStoredPendingMatches(){
+        ArrayList<Match> result = new ArrayList<>();
+        Match toAdd;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        char c;
+        try {
+            File file;
+            FileReader reader;
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/pendingMatches");
+            reader = new FileReader(file);
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    toAdd = (Match) convertEntryToObject(buffer);
+                    if (toAdd != null) result.add(toAdd);
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            // ignored
+        }
+        return result;
+    }
 }
 

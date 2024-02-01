@@ -21,6 +21,7 @@ import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
+import com.sensolic.badmintontrainer.data.Storage;
 
 public class MatchInfoFragment extends Fragment {
 
@@ -101,6 +102,19 @@ public class MatchInfoFragment extends Fragment {
                     Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        ImageView deleteMatchButton = view.findViewById(R.id.deleteImage);
+        deleteMatchButton.setOnClickListener(view -> {
+            Storage storage = Storage.getInstance(getContext());
+            if(currentShowing.getMatchDependency().equals("Pending")) {
+                storage.deletePendingMatch(currentShowing.getMatchID());
+            } else{
+                storage.deleteMatch(currentShowing.getMatchID());
+            }
+            currentShowing = null;
+            showing = false;
+            getActivity().onBackPressed();
         });
 
         if(!showing && currentShowing != null){
@@ -201,7 +215,11 @@ public class MatchInfoFragment extends Fragment {
         if(view != null){
             if (match.getMatchType() == 'S') {
                 textView = view.findViewById(R.id.matchInfoTitle);
-                textView.setText("Singles Match \n" + match.getIDInfo());
+                if(match.getMatchDependency().equals("Pending")){
+                    textView.setText("Pending \n Singles Match");
+                } else {
+                    textView.setText("Singles Match \n" + match.getIDInfo());
+                }
                 textView = view.findViewById(R.id.team1player1name);
                 textView.setText(match.getTeam1Player1().getPlayerName());
                 textView = view.findViewById(R.id.team1player1ID);
@@ -210,7 +228,7 @@ public class MatchInfoFragment extends Fragment {
                 textView.setText(match.getTeam2Player1().getPlayerName());
                 textView = view.findViewById(R.id.team2player1ID);
                 textView.setText("#P" + match.getTeam2Player1ID());
-                if(match.getWinner() == 1){
+                if(!match.getMatchDependency().equals("Pending") && match.getWinner() == 1){
                     textView = view.findViewById(R.id.team1player1points);
                     textView.setText("+"+match.getTeam1Player1points()+" Points");
                     textView = view.findViewById(R.id.team1player2points);
@@ -219,7 +237,7 @@ public class MatchInfoFragment extends Fragment {
                     textView.setVisibility(View.INVISIBLE);
                     textView = view.findViewById(R.id.team2player2points);
                     textView.setVisibility(View.INVISIBLE);
-                }else{
+                }else if(!match.getMatchDependency().equals("Pending")){
                     textView = view.findViewById(R.id.team1player1points);
                     textView.setVisibility(View.INVISIBLE);
                     textView = view.findViewById(R.id.team1player2points);
@@ -229,16 +247,18 @@ public class MatchInfoFragment extends Fragment {
                     textView = view.findViewById(R.id.team2player1points);
                     textView.setText("+"+match.getTeam2Player1points()+" Points");
                 }
-                textView = view.findViewById(R.id.first_set);
-                textView.setText("First Set - " + match.getScoreFirst());
-                textView = view.findViewById(R.id.second_set);
-                textView.setText("Second Set - " + match.getScoreSecond());
-                if (match.getSetCount() == 3) {
-                    textView = view.findViewById(R.id.third_set);
-                    textView.setText("Third Set - " + match.getScoreThird());
-                } else {
-                    textView = view.findViewById(R.id.third_set);
-                    textView.setVisibility(View.GONE);
+                if(!match.getMatchDependency().equals("Pending")) {
+                    textView = view.findViewById(R.id.first_set);
+                    textView.setText("First Set - " + match.getScoreFirst());
+                    textView = view.findViewById(R.id.second_set);
+                    textView.setText("Second Set - " + match.getScoreSecond());
+                    if (match.getSetCount() == 3) {
+                        textView = view.findViewById(R.id.third_set);
+                        textView.setText("Third Set - " + match.getScoreThird());
+                    } else {
+                        textView = view.findViewById(R.id.third_set);
+                        textView.setVisibility(View.GONE);
+                    }
                 }
 
                 textView = view.findViewById(R.id.team1player2name);
@@ -253,9 +273,14 @@ public class MatchInfoFragment extends Fragment {
                 icon.setVisibility(View.GONE);
                 icon = view.findViewById(R.id.team2player2icon);
                 icon.setVisibility(View.GONE);
+
             } else {
                 textView = view.findViewById(R.id.matchInfoTitle);
-                textView.setText("Doubles Match \n" + match.getIDInfo());
+                if(match.getMatchDependency().equals("Pending")){
+                    textView.setText("Pending \n Doubles Match");
+                } else {
+                    textView.setText("Doubles Match \n" + match.getIDInfo());
+                }
                 textView = view.findViewById(R.id.team1player1name);
                 textView.setText(match.getTeam1Player1().getPlayerName());
                 textView = view.findViewById(R.id.team1player1ID);
@@ -272,7 +297,7 @@ public class MatchInfoFragment extends Fragment {
                 textView.setText(match.getTeam2Player2().getPlayerName());
                 textView = view.findViewById(R.id.team2player2ID);
                 textView.setText("#P" + match.getTeam2Player2ID());
-                if(match.getWinner() == 1){
+                if(!match.getMatchDependency().equals("Pending") && match.getWinner() == 1){
                     textView = view.findViewById(R.id.team1player1points);
                     textView.setText("+"+match.getTeam1Player1points()+" Points");
                     textView = view.findViewById(R.id.team1player2points);
@@ -281,7 +306,7 @@ public class MatchInfoFragment extends Fragment {
                     textView.setVisibility(View.INVISIBLE);
                     textView = view.findViewById(R.id.team2player2points);
                     textView.setVisibility(View.INVISIBLE);
-                }else{
+                }else if(!match.getMatchDependency().equals("Pending")){
                     textView = view.findViewById(R.id.team1player1points);
                     textView.setVisibility(View.INVISIBLE);
                     textView = view.findViewById(R.id.team1player2points);
@@ -291,18 +316,19 @@ public class MatchInfoFragment extends Fragment {
                     textView = view.findViewById(R.id.team2player2points);
                     textView.setText("+"+match.getTeam2Player2points()+" Points");
                 }
-                textView = view.findViewById(R.id.first_set);
-                textView.setText("First Game - " + match.getScoreFirst());
-                textView = view.findViewById(R.id.second_set);
-                textView.setText("Second Game - " + match.getScoreSecond());
-                if (match.getSetCount() == 3) {
-                    textView = view.findViewById(R.id.third_set);
-                    textView.setText("Third Game - " + match.getScoreThird());
-                } else {
-                    textView = view.findViewById(R.id.third_set);
-                    textView.setVisibility(View.GONE);
+                if(!match.getMatchDependency().equals("Pending")) {
+                    textView = view.findViewById(R.id.first_set);
+                    textView.setText("First Game - " + match.getScoreFirst());
+                    textView = view.findViewById(R.id.second_set);
+                    textView.setText("Second Game - " + match.getScoreSecond());
+                    if (match.getSetCount() == 3) {
+                        textView = view.findViewById(R.id.third_set);
+                        textView.setText("Third Game - " + match.getScoreThird());
+                    } else {
+                        textView = view.findViewById(R.id.third_set);
+                        textView.setVisibility(View.GONE);
+                    }
                 }
-
                 textView = view.findViewById(R.id.team1player2name);
                 textView.setVisibility(View.VISIBLE);
                 textView = view.findViewById(R.id.team1player2ID);
@@ -318,6 +344,13 @@ public class MatchInfoFragment extends Fragment {
 
                 showing = true;
             }
+
+            // Make Info below invisible when it is a pending match TODO
+            if(match.getMatchDependency().equals("Pending")){
+                TextView resultText = view.findViewById(R.id.resultText);
+                resultText.setVisibility(View.GONE);
+            }
+
         }
     }
 }

@@ -21,6 +21,7 @@ import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
+import com.sensolic.badmintontrainer.home.PendingMatchesAdapter;
 import com.sensolic.badmintontrainer.home.RecentMatchesAdapter;
 import com.sensolic.badmintontrainer.home.RecommendedMatchesAdapter;
 
@@ -40,12 +41,15 @@ public class HomeFragment extends Fragment {
     private View view;
     private int recentMatchHeight;
     private int recommendedMatchHeight;
+    private int pendingMatchHeight;
     private final ArrayList[] recommendedMatchesHistory = new ArrayList[5];
     Storage storage;
     ListView recentMatches;
     ListView recommendedMatches;
+    ListView pendingMatches;
     RecentMatchesAdapter recentMatchAdapter;
     RecommendedMatchesAdapter recommendedMatchesAdapter;
+    PendingMatchesAdapter pendingMatchesAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,9 +67,11 @@ public class HomeFragment extends Fragment {
         storage = Storage.getInstance(view.getContext());
         recentMatches = view.findViewById(R.id.recentMatches);
         recommendedMatches = view.findViewById(R.id.recommendedMatches);
+        pendingMatches = view.findViewById(R.id.pendingMatches);
 
         refreshTextSize();
 
+        // Configure Recent Matches:
         ArrayList<Match> arrayList = storage.getStoredRecentMatches();
 
         final TextView[] emptyRecentMatchText = {view.findViewById(R.id.emptyRecentMatchesText)};
@@ -122,6 +128,7 @@ public class HomeFragment extends Fragment {
             lockRefreshRecentMatchesButton.unlock();
         });
 
+        // Configure Recommended Matches:
         arrayList = generateRecommendedMatches();
 
         TextView emptyRecommendedMatchText = view.findViewById(R.id.emptyRecommendedMatchesText);
@@ -164,6 +171,63 @@ public class HomeFragment extends Fragment {
 
             refreshDone = true;
             lockRefreshRecommendedMatchesButton.unlock();
+        });
+
+        // Configure Pending Matches:
+        arrayList = storage.getStoredPendingMatches();
+
+        final TextView[] emptyPendingMatchText = {view.findViewById(R.id.emptyPendingMatchesText)};
+        if (arrayList.size() == 0) {
+            pendingMatches.setVisibility(View.GONE);
+            emptyPendingMatchText[0].setVisibility(View.VISIBLE);
+        } else {
+            pendingMatches.setVisibility(View.VISIBLE);
+            emptyPendingMatchText[0].setVisibility(View.GONE);
+            ViewGroup.LayoutParams params = pendingMatches.getLayoutParams();
+            params.height = pendingMatchHeight * arrayList.size();
+        }
+
+        pendingMatchesAdapter = new PendingMatchesAdapter(view.getContext(), arrayList);
+
+        pendingMatches.setAdapter(pendingMatchesAdapter);
+
+        Lock lockRefreshPendingMatchesButton = new ReentrantLock(true);
+        Button refreshPendingMatches = view.findViewById(R.id.refreshPendingMatches);
+        refreshPendingMatches.setOnClickListener(view1 -> {
+            lockRefreshPendingMatchesButton.lock();
+            refreshDone = false;
+            Thread t = new Thread(() -> {
+                while (!refreshDone) {
+                    for (int i = 0; i <= 180; i++) {
+                        refreshPendingMatches.setRotation(i);
+                        refreshPendingMatches.invalidate();
+                        try {
+                            Thread.sleep(2);
+                        } catch (InterruptedException e) {
+                            //ignored
+                        }
+                        refreshPendingMatches.setRotation(0);
+                    }
+                }
+            });
+            t.start();
+
+            emptyPendingMatchText[0] = view.findViewById(R.id.emptyPendingMatchesText);
+            ArrayList<Match> list = storage.getStoredPendingMatches();
+            pendingMatchesAdapter = new PendingMatchesAdapter(view1.getContext(), list);
+            pendingMatches.setAdapter(pendingMatchesAdapter);
+            pendingMatchesAdapter.notifyDataSetChanged();
+            ViewGroup.LayoutParams params = pendingMatches.getLayoutParams();
+            params.height = pendingMatchHeight * list.size();
+            if (list.size() == 0) {
+                pendingMatches.setVisibility(View.GONE);
+                emptyPendingMatchText[0].setVisibility(View.VISIBLE);
+            } else {
+                pendingMatches.setVisibility(View.VISIBLE);
+                emptyPendingMatchText[0].setVisibility(View.GONE);
+            }
+            refreshDone = true;
+            lockRefreshPendingMatchesButton.unlock();
         });
 
         return view;
@@ -474,8 +538,9 @@ public class HomeFragment extends Fragment {
         if(view == null) return;
         TextView recommendedMatchesHeader = view.findViewById(R.id.recommendedMatchesHeader);
         TextView recentMatchesHeader = view.findViewById(R.id.recentMatchesHeader);
+        TextView pendingMatchesHeader = view.findViewById(R.id.pendingMatchesHeader);
 
-        if(recommendedMatchesHeader == null || recentMatchesHeader == null) return;
+        if(recommendedMatchesHeader == null || recentMatchesHeader == null || pendingMatchesHeader == null) return;
 
         float txtsizeHead = 0;
         int recent = 0, recomm = 0;
@@ -498,11 +563,12 @@ public class HomeFragment extends Fragment {
         }
         recommendedMatchesHeader.setTextSize(txtsizeHead);
         recentMatchesHeader.setTextSize(txtsizeHead);
+        pendingMatchesHeader.setTextSize(txtsizeHead);
 
         // Refresh layout sizes
         recentMatchHeight = (int) (recent * getResources().getDisplayMetrics().density);
         recommendedMatchHeight = (int) (recomm * getResources().getDisplayMetrics().density);
-
+        pendingMatchHeight = (int) (recomm * getResources().getDisplayMetrics().density);
     }
 
     /**
