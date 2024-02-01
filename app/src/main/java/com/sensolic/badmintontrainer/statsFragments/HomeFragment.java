@@ -206,9 +206,7 @@ public class HomeFragment extends Fragment {
                 Player player2 = sortedPlayerList.get(k);
                 if (Math.abs(player1.getRankingPoints() - player2.getRankingPoints()) <= Settings.singlesPlayerDifference()) {
                     // Player inside point range -> create new recommendation
-                    Match m = new Match(storage, -2, 'S',
-                            new long[]{player1.getPlayerID(), player2.getPlayerID()},
-                            -2, null, null);
+                    Match m = new Match(storage, 'S', new long[]{player1.getPlayerID(), player2.getPlayerID()});
 
                     boolean valid = true;
                     // Check if same match was previously recommended
@@ -257,11 +255,10 @@ public class HomeFragment extends Fragment {
 
                         if (Math.abs(pointsTeam1 - pointsTeam2) <= Settings.doublesPlayerDifference()) {
                             // Player inside point range -> create new recommendation
-                            Match m = new Match(storage, -2, 'D',
+                            Match m = new Match(storage, 'D',
                                     new long[]{player1.getPlayerID(), player2.getPlayerID(),
                                             player3.getPlayerID(),
-                                            player4.getPlayerID()},
-                                    -2, null, null);
+                                            player4.getPlayerID()});
 
                             boolean valid = true;
                             // Check if same match was previously recommended

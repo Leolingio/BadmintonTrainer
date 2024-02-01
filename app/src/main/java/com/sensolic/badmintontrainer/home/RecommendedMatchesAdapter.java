@@ -62,10 +62,6 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
         return 0;
     }
 
-    //Variables for touch detection
-    boolean pressed = false, popupMenuShowing = false;
-    long start, end;
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View getView(int position, View view, ViewGroup parent) {
@@ -135,6 +131,14 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
         holder.team2player1.setTextSize(sizeText);
         holder.team2player2.setTextSize(sizeText);
         holder.saveMatch.setTextSize(sizeText);
+
+        // save match button
+        holder.saveMatch.setOnClickListener(view1 -> {
+                storage.storePendingMatch(current);
+                arrayList.remove(current);
+                matchList.remove(current);
+                notifyDataSetChanged();
+        });
 
         return view;
     }

@@ -25,6 +25,7 @@ public class Storage {
 
     public static final int PLAYER_ID_DIGITS = 4;
     public static final int MATCH_ID_DIGITS = 6;
+    public static final int PENDING_MATCH_ID_DIGITS = 3;
     private static final boolean resetAll = false;
     private static final boolean resetPlayers = false;
     private static final boolean resetMatches = false;
@@ -35,6 +36,7 @@ public class Storage {
     private final Context context;
     private ArrayList<Long> matchIDs = new ArrayList<>();
     private ArrayList<Long> playerIDs = new ArrayList<>();
+    private ArrayList<Long> pendingMatchIDs = new ArrayList<>();
 
     private Storage(Context applicationContext) {
         context = applicationContext;
@@ -45,13 +47,13 @@ public class Storage {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/data");
             } else if (i == 1) {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
-            } else if(i == 2){
+            } else if (i == 2) {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/players");
-            } else{
+            } else {
                 file = new File(context.getFilesDir().getAbsolutePath() + "/recentMatches");
             }
-            if((resetAll || resetPlayers) && i == 2) file.delete();
-            if((resetAll || resetMatches) && (i == 1 || i == 3)){
+            if ((resetAll || resetPlayers) && i == 2) file.delete();
+            if ((resetAll || resetMatches) && (i == 1 || i == 3)) {
                 file.delete();
             }
 
@@ -65,13 +67,13 @@ public class Storage {
                         FileWriter w = new FileWriter(file);
                         BufferedWriter writer = new BufferedWriter(w);
                         Player[] players = new Player[]{
-                            new Player(1302, "Daniil Pindiurin", 0, 0, -1, 'r'),
-                            new Player(1303, "Rouven Wulandoko", 0, 0, -1, 'r'),
-                            new Player(1304, "Aurelia Wulandoko", 0, 0, -1, 'r'),
-                            new Player(1305, "Leo Hofmann", 0, 0, -1, 'r'),
-                            new Player(1306, "Luna Schmid", 0, 0, -1, 'r'),
-                            new Player(1307, "Jonas Schmid", 0, 0, -1, 'r'),
-                            new Player(1308, "Mian Khan", 0, 0, -1, 'r')
+                                new Player(1302, "Daniil Pindiurin", 0, 0, -1, 'r'),
+                                new Player(1303, "Rouven Wulandoko", 0, 0, -1, 'r'),
+                                new Player(1304, "Aurelia Wulandoko", 0, 0, -1, 'r'),
+                                new Player(1305, "Leo Hofmann", 0, 0, -1, 'r'),
+                                new Player(1306, "Luna Schmid", 0, 0, -1, 'r'),
+                                new Player(1307, "Jonas Schmid", 0, 0, -1, 'r'),
+                                new Player(1308, "Mian Khan", 0, 0, -1, 'r')
                         };
                         for (Player player : players) {
                             writer.write(convertPlayerToEntry(player) + "\n");
@@ -90,11 +92,13 @@ public class Storage {
         char c;
         try {
             FileReader reader;
-            for (int k = 0; k <= 1; k++) {
+            for (int k = 0; k <= 2; k++) {
                 if (k == 0) {
                     file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
-                } else {
+                } else if(k == 1){
                     file = new File(context.getFilesDir().getAbsolutePath() + "/players");
+                } else{
+                    file = new File(context.getFilesDir().getAbsolutePath() + "/pendingMatches");
                 }
                 reader = new FileReader(file);
                 while (reader.ready()) {
@@ -104,10 +108,12 @@ public class Storage {
                     } else if (c == '}') {
                         buffer = buffer + c;
                         toAdd = convertEntryToObject(buffer);
-                        if (toAdd instanceof Match){
+                        if (k == 0) {
                             matchIDs.add(((Match) toAdd).getMatchID());
-                        } else if(toAdd instanceof Player){
+                        } else if (k == 1) {
                             playerIDs.add(((Player) toAdd).getPlayerID());
+                        } else{
+                            pendingMatchIDs.add(((Match) toAdd).getMatchID());
                         }
                     } else {
                         buffer = buffer + c;
@@ -117,10 +123,11 @@ public class Storage {
         } catch (Exception e) {
             // ignored
         }
-        Comparator<Long> comp= (l1, l2) -> Math.toIntExact(l1-l2);
+        Comparator<Long> comp = (l1, l2) -> Math.toIntExact(l1 - l2);
         playerIDs.sort(comp);
         matchIDs.sort(comp);
-        if(matchIDs.size() != 0) lastMatchID = matchIDs.get(matchIDs.size()-1);
+        pendingMatchIDs.sort(comp);
+        if (matchIDs.size() != 0) lastMatchID = matchIDs.get(matchIDs.size() - 1);
     }
 
     public static Storage getInstance(Context context) {
@@ -246,8 +253,8 @@ public class Storage {
             }
         }
 
-        if (!changeSetting("doublesPlayerDiff", Settings.doublesPlayerDifference()+ "")) {
-            if (!addSetting("doublesPlayerDiff", Settings.doublesPlayerDifference()+ "")) {
+        if (!changeSetting("doublesPlayerDiff", Settings.doublesPlayerDifference() + "")) {
+            if (!addSetting("doublesPlayerDiff", Settings.doublesPlayerDifference() + "")) {
                 System.out.println("ERROR in Saving Settings");
             }
         }
@@ -376,31 +383,31 @@ public class Storage {
         // Adjust player profile stats
         Match toDelete = getMatchData(ID);
         Player team1player1, team1player2, team2player1, team2player2;
-        if(toDelete.getMatchType() == 'S'){
+        if (toDelete.getMatchType() == 'S') {
             team1player1 = toDelete.getTeam1Player1();
             team2player1 = toDelete.getTeam2Player1();
-            team1player1.setRankingPoints(team1player1.getRankingPoints()-toDelete.getTeam1Player1points());
-            team2player1.setRankingPoints(team2player1.getRankingPoints()-toDelete.getTeam2Player1points());
+            team1player1.setRankingPoints(team1player1.getRankingPoints() - toDelete.getTeam1Player1points());
+            team2player1.setRankingPoints(team2player1.getRankingPoints() - toDelete.getTeam2Player1points());
 
-            team1player1.setMatchesPlayed(team1player1.getMatchesPlayed()-1);
-            team2player1.setMatchesPlayed(team2player1.getMatchesPlayed()-1);
+            team1player1.setMatchesPlayed(team1player1.getMatchesPlayed() - 1);
+            team2player1.setMatchesPlayed(team2player1.getMatchesPlayed() - 1);
 
             storePlayer(team1player1);
             storePlayer(team2player1);
-        } else{
+        } else {
             team1player1 = toDelete.getTeam1Player1();
             team1player2 = toDelete.getTeam1Player2();
             team2player1 = toDelete.getTeam2Player1();
             team2player2 = toDelete.getTeam2Player2();
-            team1player1.setRankingPoints(team1player1.getRankingPoints()-toDelete.getTeam1Player1points());
-            team1player2.setRankingPoints(team1player2.getRankingPoints()-toDelete.getTeam1Player2points());
-            team2player1.setRankingPoints(team2player1.getRankingPoints()-toDelete.getTeam2Player1points());
-            team2player2.setRankingPoints(team2player2.getRankingPoints()-toDelete.getTeam2Player2points());
+            team1player1.setRankingPoints(team1player1.getRankingPoints() - toDelete.getTeam1Player1points());
+            team1player2.setRankingPoints(team1player2.getRankingPoints() - toDelete.getTeam1Player2points());
+            team2player1.setRankingPoints(team2player1.getRankingPoints() - toDelete.getTeam2Player1points());
+            team2player2.setRankingPoints(team2player2.getRankingPoints() - toDelete.getTeam2Player2points());
 
-            team1player1.setMatchesPlayed(team1player1.getMatchesPlayed()-1);
-            team1player2.setMatchesPlayed(team1player2.getMatchesPlayed()-1);
-            team2player1.setMatchesPlayed(team2player1.getMatchesPlayed()-1);
-            team2player2.setMatchesPlayed(team2player2.getMatchesPlayed()-1);
+            team1player1.setMatchesPlayed(team1player1.getMatchesPlayed() - 1);
+            team1player2.setMatchesPlayed(team1player2.getMatchesPlayed() - 1);
+            team2player1.setMatchesPlayed(team2player1.getMatchesPlayed() - 1);
+            team2player2.setMatchesPlayed(team2player2.getMatchesPlayed() - 1);
 
             storePlayer(team1player1);
             storePlayer(team1player2);
@@ -462,7 +469,7 @@ public class Storage {
         } catch (Exception e) {
             // ignored
         }
-        if(result){
+        if (result) {
             matchIDs.remove(ID);
 
             // Check if deleted match was in recent matches
@@ -475,7 +482,7 @@ public class Storage {
 
     public long getLastMatchID() {
         if (lastMatchID != 0) return lastMatchID;
-        else return (long) Math.pow(10, MATCH_ID_DIGITS-1);
+        else return (long) Math.pow(10, MATCH_ID_DIGITS - 1);
     }
 
     public void registerMatchID(long matchID) {
@@ -659,8 +666,10 @@ public class Storage {
                 points = new int[2];
                 players[0] = team1player1;
                 players[1] = team2player1;
-                points[0] = team1player1points;
-                points[1] = team2player1points;
+                if(!matchDependency.equals("Pending")) {
+                    points[0] = team1player1points;
+                    points[1] = team2player1points;
+                }
             } else {
                 players = new long[4];
                 points = new int[4];
@@ -668,19 +677,24 @@ public class Storage {
                 players[1] = team1player2;
                 players[2] = team2player1;
                 players[3] = team2player2;
-                points[0] = team1player1points;
-                points[1] = team1player2points;
-                points[2] = team2player1points;
-                points[3] = team2player2points;
+                if(!matchDependency.equals("Pending")) {
+                    points[0] = team1player1points;
+                    points[1] = team1player2points;
+                    points[2] = team2player1points;
+                    points[3] = team2player2points;
+                }
             }
             String[] scores = new String[setCount];
-            if (!InputFilterScore.checkScore(firstSetTeamOne, firstSetTeamTwo)) return null;
-            scores[0] = firstSetTeamOne + ":" + firstSetTeamTwo;
-            if (!InputFilterScore.checkScore(secondSetTeamOne, secondSetTeamTwo)) return null;
-            scores[1] = secondSetTeamOne + ":" + secondSetTeamTwo;
-            if (setCount == 3) {
-                if (!InputFilterScore.checkScore(thirdSetTeamOne, thirdSetTeamTwo)) return null;
-                scores[2] = thirdSetTeamOne + ":" + thirdSetTeamTwo;
+
+            if(!matchDependency.equals("Pending")) {
+                if (!InputFilterScore.checkScore(firstSetTeamOne, firstSetTeamTwo)) return null;
+                scores[0] = firstSetTeamOne + ":" + firstSetTeamTwo;
+                if (!InputFilterScore.checkScore(secondSetTeamOne, secondSetTeamTwo)) return null;
+                scores[1] = secondSetTeamOne + ":" + secondSetTeamTwo;
+                if (setCount == 3) {
+                    if (!InputFilterScore.checkScore(thirdSetTeamOne, thirdSetTeamTwo)) return null;
+                    scores[2] = thirdSetTeamOne + ":" + thirdSetTeamTwo;
+                }
             }
             switch (matchDependency) {
                 case "Ranking":
@@ -689,6 +703,10 @@ public class Storage {
                     return new Match(instance, ID, matchType, players, setCount, scores, points, tournamentID);
                 case "League":
                     return new Match(instance, ID, matchType, players, setCount, scores, points, leagueID, teamNumber);
+                case "Pending":
+                    Match toReturn = new Match(instance, matchType, players);
+                    toReturn.setMatchID(ID);
+                    return toReturn;
                 default:
                     return null;
             }
@@ -731,12 +749,11 @@ public class Storage {
         }
         // Update the recent matches
         ArrayList<Match> recentMatches = getStoredRecentMatches();
-        if(recentMatches.size() >= 4){
+        if (recentMatches.size() >= 4) {
             recentMatches.remove(0);
         }
         recentMatches.add(match);
         storeRecentMatches(recentMatches);
-
     }
 
     private boolean containsMatch(Match match) {
@@ -781,26 +798,30 @@ public class Storage {
             toStore = toStore + "team2player2:" + match.getTeam2Player2ID() + ";" + System.lineSeparator();
         }
 
-        // Points
-        toStore = toStore + "team1player1points:" + match.getTeam1Player1points() + ";" + System.lineSeparator();
-        toStore = toStore + "team2player1points:" + match.getTeam2Player1points() + ";" + System.lineSeparator();
-        if (match.getMatchType() == 'D') {
-            toStore = toStore + "team1player2points:" + match.getTeam1Player2points() + ";" + System.lineSeparator();
-            toStore = toStore + "team2player2points:" + match.getTeam2Player2points() + ";" + System.lineSeparator();
-        }
+        if(!match.getMatchDependency().equals("Pending")) {
 
-        // Add set attributes
-        toStore = toStore + "setCount:" + match.getSetCount() + ";" + System.lineSeparator();
-        buffer = match.getScoreFirst();
-        toStore = toStore + "firstSetTeamOne:" + buffer.substring(0, buffer.indexOf(':')) + ";" + System.lineSeparator();
-        toStore = toStore + "firstSetTeamTwo:" + buffer.substring(buffer.indexOf(':') + 1) + ";" + System.lineSeparator();
-        buffer = match.getScoreSecond();
-        toStore = toStore + "secondSetTeamOne:" + buffer.substring(0, buffer.indexOf(':')) + ";" + System.lineSeparator();
-        toStore = toStore + "secondSetTeamTwo:" + buffer.substring(buffer.indexOf(':') + 1) + ";" + System.lineSeparator();
-        if (match.getSetCount() == 3) {
-            buffer = match.getScoreThird();
-            toStore = toStore + "thirdSetTeamOne:" + buffer.substring(0, buffer.indexOf(':')) + ";" + System.lineSeparator();
-            toStore = toStore + "thirdSetTeamTwo:" + buffer.substring(buffer.indexOf(':') + 1) + ";" + System.lineSeparator();
+            // Points
+            toStore = toStore + "team1player1points:" + match.getTeam1Player1points() + ";" + System.lineSeparator();
+            toStore = toStore + "team2player1points:" + match.getTeam2Player1points() + ";" + System.lineSeparator();
+            if (match.getMatchType() == 'D') {
+                toStore = toStore + "team1player2points:" + match.getTeam1Player2points() + ";" + System.lineSeparator();
+                toStore = toStore + "team2player2points:" + match.getTeam2Player2points() + ";" + System.lineSeparator();
+            }
+
+            // Add set attributes
+            toStore = toStore + "setCount:" + match.getSetCount() + ";" + System.lineSeparator();
+            buffer = match.getScoreFirst();
+            toStore = toStore + "firstSetTeamOne:" + buffer.substring(0, buffer.indexOf(':')) + ";" + System.lineSeparator();
+            toStore = toStore + "firstSetTeamTwo:" + buffer.substring(buffer.indexOf(':') + 1) + ";" + System.lineSeparator();
+            buffer = match.getScoreSecond();
+            toStore = toStore + "secondSetTeamOne:" + buffer.substring(0, buffer.indexOf(':')) + ";" + System.lineSeparator();
+            toStore = toStore + "secondSetTeamTwo:" + buffer.substring(buffer.indexOf(':') + 1) + ";" + System.lineSeparator();
+            if (match.getSetCount() == 3) {
+                buffer = match.getScoreThird();
+                toStore = toStore + "thirdSetTeamOne:" + buffer.substring(0, buffer.indexOf(':')) + ";" + System.lineSeparator();
+                toStore = toStore + "thirdSetTeamTwo:" + buffer.substring(buffer.indexOf(':') + 1) + ";" + System.lineSeparator();
+            }
+
         }
 
         // Adding match dependency
@@ -942,7 +963,7 @@ public class Storage {
         return null;
     }
 
-    public Match getMatchData(long matchID){
+    public Match getMatchData(long matchID) {
         Searchable toAdd;
         String buffer = "";         // Here the matchEntry will be loaded to
         char c;
@@ -1005,7 +1026,7 @@ public class Storage {
         return result;
     }
 
-    public void storePlayer(Player player){
+    public void storePlayer(Player player) {
         // If already saved then just update the existing data
         if (containsPlayer(player)) updatePlayer(player);
         else {   // Create new entry for the match
@@ -1028,7 +1049,7 @@ public class Storage {
                 FileWriter w = new FileWriter(file);
                 BufferedWriter writer = new BufferedWriter(w);
 
-                writer.write(content + System.lineSeparator() +toStore);
+                writer.write(content + System.lineSeparator() + toStore);
 
                 reader.close();
                 writer.close();
@@ -1038,7 +1059,7 @@ public class Storage {
         }
     }
 
-    private void updatePlayer(Player player){
+    private void updatePlayer(Player player) {
         String content = "";
         String newContent = convertPlayerToEntry(player);
         String read;
@@ -1056,7 +1077,7 @@ public class Storage {
                     buffer = c + "";
                 } else if (c == '}') {
                     buffer = buffer + c;
-                    if(playerFound) content = content + buffer;
+                    if (playerFound) content = content + buffer;
                     else {
                         read = buffer;
 
@@ -1101,7 +1122,7 @@ public class Storage {
         }
     }
 
-    private boolean containsPlayer(Player player){
+    private boolean containsPlayer(Player player) {
         String buffer;
         try {
             File file = new File(context.getFilesDir().getAbsolutePath() + "/players");
@@ -1119,11 +1140,11 @@ public class Storage {
         return false;
     }
 
-    public long getNextFreeMatchID(){
-        long res = (long) Math.pow(10,MATCH_ID_DIGITS-1);
-        while (res != Math.pow(10,MATCH_ID_DIGITS)){
-            if(RegisterMatchActivity.isValidID(res, MATCH_ID_DIGITS)
-                    && !matchIDs.contains(res)){
+    public long getNextFreeMatchID() {
+        long res = (long) Math.pow(10, MATCH_ID_DIGITS - 1);
+        while (res != Math.pow(10, MATCH_ID_DIGITS)) {
+            if (RegisterMatchActivity.isValidID(res, MATCH_ID_DIGITS)
+                    && !matchIDs.contains(res)) {
                 return res;
             }
             res++;
@@ -1189,7 +1210,7 @@ public class Storage {
         return result;
     }
 
-    public ArrayList<Match> getStoredRecentMatches(){
+    public ArrayList<Match> getStoredRecentMatches() {
         ArrayList<Match> result = new ArrayList<>();
         Match toAdd;
         String buffer = "";         // Here the matchEntry will be loaded to
@@ -1219,15 +1240,15 @@ public class Storage {
         return result;
     }
 
-    private void storeRecentMatches(ArrayList<Match> toStore){
-        if(toStore == null || toStore.size() == 0) resetFile("recentMatches");
+    private void storeRecentMatches(ArrayList<Match> toStore) {
+        if (toStore == null || toStore.size() == 0) resetFile("recentMatches");
 
         String newRecentMatches = "";
         String buffer;
 
-        for(Match m : toStore){
+        for (Match m : toStore) {
             buffer = convertMatchToEntry(m);
-            newRecentMatches = newRecentMatches+buffer+"\n";
+            newRecentMatches = newRecentMatches + buffer + "\n";
         }
 
         try {
@@ -1242,9 +1263,133 @@ public class Storage {
 
             writer.write(newRecentMatches);
             writer.close();
-        } catch(Exception e){
+        } catch (Exception e) {
             //ignored
         }
+    }
+
+    /**
+     *  This method returns the next available pendingMatch ID
+     * @return pending match ID
+     */
+    public long getNextFreePendingMatchID() {
+        long res = (long) Math.pow(10, PENDING_MATCH_ID_DIGITS - 1);
+        while (res != Math.pow(10, PENDING_MATCH_ID_DIGITS)) {
+            if (!pendingMatchIDs.contains(res)) {
+                return res;
+            }
+            res++;
+        }
+        return -1;
+    }
+
+    /**
+     * This method stores a pending match
+     *
+     * @param match Match to store
+     */
+    public void storePendingMatch(Match match) {
+
+        // Eine ID zuweisen
+        match.setMatchID(getNextFreePendingMatchID());
+
+        String buffer;
+        String toStore = convertMatchToEntry(match);
+
+        String content = "";
+        try {
+            File file = new File(context.getFilesDir().getAbsolutePath() + "/pendingMatches");
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            buffer = reader.readLine();
+            while (buffer != null) {
+                content = content + buffer + System.lineSeparator();
+                buffer = reader.readLine();
+            }
+
+            resetFile("pendingMatches");
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/pendingMatches");
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content + System.lineSeparator() + toStore);
+
+            reader.close();
+            writer.close();
+
+            // Add ID to the pending match ID list
+            pendingMatchIDs.add(match.getMatchID());
+
+        } catch (Exception e) {
+            // ignore
+        }
+
+    }
+
+    /**
+     * This method deletes a pending match
+     *
+     * @param ID ID of the pending match
+     */
+    public boolean deletePendingMatch(long ID) {
+        String content = "";
+        String read;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        String toCompare;      // Here the substrings of buffer will be saved
+        boolean matchfound = false, result = false;
+        char c;
+        try {
+            File file = new File(context.getFilesDir().getAbsolutePath() + "/pendingMatches");
+            FileReader reader = new FileReader(file);
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    read = buffer;
+
+                    read = read.replaceAll(" ", "");
+                    read = read.replaceAll("\n", "");
+
+                    toCompare = read.substring(1, read.indexOf(';'));
+                    read = read.substring(read.indexOf(';') + 1);
+                    do {
+                        if (toCompare.substring(0, toCompare.indexOf(':')).equals("id")
+                                && toCompare.substring(toCompare.indexOf(':') + 1).equals(String.valueOf(ID))) {
+                            matchfound = true;
+                            result = true;
+                            break;
+                        }
+                        if (!read.equals("}")) {
+                            toCompare = read.substring(0, read.indexOf(';'));
+                            read = read.substring(read.indexOf(';') + 1);
+                        } else toCompare = "";
+                    } while (toCompare.length() != 0);
+                    if (!matchfound) {
+                        content = content + buffer;
+                    } else matchfound = false;
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+
+            resetFile("pendingMatches");
+
+            FileWriter w = new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(w);
+
+            writer.write(content);
+
+            reader.close();
+            writer.close();
+        } catch (Exception e) {
+            // ignored
+        }
+        if (result) {
+            pendingMatchIDs.remove(ID);
+        }
+        return result;
     }
 }
 

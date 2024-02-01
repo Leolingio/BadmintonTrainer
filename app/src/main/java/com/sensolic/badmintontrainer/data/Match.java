@@ -38,6 +38,7 @@ public class Match implements Searchable {
 
     /**
      * Describes if match is for "Ranking", "Tournament" or "League"
+     * If it is "Pending", that means, the match has not happened yet -> is shown in pending matches
      * This is just for later usage if more functions are implemented
      */
     private String matchDependency;
@@ -73,26 +74,26 @@ public class Match implements Searchable {
         }
 
         // Points
-        if(matchID != -2) {
-            if (matchType == 'S') {
-                team1player1points = points[0];
-                team2player1points = points[1];
-            } else {
-                team1player1points = points[0];
-                team1player2points = points[1];
-                team2player1points = points[2];
-                team2player2points = points[3];
-            }
+
+        if (matchType == 'S') {
+            team1player1points = points[0];
+            team2player1points = points[1];
+        } else {
+            team1player1points = points[0];
+            team1player2points = points[1];
+            team2player1points = points[2];
+            team2player2points = points[3];
         }
+
 
         this.setCount = setCount;
 
-        if (matchID != -2) {
-            // Read our set count
-            scoreFirst = scores[0];
-            scoreSecond = scores[1];
-            if (setCount == 3 && scores.length == 3) scoreThird = scores[2];
-        }
+
+        // Read our set count
+        scoreFirst = scores[0];
+        scoreSecond = scores[1];
+        if (setCount == 3 && scores.length == 3) scoreThird = scores[2];
+
         matchDependency = "Ranking";
     }
 
@@ -203,6 +204,32 @@ public class Match implements Searchable {
     }
 
     /**
+     * Creates a new match object with attributes given in parameter list
+     * This constructor is only for Pending matches
+     *
+     * @param matchType Type of the match 'S', 'D' - Singles or Doubles
+     * @param playerIDs Array with all ID of participating players
+     */
+    public Match(Storage storage, char matchType, long[] playerIDs) {
+        this.storage = storage;
+
+        this.matchType = matchType;
+
+        // Read our playerIDs
+        if (matchType == 'S') {
+            team1player1ID = playerIDs[0];
+            team2player1ID = playerIDs[1];
+        } else {
+            team1player1ID = playerIDs[0];
+            team1player2ID = playerIDs[1];
+            team2player1ID = playerIDs[2];
+            team2player2ID = playerIDs[3];
+        }
+
+        matchDependency = "Pending";
+    }
+
+    /**
      * Returns the info that should be displayed by default
      *
      * @return matchType in String format or null if the matchType is invalid
@@ -230,6 +257,18 @@ public class Match implements Searchable {
 
     public long getMatchID() {
         return matchID;
+    }
+
+    /**
+     *  This method changes the matchID
+     *  This works only for pending matches! ID of already played matches can't be changed anymore.
+     * @return true if operation was successful - false if not
+     */
+    public boolean setMatchID(long newID){
+        if(matchDependency.equals("Pending")){
+            matchID = newID;
+            return true;
+        } else return false;
     }
 
     public char getMatchType() {
