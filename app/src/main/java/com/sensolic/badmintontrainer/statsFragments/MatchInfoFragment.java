@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
+import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
+import com.sensolic.badmintontrainer.search.SearchActivity;
 
 public class MatchInfoFragment extends Fragment {
 
@@ -347,9 +350,33 @@ public class MatchInfoFragment extends Fragment {
 
             // Make Info below invisible when it is a pending match TODO
             if(match.getMatchDependency().equals("Pending")){
-                TextView resultText = view.findViewById(R.id.resultText);
-                resultText.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.resultText);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.first_set);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.second_set);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.third_set);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.team1player1points);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.team1player2points);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.team2player1points);
+                textView.setVisibility(View.GONE);
+                textView = view.findViewById(R.id.team2player2points);
+                textView.setVisibility(View.GONE);
             }
+
+            // AddResult Button
+            Button addResButton = view.findViewById(R.id.add_Result_Button);
+            addResButton.setOnClickListener(view -> {
+                RegisterMatchActivity.loadMatch = true;
+                RegisterMatchActivity.matchToLoad = currentShowing;
+                startActivity(new Intent(getContext(), RegisterMatchActivity.class));
+            });
+            if(match.getMatchDependency().equals("Pending")) addResButton.setVisibility(View.VISIBLE);
+            else addResButton.setVisibility(View.GONE);
 
         }
     }

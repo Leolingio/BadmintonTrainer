@@ -45,6 +45,8 @@ import java.util.Arrays;
 
 public class RegisterMatchActivity extends AppCompatActivity {
 
+    public static boolean loadMatch = false;
+    public static Match matchToLoad;
     private static long matchID;
     static boolean singlesMatch = true;
     boolean closeActivity = true;
@@ -1056,6 +1058,13 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
                     storage.registerMatchID(matchID);
                     StatsActivity.showInfo(matchNew);
+
+                    if(loadMatch){
+                        loadMatch = false;
+                        storage.deletePendingMatch(matchToLoad.getMatchID());
+                        matchToLoad = null;
+                    }
+
                     finish();
                 } else {
                     if (!validatePlayer(team1player1chooser.getText().toString())) errorMessage = errorMessage + "Player 1 missing \n ";
@@ -1190,6 +1199,13 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
                     storage.registerMatchID(matchID);
                     StatsActivity.showInfo(matchNew);
+
+                    if(loadMatch){
+                        loadMatch = false;
+                        storage.deletePendingMatch(matchToLoad.getMatchID());
+                        matchToLoad = null;
+                    }
+
                     finish();
                 } else {
                     if (!validatePlayer(team1player1chooser.getText().toString())) errorMessage = errorMessage + "Team 1 Player 1 missing \n";
@@ -1244,11 +1260,47 @@ public class RegisterMatchActivity extends AppCompatActivity {
         tv.setTextSize(sizeHead);
 
         submitButton.setTextSize(sizeText);
+
+        // Check if matchData should be loaded -> means, that pending match should be shown
+        if(loadMatch){
+            if(matchToLoad == null) loadMatch = false;      // No match to load -> false trigger
+            else{
+                // Pending match should be loaded
+
+                //Select matchType
+                if(matchToLoad.getMatchType() == 'S'){
+                    radioGroup.check(R.id.singlesMatchSelector);
+                } else{
+                    radioGroup.check(R.id.doublesMatchSelector);
+                }
+
+                //Load Player names
+                Player p = matchToLoad.getTeam1Player1();
+                String textToEnter = p.getPlayerName() + " - " + p.getIDInfo();
+                team1player1chooser.setText(textToEnter);
+                p = matchToLoad.getTeam2Player1();
+                textToEnter = p.getPlayerName() + " - " + p.getIDInfo();
+                team2player1chooser.setText(textToEnter);
+                if(matchToLoad.getMatchType() == 'D') {
+                    p = matchToLoad.getTeam1Player2();
+                    textToEnter = p.getPlayerName() + " - " + p.getIDInfo();
+                    team1player2chooser.setText(textToEnter);
+                    p = matchToLoad.getTeam2Player2();
+                    textToEnter = p.getPlayerName() + " - " + p.getIDInfo();
+                    team2player2chooser.setText(textToEnter);
+                }
+            }
+        }
+
     }
 
     @Override
     public void onBackPressed() {
         if(closeActivity) {
+            if(loadMatch){
+                loadMatch = false;
+                matchToLoad = null;
+            }
             super.onBackPressed();
         }
         closeActivity = true;
@@ -1354,6 +1406,10 @@ public class RegisterMatchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
+            if(loadMatch){
+                loadMatch = false;
+                matchToLoad = null;
+            }
             finish();
         }
         return super.onOptionsItemSelected(item);

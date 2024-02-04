@@ -3,6 +3,7 @@ package com.sensolic.badmintontrainer.statsFragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.Configuration;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,6 +39,7 @@ import kotlinx.coroutines.sync.Mutex;
 
 public class HomeFragment extends Fragment {
 
+    public static boolean doRefreshPendingMatches = false;
     private static boolean refreshDone = false;
     private View view;
     private int recentMatchHeight;
@@ -238,6 +241,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
         refreshRecommendedMatches();
         refreshRecentMatches();
+        refreshPendingMatches();
         refreshTextSize();
     }
 
@@ -263,6 +267,8 @@ public class HomeFragment extends Fragment {
                 previousMatches.addAll(list);
             }
         }
+        // Add all pending matches to list
+        ArrayList<Match> pendingMatchesList = new ArrayList<>(storage.getStoredPendingMatches());
 
         // Find out Singles recommendations
         for (Player player1 : sortedPlayerList) {
@@ -276,6 +282,14 @@ public class HomeFragment extends Fragment {
                     // Check if same match was previously recommended
                     for (Match prev : previousMatches) {
                         if (sameParticipants(prev, m)) {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    // Check if same match is already pending
+                    for (Match pend : pendingMatchesList) {
+                        if (sameParticipants(pend, m)) {
                             valid = false;
                             break;
                         }
@@ -328,6 +342,14 @@ public class HomeFragment extends Fragment {
                             // Check if same match was previously recommended
                             for (Match prev : previousMatches) {
                                 if (sameParticipants(prev, m)) {
+                                    valid = false;
+                                    break;
+                                }
+                            }
+
+                            // Check if same match is already pending
+                            for (Match pend : pendingMatchesList) {
+                                if (sameParticipants(pend, m)) {
                                     valid = false;
                                     break;
                                 }
@@ -403,7 +425,7 @@ public class HomeFragment extends Fragment {
 
         // Store in history
         for (int i = 0; i < recommendedMatchesHistory.length; i++) {
-            if (recommendedMatchesHistory[i] == null || recommendedMatchesHistory[i].size() == 0) {
+            if (recommendedMatchesHistory[i] == null) {
                 // Found empty list in history -> add current list
                 recommendedMatchesHistory[i] = result;
                 return result;
@@ -433,8 +455,10 @@ public class HomeFragment extends Fragment {
         if (a == null || b == null) return false;
 
         // Same ID or unequal matchType
-        if (a.getMatchID() != b.getMatchID() || a.getMatchType() != b.getMatchType()) return false;
-
+        if(!a.getMatchDependency().equals("Pending") && !b.getMatchDependency().equals("Pending")) {
+            if (a.getMatchID() != b.getMatchID() || a.getMatchType() != b.getMatchType())
+                return false;
+        }
         // Getting all playerIDs from both matches
         long aTeam1player1 = a.getTeam1Player1ID();
         long aTeam1player2 = a.getTeam1Player2ID();
@@ -596,5 +620,33 @@ public class HomeFragment extends Fragment {
         recentMatchAdapter.notifyDataSetChanged();
 
         recentMatches.invalidate();
+    }
+
+    /**
+     *  This method refreshes the pending matches view
+     */
+    private void refreshPendingMatches() {
+        ArrayList<Match> arrayList = storage.getStoredPendingMatches();
+
+        TextView emptyPendingMatchText = view.findViewById(R.id.emptyPendingMatchesText);
+        if (arrayList.size() == 0) {
+            pendingMatches.setVisibility(View.GONE);
+            emptyPendingMatchText.setVisibility(View.VISIBLE);
+        } else {
+            pendingMatches.setVisibility(View.VISIBLE);
+            emptyPendingMatchText.setVisibility(View.GONE);
+            ViewGroup.LayoutParams params = pendingMatches.getLayoutParams();
+            params.height = pendingMatchHeight * arrayList.size();
+            pendingMatches.setLayoutParams(params);
+
+        }
+
+        pendingMatchesAdapter = new PendingMatchesAdapter(view.getContext(), arrayList);
+
+        pendingMatches.setAdapter(pendingMatchesAdapter);
+
+        pendingMatchesAdapter.notifyDataSetChanged();
+
+        pendingMatches.invalidate();
     }
 }

@@ -345,5 +345,13 @@
             android:textColor="#000"
             android:textSize="15sp"
             android:visibility="visible" />
+
+        <Button
+            android:id="@+id/add_Result_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Add Result"/>
+
     </LinearLayout>
 </ScrollView>

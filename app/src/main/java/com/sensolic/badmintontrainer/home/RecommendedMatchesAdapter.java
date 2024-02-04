@@ -21,6 +21,7 @@ import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
+import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,10 +135,10 @@ public class RecommendedMatchesAdapter extends BaseAdapter {
 
         // save match button
         holder.saveMatch.setOnClickListener(view1 -> {
-                storage.storePendingMatch(current);
-                arrayList.remove(current);
-                matchList.remove(current);
-                notifyDataSetChanged();
+            storage.storePendingMatch(current);
+            arrayList.remove(current);
+            matchList.remove(current);
+            notifyDataSetChanged();
         });
 
         return view;
