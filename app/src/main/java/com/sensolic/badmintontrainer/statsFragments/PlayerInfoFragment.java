@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,10 +20,16 @@ import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
 import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
+import com.sensolic.badmintontrainer.adapter.PlayedMatchesAdapter;
+import com.sensolic.badmintontrainer.adapter.RecentMatchesAdapter;
+import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class PlayerInfoFragment extends Fragment {
 
@@ -29,6 +37,7 @@ public class PlayerInfoFragment extends Fragment {
     private Player toShow;
     private ImageView reloadImage;
     private boolean showing = false;
+    private ArrayList<Match> playedMatchesList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +161,32 @@ public class PlayerInfoFragment extends Fragment {
                 textView.setText("Left handed");
             }
             */
+
+            // Add played matches to list
+            Storage storage = Storage.getInstance(getContext());
+            playedMatchesList = storage.getPlayedMatches(player);
+            ListView playedMatches = view.findViewById(R.id.playedMatches_ListView);
+
+            int size = 0;
+            switch(Settings.textSize()){
+                case 1:
+                    size = 100;
+                    break;
+                case 2:
+                    size = 110;
+                    break;
+                case 3:
+                    size = 125;
+                    break;
+            }
+            int playedMatchHeight = (int) (size * getResources().getDisplayMetrics().density);
+
+            ViewGroup.LayoutParams params = playedMatches.getLayoutParams();
+            params.height = playedMatchHeight * playedMatchesList.size();
+
+            PlayedMatchesAdapter playedMatchAdapter = new PlayedMatchesAdapter(view.getContext(), playedMatchesList);
+
+            playedMatches.setAdapter(playedMatchAdapter);
 
             showing = true;
         }

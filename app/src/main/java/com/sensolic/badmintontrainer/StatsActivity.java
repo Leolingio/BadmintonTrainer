@@ -6,15 +6,9 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,7 +31,7 @@ public class StatsActivity extends AppCompatActivity {
     private static boolean showSearchInfo = false;
     private boolean closeDialogShowing = false;
     private boolean infoShowing = false;
-    public static boolean linkedMatch = false;
+    public static boolean linkedSearchable = false;
     private static Searchable searchableLastShown;
     private static Searchable searchableCurrentlyShowing;
     private static Searchable searchableToShow;
@@ -209,10 +203,10 @@ public class StatsActivity extends AppCompatActivity {
         if(menuExpanded){
             closeMenu();
         } else if(infoShowing && vp.getCurrentItem() == 1){
-            if(linkedMatch && searchableLastShown != null){
+            if(linkedSearchable && searchableLastShown != null){
                 searchableToShow = searchableLastShown;
                 searchableLastShown = null;
-                linkedMatch = false;
+                linkedSearchable = false;
                 showSearchInfo = true;
                 startActivity(new Intent(getApplicationContext(),ReloadActivity.class));
             } else {

@@ -491,7 +491,7 @@ public class Storage {
     }
 
     /**
-     * Adds all matches stored in matches-file to the Arraylist from parameter
+     * Adds all stored matches and players to the Arraylist from parameter
      *
      * @param list ArrayList where loaded matches should be added to
      */
@@ -1411,6 +1411,43 @@ public class Storage {
                     buffer = buffer + c;
                     toAdd = (Match) convertEntryToObject(buffer);
                     if (toAdd != null) result.add(toAdd);
+                } else {
+                    buffer = buffer + c;
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            // ignored
+        }
+        return result;
+    }
+
+    public ArrayList<Match> getPlayedMatches(Player player){
+        ArrayList<Match> result = new ArrayList<>();
+        Match toAdd;
+        String buffer = "";         // Here the matchEntry will be loaded to
+        char c;
+        try {
+            File file;
+            FileReader reader;
+
+            file = new File(context.getFilesDir().getAbsolutePath() + "/matches");
+            reader = new FileReader(file);
+            while (reader.ready()) {
+                c = (char) reader.read();
+                if (c == '{') {
+                    buffer = c + "";
+                } else if (c == '}') {
+                    buffer = buffer + c;
+                    toAdd = (Match) convertEntryToObject(buffer);
+                    if (toAdd != null){
+                        if(toAdd.getTeam1Player1ID() == player.getPlayerID()
+                                || toAdd.getTeam1Player2ID() == player.getPlayerID()
+                                || toAdd.getTeam2Player1ID() == player.getPlayerID()
+                                || toAdd.getTeam2Player2ID() == player.getPlayerID()) {
+                            result.add(toAdd);
+                        }
+                    }
                 } else {
                     buffer = buffer + c;
                 }

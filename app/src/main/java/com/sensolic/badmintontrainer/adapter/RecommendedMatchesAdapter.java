@@ -1,27 +1,19 @@
-package com.sensolic.badmintontrainer.home;
+package com.sensolic.badmintontrainer.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sensolic.badmintontrainer.R;
-import com.sensolic.badmintontrainer.ReloadActivity;
 import com.sensolic.badmintontrainer.Settings;
-import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
-import com.sensolic.badmintontrainer.statsFragments.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,41 +1,29 @@
 package com.sensolic.badmintontrainer.statsFragments;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.res.Configuration;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.Settings;
-import com.sensolic.badmintontrainer.StatsActivity;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
-import com.sensolic.badmintontrainer.home.PendingMatchesAdapter;
-import com.sensolic.badmintontrainer.home.RecentMatchesAdapter;
-import com.sensolic.badmintontrainer.home.RecommendedMatchesAdapter;
+import com.sensolic.badmintontrainer.adapter.PendingMatchesAdapter;
+import com.sensolic.badmintontrainer.adapter.RecentMatchesAdapter;
+import com.sensolic.badmintontrainer.adapter.RecommendedMatchesAdapter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import kotlinx.coroutines.sync.Mutex;
 
 public class HomeFragment extends Fragment {
 

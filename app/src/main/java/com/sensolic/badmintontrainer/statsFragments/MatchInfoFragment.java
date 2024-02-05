@@ -24,7 +24,6 @@ import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
-import com.sensolic.badmintontrainer.search.SearchActivity;
 
 public class MatchInfoFragment extends Fragment {
 
@@ -57,7 +56,7 @@ public class MatchInfoFragment extends Fragment {
                 Player toShow = currentShowing.getTeam1Player1();
                 if(toShow != null){
                     StatsActivity.showInfo(toShow);
-                    StatsActivity.linkedMatch = true;
+                    StatsActivity.linkedSearchable = true;
                     startActivity(new Intent(getContext(),ReloadActivity.class));
                 } else{
                     Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -71,7 +70,7 @@ public class MatchInfoFragment extends Fragment {
                 Player toShow = currentShowing.getTeam1Player2();
                 if(toShow != null){
                     StatsActivity.showInfo(toShow);
-                    StatsActivity.linkedMatch = true;
+                    StatsActivity.linkedSearchable = true;
                     startActivity(new Intent(getContext(),ReloadActivity.class));
                 } else{
                     Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -85,7 +84,7 @@ public class MatchInfoFragment extends Fragment {
                 Player toShow = currentShowing.getTeam2Player1();
                 if(toShow != null){
                     StatsActivity.showInfo(toShow);
-                    StatsActivity.linkedMatch = true;
+                    StatsActivity.linkedSearchable = true;
                     startActivity(new Intent(getContext(),ReloadActivity.class));
                 } else{
                     Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -99,7 +98,7 @@ public class MatchInfoFragment extends Fragment {
                 Player toShow = currentShowing.getTeam2Player2();
                 if(toShow != null){
                     StatsActivity.showInfo(toShow);
-                    StatsActivity.linkedMatch = true;
+                    StatsActivity.linkedSearchable = true;
                     startActivity(new Intent(getContext(),ReloadActivity.class));
                 } else{
                     Toast.makeText(getContext(), "Player not found", Toast.LENGTH_SHORT).show();
@@ -348,7 +347,7 @@ public class MatchInfoFragment extends Fragment {
                 showing = true;
             }
 
-            // Make Info below invisible when it is a pending match TODO
+            // Make Info below invisible when it is a pending match
             if(match.getMatchDependency().equals("Pending")){
                 textView = view.findViewById(R.id.resultText);
                 textView.setVisibility(View.GONE);

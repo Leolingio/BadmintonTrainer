@@ -1,20 +1,16 @@
-package com.sensolic.badmintontrainer.home;
+package com.sensolic.badmintontrainer.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +23,9 @@ import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-public class RecentMatchesAdapter extends BaseAdapter {
+public class PlayedMatchesAdapter extends BaseAdapter {
 
     Storage storage;
     Context context;
@@ -38,7 +33,7 @@ public class RecentMatchesAdapter extends BaseAdapter {
     List<Match> matchList;
     ArrayList<Match> arrayList;
 
-    public RecentMatchesAdapter(Context context, List<Match> entryList) {
+    public PlayedMatchesAdapter(Context context, List<Match> entryList) {
         this.context = context;
         this.matchList = entryList;
         inflater = LayoutInflater.from(context);
@@ -78,22 +73,22 @@ public class RecentMatchesAdapter extends BaseAdapter {
         float sizeHead = 0, sizeText = 0;
         switch(Settings.textSize()){
             case 1:
-                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
-                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                sizeHead = Settings.TEXTSIZE_SMALL_TEXT;
+                sizeText = sizeHead;
                 break;
             case 2:
-                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
-                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                sizeHead = Settings.TEXTSIZE_NORMAL_TEXT;
+                sizeText = sizeHead;
                 break;
             case 3:
-                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
-                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                sizeHead = Settings.TEXTSIZE_BIG_TEXT;
+                sizeText = sizeHead;
                 break;
         }
 
         if (view == null) {
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.recent_match_list_view, null);
+            view = inflater.inflate(R.layout.match_list_view, null);
 
             holder.matchInfoTitle = view.findViewById(R.id.matchInfoTitle);
             holder.team1player1 = view.findViewById(R.id.team1player1);
@@ -188,6 +183,7 @@ public class RecentMatchesAdapter extends BaseAdapter {
                         view1.startAnimation(animation);
                         if (!popupMenuShowing) {
                             StatsActivity.showInfo(match);
+                            StatsActivity.linkedSearchable = true;
                             context.startActivity(new Intent(context, ReloadActivity.class));
                         }
                     }
@@ -207,6 +203,17 @@ public class RecentMatchesAdapter extends BaseAdapter {
         holder.score1.setTextSize(sizeText);
         holder.score2.setTextSize(sizeText);
         holder.score3.setTextSize(sizeText);
+
+        // Change text color
+        holder.matchInfoTitle.setTextColor(Color.BLACK);
+        holder.team1player1.setTextColor(Color.BLACK);
+        holder.team1player2.setTextColor(Color.BLACK);
+        holder.team2player1.setTextColor(Color.BLACK);
+        holder.team2player2.setTextColor(Color.BLACK);
+        holder.score1.setTextColor(Color.BLACK);
+        holder.score2.setTextColor(Color.BLACK);
+        holder.score3.setTextColor(Color.BLACK);
+
         return view;
     }
 
