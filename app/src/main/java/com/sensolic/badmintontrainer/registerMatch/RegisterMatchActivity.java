@@ -1055,7 +1055,6 @@ public class RegisterMatchActivity extends AppCompatActivity {
 
                     Match matchNew = new Match(storage, matchID, 'S', playerIDs, scores.length, scores, points);
                     storage.storeMatch(matchNew);
-
                     storage.registerMatchID(matchID);
                     StatsActivity.showInfo(matchNew);
 

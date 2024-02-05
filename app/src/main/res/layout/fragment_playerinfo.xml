@@ -188,6 +188,7 @@
             android:visibility="gone" />
 
         <View
+            android:id="@+id/matchHistory_separator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="40dp"
@@ -211,7 +212,15 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp"
             android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/loadMoreMatches_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/load_more_icon"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"/>
+
     </LinearLayout>
 </ScrollView>

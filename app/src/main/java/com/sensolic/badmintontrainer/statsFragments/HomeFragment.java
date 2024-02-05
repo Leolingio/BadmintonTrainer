@@ -15,9 +15,9 @@ import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
-import com.sensolic.badmintontrainer.adapter.PendingMatchesAdapter;
-import com.sensolic.badmintontrainer.adapter.RecentMatchesAdapter;
-import com.sensolic.badmintontrainer.adapter.RecommendedMatchesAdapter;
+import com.sensolic.badmintontrainer.matchesAdapter.PendingMatchesAdapter;
+import com.sensolic.badmintontrainer.matchesAdapter.RecentMatchesAdapter;
+import com.sensolic.badmintontrainer.matchesAdapter.RecommendedMatchesAdapter;
 
 import java.util.ArrayList;
 import java.util.Comparator;

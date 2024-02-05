@@ -1,9 +1,8 @@
-package com.sensolic.badmintontrainer.adapter;
+package com.sensolic.badmintontrainer.matchesAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +24,7 @@ import com.sensolic.badmintontrainer.data.Storage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayedMatchesAdapter extends BaseAdapter {
+public class RecentMatchesAdapter extends BaseAdapter {
 
     Storage storage;
     Context context;
@@ -33,7 +32,7 @@ public class PlayedMatchesAdapter extends BaseAdapter {
     List<Match> matchList;
     ArrayList<Match> arrayList;
 
-    public PlayedMatchesAdapter(Context context, List<Match> entryList) {
+    public RecentMatchesAdapter(Context context, List<Match> entryList) {
         this.context = context;
         this.matchList = entryList;
         inflater = LayoutInflater.from(context);
@@ -73,16 +72,16 @@ public class PlayedMatchesAdapter extends BaseAdapter {
         float sizeHead = 0, sizeText = 0;
         switch(Settings.textSize()){
             case 1:
-                sizeHead = Settings.TEXTSIZE_SMALL_TEXT;
-                sizeText = sizeHead;
+                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
+                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
                 break;
             case 2:
-                sizeHead = Settings.TEXTSIZE_NORMAL_TEXT;
-                sizeText = sizeHead;
+                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
+                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
                 break;
             case 3:
-                sizeHead = Settings.TEXTSIZE_BIG_TEXT;
-                sizeText = sizeHead;
+                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
+                sizeText = Settings.TEXTSIZE_BIG_TEXT;
                 break;
         }
 
@@ -183,7 +182,6 @@ public class PlayedMatchesAdapter extends BaseAdapter {
                         view1.startAnimation(animation);
                         if (!popupMenuShowing) {
                             StatsActivity.showInfo(match);
-                            StatsActivity.linkedSearchable = true;
                             context.startActivity(new Intent(context, ReloadActivity.class));
                         }
                     }
@@ -203,17 +201,6 @@ public class PlayedMatchesAdapter extends BaseAdapter {
         holder.score1.setTextSize(sizeText);
         holder.score2.setTextSize(sizeText);
         holder.score3.setTextSize(sizeText);
-
-        // Change text color
-        holder.matchInfoTitle.setTextColor(Color.BLACK);
-        holder.team1player1.setTextColor(Color.BLACK);
-        holder.team1player2.setTextColor(Color.BLACK);
-        holder.team2player1.setTextColor(Color.BLACK);
-        holder.team2player2.setTextColor(Color.BLACK);
-        holder.score1.setTextColor(Color.BLACK);
-        holder.score2.setTextColor(Color.BLACK);
-        holder.score3.setTextColor(Color.BLACK);
-
         return view;
     }
 

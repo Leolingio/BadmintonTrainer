@@ -1,4 +1,4 @@
-package com.sensolic.badmintontrainer.adapter;
+package com.sensolic.badmintontrainer.matchesAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -17,9 +17,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Storage {
 
@@ -534,6 +539,7 @@ public class Storage {
         int setCount = 0, firstSetTeamOne = 0, firstSetTeamTwo = 0, secondSetTeamOne = 0, secondSetTeamTwo = 0,
                 thirdSetTeamOne = 0, thirdSetTeamTwo = 0, rankingPoints = 0, matchesPlayed = 0, teamNumber = 0,
                 team1player1points = 0, team1player2points = 0, team2player1points = 0, team2player2points = 0;
+        Date creationDate = null;
         String objectType = "";
         String matchDependency = "", playerName = "";
 
@@ -563,6 +569,20 @@ public class Storage {
                     } else if (value.equals("Doubles")) {
                         matchType = 'D';
                     } else return null;
+                    break;
+                case "creationDate":
+                    DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss", Locale.GERMANY);
+                    Date date = null;
+                    try {
+                        date = formatter.parse(value);
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    if(date == null) {
+                        creationDate = null;
+                    } else{
+                        creationDate = date;
+                    }
                     break;
                 case "team1player1":
                     team1player1 = Long.parseLong(value);
@@ -661,6 +681,7 @@ public class Storage {
         if (objectType.equals("match")) {
             long[] players;
             int[] points;
+
             if (matchType == 'S') {
                 players = new long[2];
                 points = new int[2];
@@ -696,20 +717,27 @@ public class Storage {
                     scores[2] = thirdSetTeamOne + ":" + thirdSetTeamTwo;
                 }
             }
+            Match result = null;
             switch (matchDependency) {
                 case "Ranking":
-                    return new Match(instance, ID, matchType, players, setCount, scores, points);
+                    result = new Match(instance, ID, matchType, players, setCount, scores, points);
+                    break;
                 case "Tournament":
-                    return new Match(instance, ID, matchType, players, setCount, scores, points, tournamentID);
+                    result =  new Match(instance, ID, matchType, players, setCount, scores, points, tournamentID);
+                    break;
                 case "League":
-                    return new Match(instance, ID, matchType, players, setCount, scores, points, leagueID, teamNumber);
+                    result =  new Match(instance, ID, matchType, players, setCount, scores, points, leagueID, teamNumber);
+                    break;
                 case "Pending":
-                    Match toReturn = new Match(instance, matchType, players);
-                    toReturn.setMatchID(ID);
-                    return toReturn;
+                    result = new Match(instance, matchType, players);
+                    result.setMatchID(ID);
+                    //result.setCreationDate(null);
+                    return result;
                 default:
                     return null;
             }
+            result.setCreationDate(creationDate);
+            return result;
         } else if (objectType.equals("player")) {
             return new Player(ID, playerName, rankingPoints, matchesPlayed, teamNumber, mainHand);
         }
@@ -790,6 +818,16 @@ public class Storage {
         }
         toStore = toStore + buffer + ";" + System.lineSeparator();
 
+        // Add creationDate attribute
+        buffer = "creationDate:";
+        if (match.getCreationDate() == null) {
+            buffer = buffer + "null";
+        } else {
+            DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss", Locale.GERMANY);
+            buffer = buffer + formatter.format(match.getCreationDate());
+        }
+        toStore = toStore + buffer + ";" + System.lineSeparator();
+
         // Add player attributes
         toStore = toStore + "team1player1:" + match.getTeam1Player1ID() + ";" + System.lineSeparator();
         toStore = toStore + "team2player1:" + match.getTeam2Player1ID() + ";" + System.lineSeparator();
@@ -799,7 +837,6 @@ public class Storage {
         }
 
         if(!match.getMatchDependency().equals("Pending")) {
-
             // Points
             toStore = toStore + "team1player1points:" + match.getTeam1Player1points() + ";" + System.lineSeparator();
             toStore = toStore + "team2player1points:" + match.getTeam2Player1points() + ";" + System.lineSeparator();

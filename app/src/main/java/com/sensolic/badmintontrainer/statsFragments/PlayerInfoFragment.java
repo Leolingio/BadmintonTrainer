@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,16 +22,13 @@ import com.sensolic.badmintontrainer.R;
 import com.sensolic.badmintontrainer.ReloadActivity;
 import com.sensolic.badmintontrainer.Settings;
 import com.sensolic.badmintontrainer.StatsActivity;
-import com.sensolic.badmintontrainer.adapter.PlayedMatchesAdapter;
-import com.sensolic.badmintontrainer.adapter.RecentMatchesAdapter;
+import com.sensolic.badmintontrainer.matchesAdapter.PlayedMatchesAdapter;
 import com.sensolic.badmintontrainer.data.Match;
 import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class PlayerInfoFragment extends Fragment {
 
@@ -179,14 +178,67 @@ public class PlayerInfoFragment extends Fragment {
                     size = 125;
                     break;
             }
+
+            // adjust list height
             int playedMatchHeight = (int) (size * getResources().getDisplayMetrics().density);
 
             ViewGroup.LayoutParams params = playedMatches.getLayoutParams();
-            params.height = playedMatchHeight * playedMatchesList.size();
+            if(playedMatchesList.size() <= 5) {
+                params.height = playedMatchHeight * playedMatchesList.size();
+            } else{
+                params.height = playedMatchHeight * 5;
+            }
 
+            // Configuring Adapter
             PlayedMatchesAdapter playedMatchAdapter = new PlayedMatchesAdapter(view.getContext(), playedMatchesList);
-
             playedMatches.setAdapter(playedMatchAdapter);
+
+            // Load more matches button
+            ImageView loadMoreMatchesButton = view.findViewById(R.id.loadMoreMatches_button);
+            int finalSize = size;
+            loadMoreMatchesButton.setOnClickListener(view -> {
+
+                // Click animation of list item
+                Animation animation = new AlphaAnimation(0.3f, 1.0f);
+                animation.setDuration(300);
+                view.startAnimation(animation);
+                view.postDelayed(() -> {
+                    playedMatchAdapter.loadMoreMatches();
+
+                    int height = (int) (finalSize * getResources().getDisplayMetrics().density);
+
+                    ViewGroup.LayoutParams prms = playedMatches.getLayoutParams();
+                    prms.height = height * playedMatchAdapter.getCount();
+
+                    if(playedMatchAdapter.getCount() == playedMatchesList.size()){
+                        loadMoreMatchesButton.setVisibility(View.GONE);
+                    } else{
+                        loadMoreMatchesButton.setVisibility(View.VISIBLE);
+                    }
+
+                    playedMatches.invalidate();
+                }, 300);
+            });
+
+            // Visibility of matchHistory
+            TextView header = view.findViewById(R.id.matchHistoryText);
+            View v = view.findViewById(R.id.matchHistory_separator);
+            if(playedMatchesList.size() == 0){
+                header.setVisibility(View.GONE);
+                v.setVisibility(View.GONE);
+                loadMoreMatchesButton.setVisibility(View.GONE);
+                playedMatches.setVisibility(View.GONE);
+            } else{
+                header.setVisibility(View.VISIBLE);
+                v.setVisibility(View.VISIBLE);
+                loadMoreMatchesButton.setVisibility(View.VISIBLE);
+                playedMatches.setVisibility(View.VISIBLE);
+            }
+            if(playedMatchesList.size() <= 5){
+                loadMoreMatchesButton.setVisibility(View.GONE);
+            } else{
+                loadMoreMatchesButton.setVisibility(View.VISIBLE);
+            }
 
             showing = true;
         }

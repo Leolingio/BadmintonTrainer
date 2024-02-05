@@ -1,8 +1,9 @@
-package com.sensolic.badmintontrainer.adapter;
+package com.sensolic.badmintontrainer.matchesAdapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,22 +23,36 @@ import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class RecentMatchesAdapter extends BaseAdapter {
+public class PlayedMatchesAdapter extends BaseAdapter {
 
     Storage storage;
     Context context;
     LayoutInflater inflater;
-    List<Match> matchList;
-    ArrayList<Match> arrayList;
+    List<Match> completeMatchList;
+    ArrayList<Match> shownMatchList;
 
-    public RecentMatchesAdapter(Context context, List<Match> entryList) {
+    public PlayedMatchesAdapter(Context context, List<Match> entryList) {
         this.context = context;
-        this.matchList = entryList;
+        this.completeMatchList = entryList;
         inflater = LayoutInflater.from(context);
-        arrayList = new ArrayList<>();
-        arrayList.addAll(entryList);
+        shownMatchList = new ArrayList<>();
+
+        //Sorting matchList by date
+        completeMatchList.sort(Comparator.comparing(Match::getCreationDate));
+
+        // Adding first max 5 played matches
+        if(completeMatchList.size() <= 5){
+            shownMatchList.addAll(completeMatchList);
+        }else{
+            for(int i = 0; i < 5; i++){
+                shownMatchList.add(completeMatchList.get(i));
+            }
+        }
+
+
         storage = Storage.getInstance(context);
     }
 
@@ -48,12 +63,12 @@ public class RecentMatchesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return matchList.size();
+        return shownMatchList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return matchList.get(i);
+        return shownMatchList.get(i);
     }
 
     @Override
@@ -72,16 +87,16 @@ public class RecentMatchesAdapter extends BaseAdapter {
         float sizeHead = 0, sizeText = 0;
         switch(Settings.textSize()){
             case 1:
-                sizeHead = Settings.TEXTSIZE_SMALL_HEADER;
-                sizeText = Settings.TEXTSIZE_SMALL_TEXT;
+                sizeHead = Settings.TEXTSIZE_SMALL_TEXT;
+                sizeText = sizeHead;
                 break;
             case 2:
-                sizeHead = Settings.TEXTSIZE_NORMAL_HEADER;
-                sizeText = Settings.TEXTSIZE_NORMAL_TEXT;
+                sizeHead = Settings.TEXTSIZE_NORMAL_TEXT;
+                sizeText = sizeHead;
                 break;
             case 3:
-                sizeHead = Settings.TEXTSIZE_BIG_HEADER;
-                sizeText = Settings.TEXTSIZE_BIG_TEXT;
+                sizeHead = Settings.TEXTSIZE_BIG_TEXT;
+                sizeText = sizeHead;
                 break;
         }
 
@@ -102,7 +117,7 @@ public class RecentMatchesAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        Match current = arrayList.get(position);
+        Match current = shownMatchList.get(position);
         Player buffer = current.getTeam1Player1();
         holder.matchInfoTitle.setText(current.getInfo()+" "+current.getIDInfo());
         if(buffer != null) {
@@ -144,13 +159,13 @@ public class RecentMatchesAdapter extends BaseAdapter {
                 return false;
             }
             int index = 0;
-            for (Match m : matchList) {
+            for (Match m : completeMatchList) {
                 if (m.getIDInfo().equals("#M" + id)) {
                     break;
                 }
                 index++;
             }
-            Match match = matchList.get(index);
+            Match match = completeMatchList.get(index);
 
             if(storage.getMatchData(match.getMatchID()) == null){
                 if(holder.matchInfoTitle.getVisibility() == View.GONE){
@@ -182,6 +197,7 @@ public class RecentMatchesAdapter extends BaseAdapter {
                         view1.startAnimation(animation);
                         if (!popupMenuShowing) {
                             StatsActivity.showInfo(match);
+                            StatsActivity.linkedSearchable = true;
                             context.startActivity(new Intent(context, ReloadActivity.class));
                         }
                     }
@@ -201,7 +217,39 @@ public class RecentMatchesAdapter extends BaseAdapter {
         holder.score1.setTextSize(sizeText);
         holder.score2.setTextSize(sizeText);
         holder.score3.setTextSize(sizeText);
+
+        // Change text color
+        holder.matchInfoTitle.setTextColor(Color.BLACK);
+        holder.team1player1.setTextColor(Color.BLACK);
+        holder.team1player2.setTextColor(Color.BLACK);
+        holder.team2player1.setTextColor(Color.BLACK);
+        holder.team2player2.setTextColor(Color.BLACK);
+        holder.score1.setTextColor(Color.BLACK);
+        holder.score2.setTextColor(Color.BLACK);
+        holder.score3.setTextColor(Color.BLACK);
+
         return view;
+    }
+
+    /**
+     *  This method loads up to 10 more matches to the history listview
+     */
+    public void loadMoreMatches(){
+        if(shownMatchList.size() == completeMatchList.size()){
+
+            Toast.makeText(context, "No more played matches", Toast.LENGTH_SHORT).show();
+        } else{
+            if(completeMatchList.size() - shownMatchList.size() <= 5){
+                shownMatchList.clear();
+                shownMatchList.addAll(completeMatchList);
+            } else{
+                int start = shownMatchList.size(), end = start+5;
+                for(int i = start; i < end; i++){
+                    shownMatchList.add(completeMatchList.get(i));
+                }
+            }
+            notifyDataSetChanged();
+        }
     }
 
 }

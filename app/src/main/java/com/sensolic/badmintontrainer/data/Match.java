@@ -2,6 +2,8 @@ package com.sensolic.badmintontrainer.data;
 
 import com.sensolic.badmintontrainer.search.Searchable;
 
+import java.util.Date;
+
 public class Match implements Searchable {
 
     Storage storage;
@@ -47,6 +49,11 @@ public class Match implements Searchable {
     private int teamNumber;
 
     /**
+     *  Date when the match was created
+     */
+    private Date creationDate;
+
+    /**
      * Creates a new match object with attributes given in parameter list
      * This constructor is only for Ranking matches
      *
@@ -61,6 +68,8 @@ public class Match implements Searchable {
 
         this.matchID = matchID;
         this.matchType = matchType;
+
+        creationDate = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("Europe/Berlin")).getTime();
 
         // Read our playerIDs
         if (matchType == 'S') {
@@ -366,5 +375,13 @@ public class Match implements Searchable {
         }
         if (first > second) return 1;
         else return 2;
+    }
+
+    public void setCreationDate(Date date){
+        creationDate = date;
+    }
+
+    public Date getCreationDate(){
+        return creationDate;
     }
 }

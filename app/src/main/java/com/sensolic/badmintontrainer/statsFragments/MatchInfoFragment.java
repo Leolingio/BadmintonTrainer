@@ -25,6 +25,10 @@ import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 import com.sensolic.badmintontrainer.registerMatch.RegisterMatchActivity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class MatchInfoFragment extends Fragment {
 
     private View view;
@@ -345,6 +349,16 @@ public class MatchInfoFragment extends Fragment {
                 icon.setVisibility(View.VISIBLE);
 
                 showing = true;
+            }
+
+            // Creation date text
+            textView = view.findViewById(R.id.creationDateText);
+            if(!match.getMatchDependency().equals("Pending") && currentShowing.getCreationDate() != null){
+                textView.setVisibility(View.VISIBLE);
+                DateFormat formatter = new SimpleDateFormat("d. MMMM yyyy", Locale.US);
+                textView.setText(formatter.format(currentShowing.getCreationDate()));
+            } else{
+                textView.setVisibility(View.GONE);
             }
 
             // Make Info below invisible when it is a pending match
