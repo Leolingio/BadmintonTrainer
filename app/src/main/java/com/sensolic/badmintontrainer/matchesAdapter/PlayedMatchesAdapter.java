@@ -23,7 +23,6 @@ import com.sensolic.badmintontrainer.data.Player;
 import com.sensolic.badmintontrainer.data.Storage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class PlayedMatchesAdapter extends BaseAdapter {
@@ -41,7 +40,16 @@ public class PlayedMatchesAdapter extends BaseAdapter {
         shownMatchList = new ArrayList<>();
 
         //Sorting matchList by date
-        completeMatchList.sort(Comparator.comparing(Match::getCreationDate));
+        completeMatchList.sort((match1, match2) -> {
+            if(match1.getCreationDate().before(match2.getCreationDate())){
+                return 1;
+            } else if(match1.getCreationDate().after(match2.getCreationDate())){
+                return -1;
+            } else{
+                return 0;
+            }
+
+        });
 
         // Adding first max 5 played matches
         if(completeMatchList.size() <= 5){
